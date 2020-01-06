@@ -4,9 +4,30 @@
     <title>SEQU</title>
     <link rel="stylesheet" type="text/css" href="ui.css">
 
+    <!--Dependencies-->
+    <script src="node_modules/tone/build/Tone.js"></script>
+
+    <script src="script/synth.js"></script>
+    <script src="script/sequencer.js"></script>
+    <script src="script/oscillator.js"></script>
+    <script src="script/clock.js"></script>
+    <script src="script/effect.js"></script>
+    <script src="script/envelope.js"></script>
+    <script src="script/master.js"></script>
     <script src="script/main.js"></script>
+    
+    
 </head>
 <body>
-    <div class="button">start</div>
+    <div id="menu">
+        <div class="menuButton" onclick="AddModule('vco')">+ VCO</div>
+        <div class="menuButton" onclick="AddModule('clock')">+ CLOCK</div>
+        <div class="menuButton" onclick="AddModule('env')">+ ENV</div>
+        <div class="menuButton" onclick="AddModule('lfo')">+ LFO</div>
+        <div class="menuButton" id="start" onclick="Init()">Start</div>
+    </div>
+    <div id="wrapper">
+        
+    </div>
 </body>
 </html>
