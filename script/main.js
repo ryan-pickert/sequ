@@ -41,7 +41,11 @@ function Init()
 
     document.getElementById("start").innerHTML = "Stop";
     Tone.Transport.start();
-
+    document.getElementsByClassName("menuButton")[0].style.display = "";
+    document.getElementsByClassName("menuButton")[1].style.display = "";
+    document.getElementsByClassName("menuButton")[2].style.display = "";
+    document.getElementsByClassName("menuButton")[3].style.display = "";
+    document.getElementsByClassName("menuButton")[4].style.display = "";
     AddModule("master");
 }
 function AddModule(type)
