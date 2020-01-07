@@ -14,20 +14,25 @@
     <script src="script/effect.js"></script>
     <script src="script/envelope.js"></script>
     <script src="script/master.js"></script>
+    <script src="script/controller.js"></script>
     <script src="script/main.js"></script>
     
     
 </head>
 <body>
     <div id="menu">
-        <div class="menuButton" onclick="AddModule('vco')">+ VCO</div>
-        <div class="menuButton" onclick="AddModule('clock')">+ CLOCK</div>
-        <div class="menuButton" onclick="AddModule('env')">+ ENV</div>
-        <div class="menuButton" onclick="AddModule('lfo')">+ LFO</div>
-        <div class="menuButton" id="start" onclick="Init()">Start</div>
+        <div class="menuButton" onclick="AddModule('vco')"style="float: left;">+ VCO</div>
+        <div class="menuButton" onclick="AddModule('clock')" >+ CLOCK</div>
+        <div class="menuButton" onclick="AddModule('env')" style="float: left;">+ ENV</div>
+        <div class="menuButton" onclick="AddModule('lfo')" style="float: left;">+ LFO</div>
+        <div class="menuButton" onclick="AddModule('seq8')" >+ SEQ</div>
+        <div class="menuButton" id="start" onclick="Init() ">Start</div>
+        
     </div>
     <div id="wrapper">
-        
+        <svg id="draw" height="720" width="1000">
+            
+        </svg>
     </div>
 </body>
 </html>

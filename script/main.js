@@ -48,7 +48,7 @@ function AddModule(type)
 {
     switch(type){
         case "vco":
-            var m = new VCOModule(200, "sine");
+            var m = new VCOModule(950, "sine");
             m.setVolume(-16);
             m.module.start();
             Modules.push(m);
@@ -68,6 +68,16 @@ function AddModule(type)
             
             Modules.push(m);
             break;
+        case "seq8":
+            var m = new SequencerModule8();
+            
+            Modules.push(m);
+            break;
+        case "seq16":
+            var m = new SequencerModule16();
+            
+            Modules.push(m);
+            break;
         case "master":
             var m = new MasterModule();
             
@@ -75,7 +85,17 @@ function AddModule(type)
             break;
     }
 }
-
+function SyncClocks()
+{
+    for(let i = 0; i<Modules.length; i++){
+        if(Modules[i].name == "Clock-1"){
+            if(Modules[i].module != undefined){
+                Modules[i].module.stop();
+                Modules[i].module.start();
+            }
+        }
+    }
+}
 function GetRandom(min, max)
 {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -146,7 +166,8 @@ function move(e,t)
     
     
 }
-
+var line;
+var startX, startY;
 function Connect(m)
 {
     if(connectStart == undefined && m.classList[0] == "output"){
@@ -157,6 +178,13 @@ function Connect(m)
         for(let i = 0; i < inputs.length; i++){
             inputs[i].style.borderColor = "white";
         }
+
+        var bodyRect = document.body.getBoundingClientRect(),
+        elemRect = m.getBoundingClientRect();
+        startY   = elemRect.top - bodyRect.top,
+        startX   = elemRect.left - bodyRect.left;
+
+        line = document.createElementNS('http://www.w3.org/2000/svg', "path");
         
     }else if(connectStart != undefined && m.classList[0] == "input"){
         //Type of connection
@@ -176,29 +204,62 @@ function Connect(m)
         for(let i = 0; i < inputs.length; i++){
             inputs[i].style.borderColor = "";
         }
+
+        var bodyRect = document.body.getBoundingClientRect(),
+        elemRect = m.getBoundingClientRect(),
+        endY   = elemRect.top - bodyRect.top,
+        endX   = elemRect.left - bodyRect.left;
+        
+        if(startX > endX){
+            line.setAttribute('d', "M "+(startX+9)+" "+(startY+19) + " C "+(startX-9)+" "+(startY+150)+
+            ", "+(endX+80)+" "+(endY+150)+", "+(endX+18)+" "+(endY+19));
+        }else if(startX < endX)
+        {
+            line.setAttribute('d', "M "+(startX+18)+" "+(startY+19) + " C "+(startX+80)+" "+(startY+150)+
+                          ", "+(endX-9)+" "+(endY+150)+", "+(endX+9)+" "+(endY+19));
+        }
+        
+        
+
+        document.getElementById("draw").append(line);
     }
     
 }
 
 var moving = false;
-function TurnKnob(knob, event)
+function TurnKnob(knob, event, cIndex)
 {
-    if(!moving){
-        var start = event.clientY;
-        var dif = 0;
+    if(!moving)
+    {
         var modIndex = Number(knob.parentElement.id);
-        var controllerIndex = 0;
+        var dif = 0; 
+        var start = event.clientY;
     }
     
     document.onmousemove = function(e){
         moving = true;
         dif = start-e.clientY;
-        Modules[modIndex].control(knob.id, Math.floor(Math.abs(dif)));
-       
-        console.log(dif);
-        knob.style.transform = "rotate("+(dif) + "deg)";
+        
+        if(dif > 5){
+            //Increase
+            Modules[modIndex].control("increase", cIndex);
+            //Reset
+            dif = 0; 
+            start = e.clientY;
+        }else if(dif < -5)
+        {
+            //Decrease
+            Modules[modIndex].control("decrease", cIndex);
+            //Reset
+            dif = 0; 
+            start = e.clientY;
+        }
+        var minmax = Modules[modIndex].controllers[cIndex].max - Modules[modIndex].controllers[cIndex].min;
+        var rotation = Modules[modIndex].controllers[cIndex].value / minmax;
+        knob.style.transform = "rotate("+((rotation*240)-130) + "deg)";
     };
     document.onmouseup = function(e){
+
         document.onmousemove = null;
         moving = false;
     };

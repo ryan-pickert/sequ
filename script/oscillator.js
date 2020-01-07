@@ -4,6 +4,7 @@ class VCOModule
     {
         this.module = new Tone.Oscillator(freq, wave);
         this.module.sync();
+        this.controllers = []; //Array of controllers (knobs, etc)
         this.createUI();
     }
     setVolume(vol)
@@ -33,20 +34,34 @@ class VCOModule
                 break;
         }   
     }
-    control(p, value)
+    control(value, cIndex)
     {
-        switch(p){
-            case "frequency":
-                this.module.frequency.value = value;
-                break;
+        if(value == "increase"){
+            if(this.controllers[cIndex].value < this.controllers[cIndex].max)
+                this.controllers[cIndex].increase();
+        }
+        else{
+            if(this.controllers[cIndex].value > this.controllers[cIndex].min)
+                this.controllers[cIndex].decrease();
         }
 
+        if(this.controllers[cIndex].value > this.controllers[cIndex].max)
+                this.controllers[cIndex].value = this.controllers[cIndex].max;
+        if(this.controllers[cIndex].value < this.controllers[cIndex].min)
+                this.controllers[cIndex].value = this.controllers[cIndex].min;
+
+        switch(cIndex){
+            case 0:
+                this.module.frequency.value = this.controllers[cIndex].value;
+                break;
+        }
     }
     createUI()
     {
         var mod = document.createElement("div");
         var secName = document.createElement("div");
         var secFreq = document.createElement("div");
+        var secIn = document.createElement("div");
         var secOut = document.createElement("div");
         var secWave = document.createElement("div");
         var inFreq = document.createElement("div");
@@ -72,12 +87,22 @@ class VCOModule
         secFreq.classList.add("section");
 
         
-
+        //Frequency knob
         mod.appendChild(knob1);
+        
         knob1.innerHTML="|";
         knob1.classList.add("knob");
-        knob1.id = "frequency";
-        knob1.onmousedown = function(){TurnKnob(this, event)};
+        knob1.onmousedown = function(){TurnKnob(this, event, 0)};
+        //Create controller and set knob rotation
+        this.controllers.push(new Controller(15, 6000, 15));
+        this.controllers[this.controllers.length-1].value = this.module.frequency.value;
+        var minmax = this.controllers[this.controllers.length-1].max - this.controllers[this.controllers.length-1].min;
+        var rotation = this.controllers[this.controllers.length-1].value / minmax;
+        knob1.style.transform = "rotate("+((rotation*240)-130) + "deg)";
+
+        
+        mod.appendChild(document.createElement("br"));
+        
 
         mod.appendChild(inFreq);
         inFreq.innerHTML = "<div id='inner'></div><div id='label'>In</div>";

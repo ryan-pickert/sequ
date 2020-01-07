@@ -43,17 +43,21 @@ body
 
 .section
 {
-    font-size: 16px;
-    border-bottom: 1px dashed #222222;
+    text-align: center;
+    font-size: 14px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    border-bottom: 1px inset #777777;
     margin-top: 5px;
     margin-bottom: 5px;
 }
+
 .name
 {
-    font-size: 18px;
-    border-bottom: 1px solid #222222;
+    font-size: 16px;
+    
     margin-bottom: 5px;
-    background-color: beige;
+    
     padding: 5px;
     text-align: center;
 }
@@ -64,22 +68,17 @@ body
 }
 .input
 {
-    border: 1px solid black;
-    background-color: lightcoral;
-    border-radius: 10px;
-    width: 18px;
-    height: 18px;
     
 }
 .input #inner, .output #inner
 {
-    border: 1px solid black;
+    border: 3px solid #bbbbbb;
     background-color: #222222;
     border-radius: 10px;
     width: 10px;
     height: 10px;
-    top: 3px;
-    left: 3px;
+    top: 1px;
+    left: 1px;
     position: relative;
 }
 .input #label, .output #label
@@ -91,15 +90,15 @@ body
 }
 .output
 {
-    border: 1px solid black;
-    background-color: lightgreen;
-
-    border-radius: 10px;
-    width: 18px;
-    height: 18px;
+    
+    
 }
 .input, .output
 {
+    border-radius: 10px;
+    border: 2px solid #bbbbbb;
+    width: 18px;
+    height: 18px;
     margin-top: 3px;
     margin-bottom: 3px;
 }
@@ -135,28 +134,38 @@ body
 
 .module
 {
-    
-    
     float: left;
-    margin-left: 10px;
-    border: 4px solid #222222;
+    height: 250px;
+    margin-left: 0px;
+    border: 2px solid #444444;
+    border-radius: 2px;
+    background-color: #eeeeee;
     
-    border-radius: 5px;
-    background-color: #cccccc;
-    position: absolute;
-    z-index: 0;
+    
     padding: 5px;
 }
+
 .knob
 {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
+    
     border: 1px solid black;
     border-radius: 20px;
     transform: rotate(0deg);
     color: white;
     text-align: center;
     background-color: #434546;
+
+    display: inline-block;
+}
+#knobLabel
+{
+    margin: 2px;
+    width: 28px;
+    
+    border: 1px solid black;
+    display: inline-block;
 }
 
 #menu
@@ -164,26 +173,49 @@ body
     left: 10px;
     bottom: 10px;
     height: auto;
-    width: 120px;
-    background-color: #222222;
+    
     color: #dddddd;
     position: fixed;
-    opacity: 80%;
+    
     z-index: 1;
 }
 .menuButton
 {
     height: 50px;
+    width: 120px;
+    background-color: #222222;
     border: 1px solid #888888;
     margin-top: 2px;
     text-align: center;
+    opacity: 80%;
     line-height: 50px;
+    float: left;
+    display: table;
 }
 .menuButton:hover
 {
-    border: 2px solid #888888;
-}
-#menu:hover
-{
     opacity: 100%;
+    border: 1px solid #cccccc;
+}
+
+path
+{
+    stroke: #b2ca2b;
+    stroke-width: 4;
+    fill: transparent;
+    pointer-events: stroke;
+    opacity: 60%;
+}
+path:hover
+{
+    cursor: pointer;
+    opacity: 90%;
+}
+
+#draw
+{
+    pointer-events: none;
+    position: absolute;
+    z-index: 1;
+    
 }

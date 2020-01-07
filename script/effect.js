@@ -4,6 +4,8 @@ class LFOModule
     {      
         this.name = "LFO-1";
         this.module = new Tone.LFO(Tone.Time('4n'), 200, 400);
+        this.controllers = []; //Array of controllers (knobs, etc)
+
         this.createUI();
     }
     connect(module, type)
@@ -21,14 +23,28 @@ class LFOModule
                 break;
         }   
     }
-    control(p, value)
+    control(value, cIndex)
     {
-        switch(p){
-            case "frequency":
-                this.module.frequency.value = value/50;
-                break;
+        if(value == "increase"){
+            if(this.controllers[cIndex].value < this.controllers[cIndex].max)
+                this.controllers[cIndex].increase();
+        }
+        else{
+            if(this.controllers[cIndex].value > this.controllers[cIndex].min)
+                this.controllers[cIndex].decrease();
         }
 
+        if(this.controllers[cIndex].value > this.controllers[cIndex].max)
+                this.controllers[cIndex].value = this.controllers[cIndex].max;
+        if(this.controllers[cIndex].value < this.controllers[cIndex].min)
+                this.controllers[cIndex].value = this.controllers[cIndex].min;
+
+        //Handle controller
+        switch(cIndex){
+            case 0:
+                this.module.frequency.value = this.controllers[cIndex].value;
+                break;
+        }
     }
     createUI()
     {
@@ -59,7 +75,13 @@ class LFOModule
         knob1.innerHTML="|";
         knob1.classList.add("knob");
         knob1.id = "frequency";
-        knob1.onmousedown = function(){TurnKnob(this, event)};
+        knob1.onmousedown = function(){TurnKnob(this, event,0)};
+        //Create controller and set knob rotation
+        this.controllers.push(new Controller(0, 20, 0.5));
+        this.controllers[this.controllers.length-1].value = this.module.frequency.value;
+        var minmax = this.controllers[this.controllers.length-1].max - this.controllers[this.controllers.length-1].min;
+        var rotation = this.controllers[this.controllers.length-1].value / minmax;
+        knob1.style.transform = "rotate("+((rotation*240)-130) + "deg)";
 
         mod.appendChild(out1);
         out1.innerHTML = "<div id='inner'></div><div id='label'>Out</div>";
