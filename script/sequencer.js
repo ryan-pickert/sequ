@@ -6,6 +6,8 @@ class SequencerModule8
         this.lights = [];
         this.controllers = [];
         this.noteLabels = [];
+        this.outputs =[];
+        this.inputs = [];
         this.stepIndex = -1;//Current step in the sequence
         this.sequence = [0,0,0,0,0,0,0,0]; //Array of frequencies(notes)
         this.module;
@@ -30,10 +32,14 @@ class SequencerModule8
             //Restart the sequence;
             this.stepIndex = 0;
         }
-        console.log(this.stepIndex);
-        this.module.frequency.value = this.sequence[this.stepIndex];
 
-        
+        this.module.frequency.value = this.sequence[this.stepIndex];  
+
+        if(this.stepIndex == 0)
+            this.lights[this.lights.length-1].id = "on";
+        else
+            this.lights[this.stepIndex-1].id = "on";
+        this.lights[this.stepIndex].id = "off";
     }
     control(value, cIndex)
     {
@@ -64,203 +70,51 @@ class SequencerModule8
     createUI()
     {
         var mod = document.createElement("div");
-        var secName = document.createElement("div");
-        var sec1 = document.createElement("div");
-        var sec2 = document.createElement("div");
-        var label1 = document.createElement("span");
-        var label2 = document.createElement("span");
-        var label3 = document.createElement("span");
-        var label4 = document.createElement("span");
-        var label5 = document.createElement("span");
-        var label6 = document.createElement("span");
-        var label7 = document.createElement("span");
-        var label8 = document.createElement("span");
-        var knob1 = document.createElement("div");
-        var knob2 = document.createElement("div");
-        var knob3 = document.createElement("div");
-        var knob4 = document.createElement("div");
-        var knob5 = document.createElement("div");
-        var knob6 = document.createElement("div");
-        var knob7 = document.createElement("div");
-        var knob8 = document.createElement("div");
-        //var secWave = document.createElement("div");
-        var out1 = document.createElement("div");
-        var out2 = document.createElement("div");
-        var in1 = document.createElement("div");
-        var light1 = document.createElement("div");
-        var light2 = document.createElement("div");
-        var light3 = document.createElement("div");
-        var light4 = document.createElement("div");
+        var modIndex = Modules.length;
+        var layout = "<div class='module' id='"+modIndex+"'>"+
+                      "<div class='name'>SEQ-8</div>"+
+                      "<div class='section'>Notes</div>"+
+                      "<div style='width:610px; height: 35px'></div>"+
+                      "<div class='section'>Clock In</div>"+
+                      "<div></div>"+
+                      "<div class='section'>Freq Out</div>"+
+                      "</div";
+
+        mod.innerHTML = layout;
+        document.getElementById("wrapper").appendChild(mod);       
         
+        for(let i = 0; i < this.sequence.length; i++){
+            var l = document.createElement("div");
+            var kLabel = document.createElement("div");
+            l.classList.add("light");
+            kLabel.id="knobLabel";
+            
+            l.style.float="left";
+            kLabel.style.float="left";
 
-        mod.classList.add("module");
-        secName.onmousedown = function(){move(event, mod)};
-        if(Modules == undefined)
-            mod.id = 0;
-        else
-            mod.id = Modules.length;
+            this.controllers.push(new Controller(48, 60, 1, "knob", 48, modIndex, i));
+            this.controllers[i].element.style.float = "left";
+            this.lights.push(l);
+            this.noteLabels.push(kLabel);
+
+            document.getElementById(modIndex).children[2].appendChild(this.lights[i]);
+            document.getElementById(modIndex).children[2].appendChild(this.controllers[i].element);
+            document.getElementById(modIndex).children[2].appendChild(this.noteLabels[i]);
+        }
+
+        this.outputs.push(document.createElement("div"));
+        this.outputs[0].innerHTML = "<div id='inner'></div><div id='label'>Out</div>";
+        this.outputs[0].classList.add("output");
+        this.outputs[0].onclick = function(){Connect(mod, this)};
+
+        this.inputs.push(document.createElement("div"));
+        this.inputs[0].innerHTML = "<div id='inner'></div><div id='label'>In</div>";
+        this.inputs[0].classList.add("input");
+        this.inputs[0].onclick = function(){Connect(mod, this, "sequence")};
+
         
-        mod.appendChild(secName);
-        secName.innerHTML = this.name;
-        secName.classList.add("name");
-
-        mod.appendChild(sec1);
-        sec1.innerHTML = "Notes";
-        sec1.classList.add("section");
-
-        mod.appendChild(light1);
-        light1.classList.add("light");
-        this.lights.push(light1);
-        
-        mod.appendChild(knob1);
-        knob1.innerHTML="|";
-        knob1.classList.add("knob");
-        knob1.id = "frequency";
-        knob1.onmousedown = function(){TurnKnob(this, event, 0)};
-        knob1.onscroll = function(){ScrollKnob(this, event, 0)};
-        //Create controller and set knob rotation
-        this.controllers.push(new Controller(48, 60, 1));
-        this.controllers[this.controllers.length-1].value = 50;
-        var minmax = this.controllers[this.controllers.length-1].max - this.controllers[this.controllers.length-1].min;
-        var rotation = this.controllers[this.controllers.length-1].value / minmax;
-        knob1.style.transform = "rotate("+((rotation*240)-130) + "deg)";
-        mod.appendChild(label1);
-        label1.id="knobLabel";
-        label1.innerHTML = "";
-        this.noteLabels.push(label1);
-        
-
-        mod.appendChild(knob2);
-        knob2.innerHTML="|";
-        knob2.classList.add("knob");
-        knob2.id = "frequency";
-        knob2.onmousedown = function(){TurnKnob(this, event, 1)};
-        //Create controller and set knob rotation
-        this.controllers.push(new Controller(48, 60, 1));
-        this.controllers[this.controllers.length-1].value = 50;
-        var minmax = this.controllers[this.controllers.length-1].max - this.controllers[this.controllers.length-1].min;
-        var rotation = this.controllers[this.controllers.length-1].value / minmax;
-        knob2.style.transform = "rotate("+((rotation*240)-130) + "deg)";
-        mod.appendChild(label2);
-        label2.id="knobLabel";
-        label2.innerHTML = "";
-        this.noteLabels.push(label2);
-
-        mod.appendChild(knob3);
-        knob3.innerHTML="|";
-        knob3.classList.add("knob");
-        knob3.id = "frequency";
-        knob3.onmousedown = function(){TurnKnob(this, event, 2)};
-        //Create controller and set knob rotation
-        this.controllers.push(new Controller(48, 60, 1));
-        this.controllers[this.controllers.length-1].value = 50;
-        var minmax = this.controllers[this.controllers.length-1].max - this.controllers[this.controllers.length-1].min;
-        var rotation = this.controllers[this.controllers.length-1].value / minmax;
-        knob3.style.transform = "rotate("+((rotation*240)-130) + "deg)";
-        mod.appendChild(label3);
-        label3.id="knobLabel";
-        label3.innerHTML = "";
-        this.noteLabels.push(label3);
-
-        mod.appendChild(knob4);
-        knob4.innerHTML="|";
-        knob4.classList.add("knob");
-        knob4.id = "frequency";
-        knob4.onmousedown = function(){TurnKnob(this, event, 3)};
-        //Create controller and set knob rotation
-        this.controllers.push(new Controller(48, 60, 1));
-        this.controllers[this.controllers.length-1].value = 50;
-        var minmax = this.controllers[this.controllers.length-1].max - this.controllers[this.controllers.length-1].min;
-        var rotation = this.controllers[this.controllers.length-1].value / minmax;
-        knob4.style.transform = "rotate("+((rotation*240)-130) + "deg)";
-        mod.appendChild(label4);
-        label4.id="knobLabel";
-        label4.innerHTML = "";
-        this.noteLabels.push(label4);
-
-        mod.appendChild(knob5);
-        knob5.innerHTML="|";
-        knob5.classList.add("knob");
-        knob5.id = "frequency";
-        knob5.onmousedown = function(){TurnKnob(this, event, 4)};
-        //Create controller and set knob rotation
-        this.controllers.push(new Controller(48, 60, 1));
-        this.controllers[this.controllers.length-1].value = 50;
-        var minmax = this.controllers[this.controllers.length-1].max - this.controllers[this.controllers.length-1].min;
-        var rotation = this.controllers[this.controllers.length-1].value / minmax;
-        knob5.style.transform = "rotate("+((rotation*240)-130) + "deg)";
-        mod.appendChild(label5);
-        label5.id="knobLabel";
-        label5.innerHTML = "";
-        this.noteLabels.push(label5);
-
-        mod.appendChild(knob6);
-        knob6.innerHTML="|";
-        knob6.classList.add("knob");
-        knob6.id = "frequency";
-        knob6.onmousedown = function(){TurnKnob(this, event, 5)};
-        //Create controller and set knob rotation
-        this.controllers.push(new Controller(48, 60, 1));
-        this.controllers[this.controllers.length-1].value = 50;
-        var minmax = this.controllers[this.controllers.length-1].max - this.controllers[this.controllers.length-1].min;
-        var rotation = this.controllers[this.controllers.length-1].value / minmax;
-        knob6.style.transform = "rotate("+((rotation*240)-130) + "deg)";
-        mod.appendChild(label6);
-        label6.id="knobLabel";
-        label6.innerHTML = "";
-        this.noteLabels.push(label6);
-
-        mod.appendChild(knob7);
-        knob7.innerHTML="|";
-        knob7.classList.add("knob");
-        knob7.id = "frequency";
-        knob7.onmousedown = function(){TurnKnob(this, event, 6)};
-        //Create controller and set knob rotation
-        this.controllers.push(new Controller(48, 60, 1));
-        this.controllers[this.controllers.length-1].value = 50;
-        var minmax = this.controllers[this.controllers.length-1].max - this.controllers[this.controllers.length-1].min;
-        var rotation = this.controllers[this.controllers.length-1].value / minmax;
-        knob7.style.transform = "rotate("+((rotation*240)-130) + "deg)";
-        mod.appendChild(label7);
-        label7.id="knobLabel";
-        label7.innerHTML = "";
-        this.noteLabels.push(label7);
-
-        mod.appendChild(knob8);
-        knob8.innerHTML="|";
-        knob8.classList.add("knob");
-        knob8.id = "frequency";
-        knob8.onmousedown = function(){TurnKnob(this, event, 7)};
-        //Create controller and set knob rotation
-        this.controllers.push(new Controller(48, 60, 1));
-        this.controllers[this.controllers.length-1].value = 50;
-        var minmax = this.controllers[this.controllers.length-1].max - this.controllers[this.controllers.length-1].min;
-        var rotation = this.controllers[this.controllers.length-1].value / minmax;
-        knob8.style.transform = "rotate("+((rotation*240)-130) + "deg)";
-        mod.appendChild(label8);
-        label8.id="knobLabel";
-        label8.innerHTML = "";
-        this.noteLabels.push(label8);
-
-        mod.appendChild(sec2);
-        sec2.innerHTML = "Input/Output";
-        sec2.classList.add("section");
-
-        mod.appendChild(out1);
-        out1.innerHTML = "<div id='inner'></div><div id='label'>Out</div>";
-        out1.classList.add("output");
-        out1.onclick = function(){Connect(this)};
-
-        mod.appendChild(in1);
-        in1.innerHTML = "<div id='inner'></div><div id='label'>In</div>";
-        in1.classList.add("input");
-        in1.id="sequence";
-        in1.onclick = function(){Connect(this)};
-        
-        
-
-
-        document.getElementById("wrapper").appendChild(mod);
+        document.getElementById(modIndex).appendChild(this.outputs[0]);
+        document.getElementById(modIndex).children[4].appendChild(this.inputs[0]);
     }
 }
 

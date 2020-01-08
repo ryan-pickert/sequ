@@ -4,6 +4,9 @@ class VCOModule
     {
         this.module = new Tone.Oscillator(freq, wave);
         this.module.sync();
+        this.outputs = [];
+        this.inputs = [];
+        this.buttons = [];
         this.controllers = []; //Array of controllers (knobs, etc)
         this.createUI();
     }
@@ -59,87 +62,57 @@ class VCOModule
     createUI()
     {
         var mod = document.createElement("div");
-        var secName = document.createElement("div");
-        var secFreq = document.createElement("div");
-        var secIn = document.createElement("div");
-        var secOut = document.createElement("div");
-        var secWave = document.createElement("div");
-        var inFreq = document.createElement("div");
-        var outEnv = document.createElement("div");
-        var knob1 = document.createElement("div");
-        var bSine = document.createElement("div");
-        var bTri = document.createElement("div");
-        var bSaw = document.createElement("div");
+        var modIndex = Modules.length;
+        var layout = "<div class='module' id='"+modIndex+"' style='width:135px'>"+
+                      "<div class='name'>VCO-1</div>"+
+                      "<div class='section'>Frequency</div>"+
+                      "<div></div>"+
+                      "<div class='section'>Wave</div>"+
+                      "<div style='width:100%; height: 30px'></div>"+
+                      "<div class='section'>Signal Out</div>"+
+                      "</div";
 
-        mod.classList.add("module");
-        secName.onmousedown = function(){move(event, mod)};
-        if(Modules == undefined)
-            mod.id = 0;
-        else
-            mod.id = Modules.length;
-        
-        mod.appendChild(secName);
-        secName.innerHTML = "VCO";
-        secName.classList.add("name");
-
-        mod.appendChild(secFreq);
-        secFreq.innerHTML = "Frequency";
-        secFreq.classList.add("section");
-
-        
-        //Frequency knob
-        mod.appendChild(knob1);
-        
-        knob1.innerHTML="|";
-        knob1.classList.add("knob");
-        knob1.onmousedown = function(){TurnKnob(this, event, 0)};
-        //Create controller and set knob rotation
-        this.controllers.push(new Controller(15, 6000, 15));
-        this.controllers[this.controllers.length-1].value = this.module.frequency.value;
-        var minmax = this.controllers[this.controllers.length-1].max - this.controllers[this.controllers.length-1].min;
-        var rotation = this.controllers[this.controllers.length-1].value / minmax;
-        knob1.style.transform = "rotate("+((rotation*240)-130) + "deg)";
-
-        
-        mod.appendChild(document.createElement("br"));
-        
-
-        mod.appendChild(inFreq);
-        inFreq.innerHTML = "<div id='inner'></div><div id='label'>In</div>";
-        inFreq.classList.add("input");
-        inFreq.id = "frequency";
-        inFreq.onclick = function(){Connect(this)};
-
-
-        mod.appendChild(secWave);
-        secWave.innerHTML = "Wave";
-        secWave.classList.add("section");
-
-        mod.appendChild(bSine);
-        bSine.innerHTML = "SINE";
-        bSine.classList.add("button");
-        bSine.onclick = function(){Modules[Number(mod.id)].module.type = "sine"};
-
-        mod.appendChild(bTri);
-        bTri.innerHTML = "TRI";
-        bTri.classList.add("button");
-        bTri.onclick = function(){Modules[Number(mod.id)].module.type = "triangle"};
-
-        mod.appendChild(bSaw);
-        bSaw.innerHTML = "SAW";
-        bSaw.classList.add("button");
-        bSaw.onclick = function(){Modules[Number(mod.id)].module.type = "sawtooth"};
-
-        
-        mod.appendChild(secOut);
-        secOut.innerHTML = "Output";
-        secOut.classList.add("section");
-
-        mod.appendChild(outEnv);
-        outEnv.innerHTML = "<div id='inner'></div><div id='label'>Out</div>";
-        outEnv.classList.add("output");
-        outEnv.onclick = function(){Connect(this)};
-
+        mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
+
+        //secName.onmousedown = function(){move(event, mod)};
+
+        this.controllers.push(new Controller(15, 6000, 15, "knob", this.module.frequency.value, modIndex, 0));
+
+        this.buttons.push(document.createElement("div"));
+        this.buttons.push(document.createElement("div"));
+        this.buttons.push(document.createElement("div"));
+
+        this.buttons[0].innerHTML = "SINE";
+        this.buttons[0].classList.add("button");
+        this.buttons[0].onclick = function(){Modules[modIndex].module.type = "sine"};
+
+        this.buttons[1].innerHTML = "TRI";
+        this.buttons[1].classList.add("button");
+        this.buttons[1].onclick = function(){Modules[modIndex].module.type = "triangle"};
+
+        this.buttons[2].innerHTML = "SAW";
+        this.buttons[2].classList.add("button");
+        this.buttons[2].onclick = function(){Modules[modIndex].module.type = "sawtooth"};
+
+        this.outputs.push(document.createElement("div"));
+        this.outputs[0].innerHTML = "<div id='inner'></div><div id='label'>Out</div>";
+        this.outputs[0].classList.add("output");
+        this.outputs[0].onclick = function(){Connect(mod, this)};
+
+        this.inputs.push(document.createElement("div"));
+        this.inputs[0].innerHTML = "<div id='inner'></div><div id='label'>In</div>";
+        this.inputs[0].classList.add("input");
+        this.inputs[0].onclick = function(){Connect(mod, this, "frequency")};
+
+        
+
+        //Add everything to the document
+        document.getElementById(modIndex).children[2].appendChild(this.controllers[0].element);
+        document.getElementById(modIndex).children[2].appendChild(this.inputs[0]);
+        document.getElementById(modIndex).children[4].appendChild(this.buttons[0]);
+        document.getElementById(modIndex).children[4].appendChild(this.buttons[1]);
+        document.getElementById(modIndex).children[4].appendChild(this.buttons[2]);
+        document.getElementById(modIndex).appendChild(this.outputs[0]);
     }
 }

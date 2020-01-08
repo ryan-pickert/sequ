@@ -5,7 +5,8 @@ class LFOModule
         this.name = "LFO-1";
         this.module = new Tone.LFO(Tone.Time('4n'), 200, 400);
         this.controllers = []; //Array of controllers (knobs, etc)
-
+        this.outputs = [];
+        this.inputs = [];
         this.createUI();
     }
     connect(module, type)
@@ -49,46 +50,25 @@ class LFOModule
     createUI()
     {
         var mod = document.createElement("div");
-        var secName = document.createElement("div");
-        var sec1 = document.createElement("div");
-        var knob1 = document.createElement("div");
-        //var secWave = document.createElement("div");
-        var out1 = document.createElement("div");
-        
+        var modIndex = Modules.length;
+        var layout = "<div class='module' id='"+modIndex+"' style='width:135px'>"+
+                      "<div class='name'>LFO-1</div>"+
+                      "<div class='section'>Frequency</div>"+
+                      "<div></div>"+
+                      "<div class='section'>Freq Out</div>"+
+                      "</div";
 
-        mod.classList.add("module");
-        secName.onmousedown = function(){move(event, mod)};
-        if(Modules == undefined)
-            mod.id = 0;
-        else
-            mod.id = Modules.length;
-        
-        mod.appendChild(secName);
-        secName.innerHTML = "LFO";
-        secName.classList.add("name");
-
-        mod.appendChild(sec1);
-        sec1.innerHTML = "Rate";
-        sec1.classList.add("section");
-
-        mod.appendChild(knob1);
-        knob1.innerHTML="|";
-        knob1.classList.add("knob");
-        knob1.id = "frequency";
-        knob1.onmousedown = function(){TurnKnob(this, event,0)};
-        //Create controller and set knob rotation
-        this.controllers.push(new Controller(0, 20, 0.5));
-        this.controllers[this.controllers.length-1].value = this.module.frequency.value;
-        var minmax = this.controllers[this.controllers.length-1].max - this.controllers[this.controllers.length-1].min;
-        var rotation = this.controllers[this.controllers.length-1].value / minmax;
-        knob1.style.transform = "rotate("+((rotation*240)-130) + "deg)";
-
-        mod.appendChild(out1);
-        out1.innerHTML = "<div id='inner'></div><div id='label'>Out</div>";
-        out1.classList.add("output");
-        out1.onclick = function(){Connect(this)};
-
-
+        mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
+
+        this.controllers.push(new Controller(1, 20, 1, "knob", this.module.frequency.value, modIndex, 0));
+
+        this.outputs.push(document.createElement("div"));
+        this.outputs[0].innerHTML = "<div id='inner'></div><div id='label'>Out</div>";
+        this.outputs[0].classList.add("output");
+        this.outputs[0].onclick = function(){Connect(mod, this)};
+
+        document.getElementById(modIndex).children[2].appendChild(this.controllers[0].element);
+        document.getElementById(modIndex).appendChild(this.outputs[0]);
     }
 }

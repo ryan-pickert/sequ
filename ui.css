@@ -43,11 +43,14 @@ body
 
 .section
 {
+    display: block;
     text-align: center;
     font-size: 14px;
     padding-bottom: 2px;
     padding-top: 2px;
     border-bottom: 1px inset #777777;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
     margin-top: 5px;
     margin-bottom: 5px;
 }
@@ -69,6 +72,12 @@ body
 .input
 {
     
+}
+hr
+{
+    float: left;
+    display: list-item;
+    width: 2px;
 }
 .input #inner, .output #inner
 {
@@ -106,13 +115,13 @@ body
 .input:hover
 {
     cursor: pointer;
-    border-color: red;
+    border-color: black;
 }
 
 .output:hover
 {
     cursor: pointer;
-    border-color: green;
+    border-color: black;
 }
 
 .light
@@ -140,7 +149,7 @@ body
     border: 2px solid #444444;
     border-radius: 2px;
     background-color: #eeeeee;
-    
+    min-width: 100px;
     
     padding: 5px;
 }

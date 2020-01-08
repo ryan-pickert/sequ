@@ -94,8 +94,11 @@ function SyncClocks()
     for(let i = 0; i<Modules.length; i++){
         if(Modules[i].name == "Clock-1"){
             if(Modules[i].module != undefined){
-                Modules[i].module.stop();
-                Modules[i].module.start();
+                for(let c = 0; c < Modules[i].clocks.length; c++){
+                    Modules[i].clocks[c].stop();
+                    Modules[i].clocks[c].start();
+                }
+                
             }
         }
     }
@@ -172,11 +175,11 @@ function move(e,t)
 }
 var line;
 var startX, startY;
-function Connect(m)
+function Connect(m, jack, type)
 {
-    if(connectStart == undefined && m.classList[0] == "output"){
+    if(connectStart == undefined && type == undefined){
         //Index of the starting module
-        connectStart = Number(m.parentElement.id);
+        connectStart = Number(m.children[0].id);
         console.log("Connection start " + connectStart);
         var inputs = document.getElementsByClassName("input");
         for(let i = 0; i < inputs.length; i++){
@@ -184,17 +187,17 @@ function Connect(m)
         }
 
         var bodyRect = document.body.getBoundingClientRect(),
-        elemRect = m.getBoundingClientRect();
+        elemRect = jack.getBoundingClientRect();
         startY   = elemRect.top - bodyRect.top,
         startX   = elemRect.left - bodyRect.left;
 
         line = document.createElementNS('http://www.w3.org/2000/svg', "path");
         
-    }else if(connectStart != undefined && m.classList[0] == "input"){
+    }else if(connectStart != undefined && type != undefined){
         //Type of connection
-        connectType = m.id;
+        connectType = type;
         //Index of module we are connecting
-        connectEnd = Number(m.parentElement.id);
+        connectEnd = Number(m.children[0].id);
         //Connect the modules
         console.log("Connection end " + connectEnd + connectType);
         Modules[connectStart].connect(Modules[connectEnd], connectType);
@@ -210,7 +213,7 @@ function Connect(m)
         }
 
         var bodyRect = document.body.getBoundingClientRect(),
-        elemRect = m.getBoundingClientRect(),
+        elemRect = jack.getBoundingClientRect(),
         endY   = elemRect.top - bodyRect.top,
         endX   = elemRect.left - bodyRect.left;
         
@@ -221,6 +224,10 @@ function Connect(m)
         {
             line.setAttribute('d', "M "+(startX+18)+" "+(startY+19) + " C "+(startX+80)+" "+(startY+150)+
                           ", "+(endX-9)+" "+(endY+150)+", "+(endX+9)+" "+(endY+19));
+        }else
+        {
+            line.setAttribute('d', "M "+(startX+9)+" "+(startY+19) + " C "+(startX+9)+" "+(startY+9)+
+                          ", "+(endX-9)+" "+(endY+9)+", "+(endX+9)+" "+(endY+19));
         }
         
         
@@ -228,43 +235,4 @@ function Connect(m)
         document.getElementById("draw").append(line);
     }
     
-}
-
-var moving = false;
-function TurnKnob(knob, event, cIndex)
-{
-    if(!moving)
-    {
-        var modIndex = Number(knob.parentElement.id);
-        var dif = 0; 
-        var start = event.clientY;
-    }
-    
-    document.onmousemove = function(e){
-        moving = true;
-        dif = start-e.clientY;
-        
-        if(dif > 5){
-            //Increase
-            Modules[modIndex].control("increase", cIndex);
-            //Reset
-            dif = 0; 
-            start = e.clientY;
-        }else if(dif < -5)
-        {
-            //Decrease
-            Modules[modIndex].control("decrease", cIndex);
-            //Reset
-            dif = 0; 
-            start = e.clientY;
-        }
-        var minmax = Modules[modIndex].controllers[cIndex].max - Modules[modIndex].controllers[cIndex].min;
-        var rotation = Modules[modIndex].controllers[cIndex].value / minmax;
-        knob.style.transform = "rotate("+((rotation*240)-130) + "deg)";
-    };
-    document.onmouseup = function(e){
-
-        document.onmousemove = null;
-        moving = false;
-    };
 }
