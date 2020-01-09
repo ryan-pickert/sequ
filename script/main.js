@@ -41,11 +41,12 @@ function Init()
 
     document.getElementById("start").innerHTML = "Stop";
     Tone.Transport.start();
-    document.getElementsByClassName("menuButton")[0].style.display = "";
-    document.getElementsByClassName("menuButton")[1].style.display = "";
-    document.getElementsByClassName("menuButton")[2].style.display = "";
-    document.getElementsByClassName("menuButton")[3].style.display = "";
-    document.getElementsByClassName("menuButton")[4].style.display = "";
+    document.getElementById("menu").children[1].style.display = "";
+    document.getElementById("menu").children[2].style.display = "";
+    document.getElementById("menu").children[3].style.display = "";
+    document.getElementById("menu").children[4].style.display = "";
+    document.getElementById("menu").children[5].style.display = "";
+    document.getElementById("menu").children[6].style.display = "";
     AddModule("master");
 }
 function AddModule(type)
@@ -79,6 +80,16 @@ function AddModule(type)
             break;
         case "seq16":
             var m = new SequencerModule16();
+            
+            Modules.push(m);
+            break;
+        case "reverb":
+            var m = new ReverbModule();
+            
+            Modules.push(m);
+            break;
+        case "delay":
+            var m = new DelayModule();
             
             Modules.push(m);
             break;

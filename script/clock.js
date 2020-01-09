@@ -32,7 +32,7 @@ class ClockModule
                         light.id = "on";
                     else
                         light.id = "off";
-                    module.module.triggerAttackRelease("8t");
+                    module.module.triggerAttackRelease(0.5);
                     
                 }
                 this.module.start();

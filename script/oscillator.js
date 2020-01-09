@@ -33,6 +33,7 @@ class VCOModule
                 this.module.connect(module.module);
                 break;
             
+            
             default:
                 break;
         }   
@@ -57,6 +58,9 @@ class VCOModule
             case 0:
                 this.module.frequency.value = this.controllers[cIndex].value;
                 break;
+            case 1:
+                this.module.volume.value = this.controllers[cIndex].value;
+                break;
         }
     }
     createUI()
@@ -78,6 +82,7 @@ class VCOModule
         //secName.onmousedown = function(){move(event, mod)};
 
         this.controllers.push(new Controller(15, 6000, 15, "knob", this.module.frequency.value, modIndex, 0));
+        this.controllers.push(new Controller(-50, 0, 1, "knob", this.module.volume.value, modIndex, 1));
 
         this.buttons.push(document.createElement("div"));
         this.buttons.push(document.createElement("div"));
@@ -98,21 +103,30 @@ class VCOModule
         this.outputs.push(document.createElement("div"));
         this.outputs[0].innerHTML = "<div id='inner'></div><div id='label'>Out</div>";
         this.outputs[0].classList.add("output");
+        this.outputs[0].style.float="left";
+        this.outputs[0].style.marginRight="30px";
         this.outputs[0].onclick = function(){Connect(mod, this)};
 
         this.inputs.push(document.createElement("div"));
+        this.inputs.push(document.createElement("div"));
         this.inputs[0].innerHTML = "<div id='inner'></div><div id='label'>In</div>";
         this.inputs[0].classList.add("input");
+        this.inputs[0].style.float="left";
+        this.inputs[0].style.marginRight="15px";
         this.inputs[0].onclick = function(){Connect(mod, this, "frequency")};
 
-        
+        this.inputs[1].innerHTML = "<div id='inner'></div><div id='label'>Effect</div>";
+        this.inputs[1].classList.add("input");
+        this.inputs[1].onclick = function(){Connect(mod, this, "effect")};
 
         //Add everything to the document
         document.getElementById(modIndex).children[2].appendChild(this.controllers[0].element);
         document.getElementById(modIndex).children[2].appendChild(this.inputs[0]);
+        document.getElementById(modIndex).children[2].appendChild(this.inputs[1]);
         document.getElementById(modIndex).children[4].appendChild(this.buttons[0]);
         document.getElementById(modIndex).children[4].appendChild(this.buttons[1]);
         document.getElementById(modIndex).children[4].appendChild(this.buttons[2]);
         document.getElementById(modIndex).appendChild(this.outputs[0]);
+        document.getElementById(modIndex).appendChild(this.controllers[1].element);
     }
 }

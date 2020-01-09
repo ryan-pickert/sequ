@@ -7,24 +7,7 @@ body
     margin: 0px;
     background-color: #888888;
     user-select: none;
-}
-#line
-{
-    position: absolute;
-    top: 100px;
-    left: 100px;
-    width: 150px;
-    height: 10px;
-    background-color: #222222;
-    transform: rotate(0deg);
-}
-#p1, #p2
-{
-    width: 50px;
-    height: 50px;
-    background-color: aquamarine;
-    position: absolute;
-
+    font-family: 'Baumans', cursive;
 }
 .button
 {
@@ -34,10 +17,13 @@ body
     border: 1px solid black;
     float: left;
     margin: 2px;
+    background-color: #3e4b2d;
+    color: #daf73a;
 }
 .button:hover
 {
-    opacity: 50%;
+    
+    border-color: #daf73a;
     cursor: pointer;
 }
 
@@ -69,16 +55,7 @@ body
     margin-bottom: 10px;
     display: table;
 }
-.input
-{
-    
-}
-hr
-{
-    float: left;
-    display: list-item;
-    width: 2px;
-}
+
 .input #inner, .output #inner
 {
     border: 3px solid #bbbbbb;
@@ -96,11 +73,6 @@ hr
     left: 20px;
     top: -10px;
     font-size: 14px;
-}
-.output
-{
-    
-    
 }
 .input, .output
 {
@@ -138,7 +110,7 @@ hr
 }
 #on.light
 {
-    background-color: #9cd453;
+    background-color: #3e4b2d;
 }
 
 .module
@@ -159,21 +131,26 @@ hr
     width: 30px;
     height: 30px;
     
-    border: 1px solid black;
+    border: 3px solid #bbbbbb;
     border-radius: 20px;
     transform: rotate(0deg);
     color: white;
     text-align: center;
     background-color: #434546;
-
     display: inline-block;
+}
+.knob:hover
+{
+
 }
 #knobLabel
 {
     margin: 2px;
     width: 28px;
-    
+    font-family: 'VT323', monospace;
     border: 1px solid black;
+    background-color: #3e4b2d;
+    color: #daf73a;
     display: inline-block;
 }
 
@@ -191,7 +168,7 @@ hr
 .menuButton
 {
     height: 50px;
-    width: 120px;
+    width: 100px;
     background-color: #222222;
     border: 1px solid #888888;
     margin-top: 2px;
@@ -199,13 +176,28 @@ hr
     opacity: 80%;
     line-height: 50px;
     float: left;
-    display: table;
+    display: block;
 }
 .menuButton:hover
 {
     opacity: 100%;
     border: 1px solid #cccccc;
 }
+.drop{
+    position: relative;
+    display: inline-block;
+}
+.dropContent{
+    position: absolute;
+    display: none;
+    bottom: 54px;
+    z-index: 1;
+}
+.drop:hover .dropContent
+{
+    display: block;
+}
+
 
 path
 {
@@ -213,12 +205,13 @@ path
     stroke-width: 4;
     fill: transparent;
     pointer-events: stroke;
-    opacity: 60%;
+    opacity: 40%;
 }
 path:hover
 {
+    stroke: #e2cf21;
     cursor: pointer;
-    opacity: 90%;
+    opacity: 100%;
 }
 
 #draw

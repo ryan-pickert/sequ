@@ -60,7 +60,7 @@ class EnvelopeModule
     {
         var mod = document.createElement("div");
         var modIndex = Modules.length;
-        var layout = "<div class='module' id='"+modIndex+"' style='width:165px'>"+
+        var layout = "<div class='module' id='"+modIndex+"' style='width:178px'>"+
                       "<div class='name'>ENV-1</div>"+
                       "<div class='section'style='float:left'>Attack</div>"+
                       "<div style='float:left; margin-left: 5px'></div>"+
@@ -94,10 +94,10 @@ class EnvelopeModule
         this.inputs[1].classList.add("input");
         this.inputs[1].onclick = function(){Connect(mod, this, "signal")};
 
-        this.controllers.push(new Controller(0.01, Tone.Time("1n"), Tone.Time("32n"), "knob", this.module.attack, modIndex, 0));
-        this.controllers.push(new Controller(0.01, Tone.Time("1n"), Tone.Time("16n"), "knob", this.module.decay, modIndex, 1));
-        this.controllers.push(new Controller(Tone.Time("16n"), Tone.Time("1n"), Tone.Time("16n"), "knob", this.module.sustain, modIndex, 2));
-        this.controllers.push(new Controller(Tone.Time("16n"), Tone.Time("1n")*2, Tone.Time("16n"), "knob", this.module.release, modIndex, 3));
+        this.controllers.push(new Controller(0, 1, 0.01, "knob", this.module.attack, modIndex, 0));
+        this.controllers.push(new Controller(0.1, 1, 0.1, "knob", this.module.decay, modIndex, 1));
+        this.controllers.push(new Controller(0.01, 1, 0.01, "knob", this.module.sustain, modIndex, 2));
+        this.controllers.push(new Controller(0.01, 1, 0.01, "knob", this.module.release, modIndex, 3));
 
         
         document.getElementById(modIndex).appendChild(this.inputs[1]);

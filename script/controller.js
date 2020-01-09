@@ -57,7 +57,7 @@ function TurnKnob(knob, event, cIndex)
     document.onmousemove = function(e){
         moving = true;
         dif = start-e.clientY;
-        
+        knob.element.style.borderColor="#9cd453";
         if(dif > 5){
             //Increase
             Modules[modIndex].control("increase", cIndex);
@@ -79,5 +79,6 @@ function TurnKnob(knob, event, cIndex)
 
         document.onmousemove = null;
         moving = false;
+        knob.element.style.borderColor="";
     };
 }
