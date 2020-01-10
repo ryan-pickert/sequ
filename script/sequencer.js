@@ -58,8 +58,17 @@ class SequencerModule4
                 this.controllers[cIndex].value = this.controllers[cIndex].min;
 
 
-        this.sequence[cIndex] = Tone.Frequency(this.controllers[cIndex].value, "midi");
-        this.noteLabels[cIndex].innerHTML = this.sequence[cIndex].toNote();
+        if(this.controllers[cIndex].value < 21){
+            this.noteLabels[cIndex].innerHTML = "off";
+            this.sequence[cIndex] = Tone.Frequency(0);
+        }else
+        {
+            this.noteLabels[cIndex].innerHTML = this.sequence[cIndex].toNote();
+            this.sequence[cIndex] = Tone.Frequency(this.controllers[cIndex].value, "midi");
+        }
+
+        
+        
         //Handle controller
         switch(cIndex){
             case 0:
@@ -92,7 +101,7 @@ class SequencerModule4
             l.style.float="left";
             kLabel.style.float="left";
 
-            this.controllers.push(new Controller(21, 108, 1, "knob", 48, modIndex, i));
+            this.controllers.push(new Controller(20, 108, 1, "knob", 48, modIndex, i));
             this.controllers[i].element.style.float = "left";
             this.lights.push(l);
             this.noteLabels.push(kLabel);
@@ -182,8 +191,14 @@ class SequencerModule8
                 this.controllers[cIndex].value = this.controllers[cIndex].min;
 
 
-        this.sequence[cIndex] = Tone.Frequency(this.controllers[cIndex].value, "midi");
-        this.noteLabels[cIndex].innerHTML = this.sequence[cIndex].toNote();
+        if(this.controllers[cIndex].value < 21){
+            this.noteLabels[cIndex].innerHTML = "off";
+            this.sequence[cIndex] = Tone.Frequency(0);
+        }else
+        {
+            this.noteLabels[cIndex].innerHTML = this.sequence[cIndex].toNote();
+            this.sequence[cIndex] = Tone.Frequency(this.controllers[cIndex].value, "midi");
+        }
         //Handle controller
         switch(cIndex){
             case 0:
@@ -217,7 +232,7 @@ class SequencerModule8
             l.style.float="left";
             kLabel.style.float="left";
 
-            this.controllers.push(new Controller(21, 108, 1, "knob", 48, modIndex, i));
+            this.controllers.push(new Controller(20, 108, 1, "knob", 48, modIndex, i));
             this.controllers[i].element.style.float = "left";
             this.lights.push(l);
             this.noteLabels.push(kLabel);

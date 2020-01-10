@@ -112,6 +112,18 @@ function AddModule(type)
             
             Modules.push(m);
             break;
+        case "band":
+            var m = new FilterModuleBand();
+            Modules.push(m);
+            break;
+        case "high":
+            var m = new FilterModuleHigh();
+            Modules.push(m);
+            break;
+        case "low":
+            var m = new FilterModuleLow();
+            Modules.push(m);
+            break;
         case "master":
             var m = new MasterModule();
             

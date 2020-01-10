@@ -1,24 +1,22 @@
-class LFOModule
+class FilterModuleBand
 {
     constructor()
-    {      
-        this.name = "LFO-1";
-        this.module = new Tone.LFO(Tone.Time('4n'), 0, 40);
-        this.controllers = []; //Array of controllers (knobs, etc)
+    {
+        this.module = new Tone.Filter(250, "bandpass", -24);
         this.outputs = [];
         this.inputs = [];
+        this.buttons = [];
+        this.controllers = []; //Array of controllers (knobs, etc)
         this.createUI();
     }
     connect(module, type)
     {
-        //Connect LFO to whatever parameter
         switch(type){
-            case "frequency":
+            case "effect":
                 console.log("connected");
-                this.module.connect(module.module.frequency);
-                break;
-            case "volume":
-                this.module.connect(module.module.volume.value);
+                
+                //Connect output to new module
+                module.module.chain(this.module, Tone.Master);
                 break;
             default:
                 break;
@@ -40,7 +38,6 @@ class LFOModule
         if(this.controllers[cIndex].value < this.controllers[cIndex].min)
                 this.controllers[cIndex].value = this.controllers[cIndex].min;
 
-        //Handle controller
         switch(cIndex){
             case 0:
                 this.module.frequency.value = this.controllers[cIndex].value;
@@ -51,43 +48,62 @@ class LFOModule
     {
         var mod = document.createElement("div");
         var modIndex = Modules.length;
-        var layout = "<div class='module' id='"+modIndex+"' style='width:135px'>"+
-                      "<div class='name'>LFO-1</div>"+
+        var layout = "<div class='module' id='"+modIndex+"' style='width:140px'>"+
+                      "<div class='name'>BAND-1</div>"+
                       "<div class='section'>Frequency</div>"+
                       "<div></div>"+
-                      "<div class='section'>Freq Out</div>"+
+                      "<div class='section'>Effect</div>"+
                       "</div";
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
 
-        this.controllers.push(new Controller(1, 10, 1, "knob", this.module.frequency.value, modIndex, 0));
+        //secName.onmousedown = function(){move(event, mod)};
+
+        this.controllers.push(new Controller(250, 2000, 25, "knob", this.module.frequency.value, modIndex, 0));
 
         this.outputs.push(document.createElement("div"));
         this.outputs[0].innerHTML = "<div id='inner'></div><div id='label'>Out</div>";
         this.outputs[0].classList.add("output");
         this.outputs[0].onclick = function(){Connect(mod, this)};
 
+        this.inputs.push(document.createElement("div"));
+        this.inputs.push(document.createElement("div"));
+        this.inputs.push(document.createElement("div"));
+
+        this.inputs[0].innerHTML = "<div id='inner'></div><div id='label'>In</div>";
+        this.inputs[0].classList.add("input");
+        this.inputs[0].onclick = function(){Connect(mod, this, "frequency")};
+
+        this.inputs[1].innerHTML = "<div id='inner'></div><div id='label'>Effect</div>";
+        this.inputs[1].classList.add("input");
+        this.inputs[1].onclick = function(){Connect(mod, this, "effect")};
+
+        this.inputs[2].innerHTML = "<div id='inner'></div><div id='label'>ENV In</div>";
+        this.inputs[2].classList.add("input");
+        this.inputs[2].onclick = function(){Connect(mod, this, "env")};
+
+        //Add everything to the document
         document.getElementById(modIndex).children[2].appendChild(this.controllers[0].element);
+        document.getElementById(modIndex).children[2].appendChild(this.inputs[0]);
         document.getElementById(modIndex).appendChild(this.outputs[0]);
+        //document.getElementById(modIndex).appendChild(this.inputs[2]);
     }
 }
 
-class ReverbModule
+class FilterModuleHigh
 {
     constructor()
-    {      
-        this.name = "REV-1";
-        this.module = new Tone.Reverb(1.5);
-        this.module.generate();
-        this.controllers = []; //Array of controllers (knobs, etc)
+    {
+        this.module = new Tone.Filter(250, "highpass", -24);
         this.outputs = [];
         this.inputs = [];
+        this.buttons = [];
+        this.controllers = []; //Array of controllers (knobs, etc)
         this.createUI();
     }
     connect(module, type)
     {
-        //Connect LFO to whatever parameter
         switch(type){
             case "effect":
                 console.log("connected");
@@ -115,15 +131,9 @@ class ReverbModule
         if(this.controllers[cIndex].value < this.controllers[cIndex].min)
                 this.controllers[cIndex].value = this.controllers[cIndex].min;
 
-        //Handle controller
         switch(cIndex){
             case 0:
-                this.module.decay = this.controllers[cIndex].value;
-                this.module.generate();
-                break;
-            case 1:
-                this.module.wet.value = this.controllers[cIndex].value;
-                this.module.generate();
+                this.module.frequency.value = this.controllers[cIndex].value;
                 break;
         }
     }
@@ -131,46 +141,62 @@ class ReverbModule
     {
         var mod = document.createElement("div");
         var modIndex = Modules.length;
-        var layout = "<div class='module' id='"+modIndex+"' style='width:135px'>"+
-                      "<div class='name'>REV-1</div>"+
-                      "<div class='section'>Decay</div>"+
+        var layout = "<div class='module' id='"+modIndex+"' style='width:140px'>"+
+                      "<div class='name'>HIGH-1</div>"+
+                      "<div class='section'>Frequency</div>"+
                       "<div></div>"+
-                      "<div class='section'>Wet</div>"+
-                      "<div></div>"+
-                      "<div class='section'>Effect Out</div>"+
+                      "<div class='section'>Effect</div>"+
                       "</div";
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
 
-        this.controllers.push(new Controller(1, 5, 0.5, "knob", this.module.decay, modIndex, 0));
-        this.controllers.push(new Controller(0, 1, 0.1, "knob", this.module.wet.value, modIndex, 1));
+        //secName.onmousedown = function(){move(event, mod)};
+
+        this.controllers.push(new Controller(250, 2000, 25, "knob", this.module.frequency.value, modIndex, 0));
 
         this.outputs.push(document.createElement("div"));
         this.outputs[0].innerHTML = "<div id='inner'></div><div id='label'>Out</div>";
         this.outputs[0].classList.add("output");
         this.outputs[0].onclick = function(){Connect(mod, this)};
 
+        this.inputs.push(document.createElement("div"));
+        this.inputs.push(document.createElement("div"));
+        this.inputs.push(document.createElement("div"));
+
+        this.inputs[0].innerHTML = "<div id='inner'></div><div id='label'>In</div>";
+        this.inputs[0].classList.add("input");
+        this.inputs[0].onclick = function(){Connect(mod, this, "frequency")};
+
+        this.inputs[1].innerHTML = "<div id='inner'></div><div id='label'>Effect</div>";
+        this.inputs[1].classList.add("input");
+        this.inputs[1].onclick = function(){Connect(mod, this, "effect")};
+
+        this.inputs[2].innerHTML = "<div id='inner'></div><div id='label'>ENV In</div>";
+        this.inputs[2].classList.add("input");
+        this.inputs[2].onclick = function(){Connect(mod, this, "env")};
+
+        //Add everything to the document
         document.getElementById(modIndex).children[2].appendChild(this.controllers[0].element);
-        document.getElementById(modIndex).children[4].appendChild(this.controllers[1].element);
+        document.getElementById(modIndex).children[2].appendChild(this.inputs[0]);
         document.getElementById(modIndex).appendChild(this.outputs[0]);
+        //document.getElementById(modIndex).appendChild(this.inputs[2]);
     }
 }
 
-class DelayModule
+class FilterModuleLow
 {
     constructor()
-    {      
-        this.name = "DELAY-1";
-        this.module = new Tone.PingPongDelay(Tone.Time("4n"), 0.2);
-        this.controllers = []; //Array of controllers (knobs, etc)
+    {
+        this.module = new Tone.Filter(250, "lowpass", -24);
         this.outputs = [];
         this.inputs = [];
+        this.buttons = [];
+        this.controllers = []; //Array of controllers (knobs, etc)
         this.createUI();
     }
     connect(module, type)
     {
-        //Connect LFO to whatever parameter
         switch(type){
             case "effect":
                 console.log("connected");
@@ -198,13 +224,9 @@ class DelayModule
         if(this.controllers[cIndex].value < this.controllers[cIndex].min)
                 this.controllers[cIndex].value = this.controllers[cIndex].min;
 
-        //Handle controller
         switch(cIndex){
             case 0:
-                this.module.delayTime.value = this.controllers[cIndex].value;
-                break;
-            case 1:
-                this.module.wet.value = this.controllers[cIndex].value;
+                this.module.frequency.value = this.controllers[cIndex].value;
                 break;
         }
     }
@@ -212,28 +234,45 @@ class DelayModule
     {
         var mod = document.createElement("div");
         var modIndex = Modules.length;
-        var layout = "<div class='module' id='"+modIndex+"' style='width:135px'>"+
-                      "<div class='name'>DELAY-1</div>"+
-                      "<div class='section'>Delay Time</div>"+
+        var layout = "<div class='module' id='"+modIndex+"' style='width:140px'>"+
+                      "<div class='name'>LOW-1</div>"+
+                      "<div class='section'>Frequency</div>"+
                       "<div></div>"+
-                      "<div class='section'>Wet</div>"+
-                      "<div></div>"+
-                      "<div class='section'>Effect Out</div>"+
+                      "<div class='section'>Effect</div>"+
                       "</div";
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
 
-        this.controllers.push(new Controller(0, 2, 0.1, "knob", this.module.delayTime.value, modIndex, 0));
-        this.controllers.push(new Controller(0, 1, 0.1, "knob", this.module.wet.value, modIndex, 1));
+        //secName.onmousedown = function(){move(event, mod)};
+
+        this.controllers.push(new Controller(250, 2000, 25, "knob", this.module.frequency.value, modIndex, 0));
 
         this.outputs.push(document.createElement("div"));
         this.outputs[0].innerHTML = "<div id='inner'></div><div id='label'>Out</div>";
         this.outputs[0].classList.add("output");
         this.outputs[0].onclick = function(){Connect(mod, this)};
 
+        this.inputs.push(document.createElement("div"));
+        this.inputs.push(document.createElement("div"));
+        this.inputs.push(document.createElement("div"));
+
+        this.inputs[0].innerHTML = "<div id='inner'></div><div id='label'>In</div>";
+        this.inputs[0].classList.add("input");
+        this.inputs[0].onclick = function(){Connect(mod, this, "frequency")};
+
+        this.inputs[1].innerHTML = "<div id='inner'></div><div id='label'>Effect</div>";
+        this.inputs[1].classList.add("input");
+        this.inputs[1].onclick = function(){Connect(mod, this, "effect")};
+
+        this.inputs[2].innerHTML = "<div id='inner'></div><div id='label'>ENV In</div>";
+        this.inputs[2].classList.add("input");
+        this.inputs[2].onclick = function(){Connect(mod, this, "env")};
+
+        //Add everything to the document
         document.getElementById(modIndex).children[2].appendChild(this.controllers[0].element);
-        document.getElementById(modIndex).children[4].appendChild(this.controllers[1].element);
+        document.getElementById(modIndex).children[2].appendChild(this.inputs[0]);
         document.getElementById(modIndex).appendChild(this.outputs[0]);
+        //document.getElementById(modIndex).appendChild(this.inputs[2]);
     }
 }
