@@ -1,6 +1,7 @@
 #start
 {
-    background-color: #441111;
+    background-color: #3e4b2d;
+    color: #dddddd;
 }
 body
 {
@@ -71,7 +72,7 @@ body
 {
     position: relative;
     left: 20px;
-    top: -10px;
+    top: -15px;
     font-size: 14px;
 }
 .input, .output
@@ -139,10 +140,7 @@ body
     background-color: #434546;
     display: inline-block;
 }
-.knob:hover
-{
 
-}
 #knobLabel
 {
     margin: 2px;
@@ -167,21 +165,25 @@ body
 }
 .menuButton
 {
-    height: 50px;
-    width: 100px;
-    background-color: #222222;
-    border: 1px solid #888888;
+    height: 40px;
+    width: 86px;
+    background-color: #eeeeee;
+    color: #333333;
+    border: 1px solid #333333;
+    border-radius: 4px;
     margin-top: 2px;
     text-align: center;
     opacity: 80%;
-    line-height: 50px;
-    float: left;
-    display: block;
+    line-height: 40px;
+    display: inline-block;
+    transition: width 0.1s;
 }
 .menuButton:hover
 {
     opacity: 100%;
-    border: 1px solid #cccccc;
+    width: 92px;
+    transition: width 0.1s;
+
 }
 .drop{
     position: relative;
@@ -190,7 +192,7 @@ body
 .dropContent{
     position: absolute;
     display: none;
-    bottom: 54px;
+    bottom: 44px;
     z-index: 1;
 }
 .drop:hover .dropContent
@@ -205,7 +207,7 @@ path
     stroke-width: 4;
     fill: transparent;
     pointer-events: stroke;
-    opacity: 40%;
+    opacity: 55%;
 }
 path:hover
 {

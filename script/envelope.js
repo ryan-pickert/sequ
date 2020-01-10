@@ -13,10 +13,19 @@ class EnvelopeModule
     {
         //Connect LFO to whatever parameter
         switch(type){
-            case "signal":
+            case "env":
                 console.log("connected");
-                this.module.disconnect();
-                this.module.connect(module.module);
+                module.module.disconnect();
+                module.module.connect(this.module);
+                this.module.toMaster();
+                break;
+            case "frequency":
+                console.log("connected");
+                this.module = new Tone.FrequencyEnvelope();
+                this.module.baseFrequency = 15;
+                this.module.octaves = 1;
+                this.module.attackCurve = "exponential";
+                this.module.connect(module.module.frequency);
                 break;
             case "volume":
                 this.module.connect(module.module.volume.value);
@@ -72,7 +81,7 @@ class EnvelopeModule
                       "<div></div>"+
                       "<div class='section'>Trigger In</div>"+
                       "<div></div>"+
-                      "<div class='section'>Signal In/Out</div>"+
+                      "<div class='section'>ENV Out</div>"+
                       "</div";
 
         mod.innerHTML = layout;
@@ -94,13 +103,12 @@ class EnvelopeModule
         this.inputs[1].classList.add("input");
         this.inputs[1].onclick = function(){Connect(mod, this, "signal")};
 
-        this.controllers.push(new Controller(0, 1, 0.01, "knob", this.module.attack, modIndex, 0));
+        this.controllers.push(new Controller(0.001, 1, 0.001, "knob", this.module.attack, modIndex, 0));
         this.controllers.push(new Controller(0.1, 1, 0.1, "knob", this.module.decay, modIndex, 1));
-        this.controllers.push(new Controller(0.01, 1, 0.01, "knob", this.module.sustain, modIndex, 2));
-        this.controllers.push(new Controller(0.01, 1, 0.01, "knob", this.module.release, modIndex, 3));
+        this.controllers.push(new Controller(0.001, 1, 0.1, "knob", this.module.sustain, modIndex, 2));
+        this.controllers.push(new Controller(0.1, 1, 0.1, "knob", this.module.release, modIndex, 3));
 
         
-        document.getElementById(modIndex).appendChild(this.inputs[1]);
         document.getElementById(modIndex).appendChild(this.outputs[0]);
         document.getElementById(modIndex).children[10].appendChild(this.inputs[0]);
         

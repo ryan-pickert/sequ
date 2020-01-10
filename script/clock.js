@@ -20,33 +20,31 @@ class ClockModule
             case "trigger":
                 var light = this.lights[this.lightIndex];
                 light.id = "off";
-                //if(this.module != undefined)
-                    //this.module.dispose();
-                var c = new Tone.Clock(trigger, this.triggerFreq);
+                var c = new Tone.Loop(trigger, this.triggerFreq).start("1m");
                 this.clocks.push(c);
                 this.module = c;
-                SyncClocks();
-                function trigger()
+                function trigger(time)
                 {
                     if(light.id == "off")
                         light.id = "on";
                     else
                         light.id = "off";
-                    module.module.triggerAttackRelease(0.5);
+
+                    if(module.module.envelope == undefined){
+                        module.module.triggerAttackRelease();
+                    }else
+                    {
+                        module.module.triggerAttackRelease(module.module.oscillator.frequency.value,time);
+                    }
                     
                 }
-                this.module.start();
                 break;
             case "sequence":
                 var light = this.lights[this.lightIndex];
                 light.id = "off";
-                //if(this.module != undefined)
-                    //this.module.dispose();
-
-                var c = new Tone.Clock(step, this.triggerFreq);
+                var c = new Tone.Loop(step, this.triggerFreq).start("1m");
                 this.clocks.push(c);
                 this.module = c;
-                SyncClocks();
                 function step()
                 {
                     if(light.id == "off")
@@ -57,7 +55,6 @@ class ClockModule
                     
                     module.stepSequence();
                 }
-                this.module.start();
                 break;
             default:
                 break;
@@ -95,27 +92,27 @@ class ClockModule
         }
         
         this.outputs[0].onclick = function(){
-            Connect(mod, this); Modules[modIndex].triggerFreq = 0.5; 
+            Connect(mod, this); Modules[modIndex].triggerFreq = "1n"; 
             Modules[modIndex].lightIndex = 0};
 
         this.outputs[1].onclick = function(){
-            Connect(mod, this); Modules[modIndex].triggerFreq = 1; 
+            Connect(mod, this); Modules[modIndex].triggerFreq = "2n"; 
             Modules[modIndex].lightIndex = 1};
 
         this.outputs[2].onclick = function(){
-            Connect(mod, this); Modules[modIndex].triggerFreq = 2; 
+            Connect(mod, this); Modules[modIndex].triggerFreq = "4n"; 
             Modules[modIndex].lightIndex = 2};
 
         this.outputs[3].onclick = function(){
-            Connect(mod, this); Modules[modIndex].triggerFreq = 4; 
+            Connect(mod, this); Modules[modIndex].triggerFreq = "8n"; 
             Modules[modIndex].lightIndex = 3};
 
         this.outputs[4].onclick = function(){
-            Connect(mod,this); Modules[modIndex].triggerFreq = 8; 
+            Connect(mod,this); Modules[modIndex].triggerFreq = "16n"; 
             Modules[modIndex].lightIndex = 4};
 
         this.outputs[5].onclick = function(){
-            Connect(mod,this); Modules[modIndex].triggerFreq = 16; 
+            Connect(mod,this); Modules[modIndex].triggerFreq = "32n"; 
             Modules[modIndex].lightIndex = 5};
 
 

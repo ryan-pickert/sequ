@@ -17,6 +17,8 @@ class MasterModule
         var modIndex = Modules.length;
         var layout = "<div class='module' id='"+modIndex+"' style='width:102px'>"+
                       "<div class='name'>Master</div>"+
+                      "<div class='section'>BPM</div>"+
+                      "<div></div>"+
                       "<div class='section'>Signal Out</div>"+
                       "</div";
 

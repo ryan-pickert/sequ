@@ -15,6 +15,7 @@
     <script src="script/envelope.js"></script>
     <script src="script/master.js"></script>
     <script src="script/controller.js"></script>
+    <script src="script/noise.js"></script>
     <script src="script/main.js"></script>
     
     
@@ -22,10 +23,15 @@
 <body>
     <div id="menu">
         <div class="menuButton" id="start" onclick="Init() ">Start</div>
-        <div class="menuButton" onclick="AddModule('vco')"style="display:none">+ VCO-1</div>
-        <div class="menuButton" onclick="AddModule('env')" style="display:none">+ ENV-1</div>
-        <div class="menuButton" onclick="AddModule('lfo')" style="display:none">+ LFO-1</div>
-        
+        <div class="drop" style="display: none">
+            <div class="menuButton dropButton">+ SOURCES</div>
+            <div class="dropContent">
+                <div class="menuButton" onclick="AddModule('synth')">+ SYN-1</div>
+                <div class="menuButton" onclick="AddModule('noise')">+ NOISE-1</div>
+                <div class="menuButton" onclick="AddModule('vco')">+ VCO-1</div>
+            </div>
+        </div>
+
         <div class="drop" style="display: none">
             <div class="menuButton dropButton">+ CLOCKS</div>
             <div class="dropContent">
@@ -48,12 +54,15 @@
                  <div class="menuButton" onclick="AddModule('lfo')">+ HIGH-1</div>
             </div>
         </div>
+
+        <div class="menuButton" onclick="AddModule('env')" style="display:none">+ ENV-1</div>
+        <div class="menuButton" onclick="AddModule('lfo')" style="display:none">+ LFO-1</div>
     </div>
     <div id="wrapper">
         <svg id="draw" height="100%" width="100%">
             
         </svg>
     </div>
-    <div style="position: absolute; right: 15px; bottom: 15px; color: #dddddd;">Pre-Alpha v0.03</div>
+    <div style="position: absolute; right: 15px; bottom: 15px; color: #eeeeee; font-size: 18px;">Pre-Alpha v0.03</div>
 </body>
 </html>

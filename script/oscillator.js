@@ -2,7 +2,7 @@ class VCOModule
 {
     constructor(freq, wave)
     {
-        this.module = new Tone.Oscillator(freq, wave);
+        this.module = new Tone.OmniOscillator(freq, wave);
         this.module.sync();
         this.outputs = [];
         this.inputs = [];
@@ -67,13 +67,13 @@ class VCOModule
     {
         var mod = document.createElement("div");
         var modIndex = Modules.length;
-        var layout = "<div class='module' id='"+modIndex+"' style='width:135px'>"+
+        var layout = "<div class='module' id='"+modIndex+"' style='width:140px'>"+
                       "<div class='name'>VCO-1</div>"+
                       "<div class='section'>Frequency</div>"+
                       "<div></div>"+
                       "<div class='section'>Wave</div>"+
                       "<div style='width:100%; height: 30px'></div>"+
-                      "<div class='section'>Signal Out</div>"+
+                      "<div class='section'>Signal</div>"+
                       "</div";
 
         mod.innerHTML = layout;
@@ -109,6 +109,8 @@ class VCOModule
 
         this.inputs.push(document.createElement("div"));
         this.inputs.push(document.createElement("div"));
+        this.inputs.push(document.createElement("div"));
+
         this.inputs[0].innerHTML = "<div id='inner'></div><div id='label'>In</div>";
         this.inputs[0].classList.add("input");
         this.inputs[0].style.float="left";
@@ -119,6 +121,12 @@ class VCOModule
         this.inputs[1].classList.add("input");
         this.inputs[1].onclick = function(){Connect(mod, this, "effect")};
 
+        this.inputs[2].innerHTML = "<div id='inner'></div><div id='label'>ENV In</div>";
+        this.inputs[2].classList.add("input");
+        this.inputs[2].style.float="right";
+        this.inputs[2].style.marginRight="25px";
+        this.inputs[2].onclick = function(){Connect(mod, this, "env")};
+
         //Add everything to the document
         document.getElementById(modIndex).children[2].appendChild(this.controllers[0].element);
         document.getElementById(modIndex).children[2].appendChild(this.inputs[0]);
@@ -128,5 +136,6 @@ class VCOModule
         document.getElementById(modIndex).children[4].appendChild(this.buttons[2]);
         document.getElementById(modIndex).appendChild(this.outputs[0]);
         document.getElementById(modIndex).appendChild(this.controllers[1].element);
+        document.getElementById(modIndex).appendChild(this.inputs[2]);
     }
 }

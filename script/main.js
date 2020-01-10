@@ -41,12 +41,11 @@ function Init()
 
     document.getElementById("start").innerHTML = "Stop";
     Tone.Transport.start();
-    document.getElementById("menu").children[1].style.display = "";
-    document.getElementById("menu").children[2].style.display = "";
-    document.getElementById("menu").children[3].style.display = "";
-    document.getElementById("menu").children[4].style.display = "";
-    document.getElementById("menu").children[5].style.display = "";
-    document.getElementById("menu").children[6].style.display = "";
+    
+    for(let i = 0; i < 7; i++){
+        document.getElementById("menu").children[i].style.display = "";
+
+    }
     AddModule("master");
 }
 function AddModule(type)
@@ -56,6 +55,11 @@ function AddModule(type)
             var m = new VCOModule(950, "sine");
             m.setVolume(-16);
             m.module.start();
+            Modules.push(m);
+            break;
+        case "synth":
+            var m = new SynthModuleMono();
+            m.setVolume(-16);
             Modules.push(m);
             break;
         case "lfo":
@@ -93,6 +97,11 @@ function AddModule(type)
             
             Modules.push(m);
             break;
+        case "noise":
+            var m = new NoiseModule("white");
+            
+            Modules.push(m);
+            break;
         case "master":
             var m = new MasterModule();
             
@@ -110,6 +119,10 @@ function SyncClocks()
                     Modules[i].clocks[c].start();
                 }
                 
+            }
+        }else if(Modules[i].name == "SEQ-8"){
+            if(Modules[i].module != undefined){
+                Modules[i].module.stepIndex = 0;
             }
         }
     }
