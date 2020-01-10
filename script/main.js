@@ -129,6 +129,10 @@ function AddModule(type)
             var m = new FilterModuleLow();
             Modules.push(m);
             break;
+        case "cross":
+            var m = new CrossFadeModule();
+            Modules.push(m);
+            break;
         case "master":
             var m = new MasterModule();
             

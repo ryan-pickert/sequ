@@ -3,7 +3,7 @@ class LFOModule
     constructor()
     {      
         this.name = "LFO-1";
-        this.module = new Tone.LFO(Tone.Time('4n'), 0, 40);
+        this.module = new Tone.LFO(Tone.Time('4n'), 0, 200);
         this.controllers = []; //Array of controllers (knobs, etc)
         this.outputs = [];
         this.inputs = [];

@@ -21,6 +21,20 @@ class NoiseModule
                 //Connect output to new module
                 this.module.connect(module.module);
                 break;
+            case "signalA":
+                console.log("connected");
+                //Disconnect all outputs
+                this.module.disconnect();
+                //Connect output to new module
+                this.module.connect(module.module, 0, 0);
+                break;
+            case "signalB":
+                console.log("connected");
+                //Disconnect all outputs
+                this.module.disconnect();
+                //Connect output to new module
+                this.module.connect(module.module, 0, 1);
+                break;
             
             
             default:
