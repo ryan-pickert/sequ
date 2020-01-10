@@ -67,6 +67,11 @@ function AddModule(type)
             m.setVolume(-16);
             Modules.push(m);
             break;
+        case "synthmetal":
+            var m = new SynthModuleMetal();
+            m.setVolume(-16);
+            Modules.push(m);
+            break;
         case "lfo":
             var m = new LFOModule();
             m.module.start();

@@ -2,7 +2,7 @@ class FilterModuleBand
 {
     constructor()
     {
-        this.module = new Tone.Filter(250, "bandpass", -24);
+        this.module = new Tone.Filter(0, "bandpass", -24);
         this.outputs = [];
         this.inputs = [];
         this.buttons = [];
@@ -60,7 +60,7 @@ class FilterModuleBand
 
         //secName.onmousedown = function(){move(event, mod)};
 
-        this.controllers.push(new Controller(250, 2000, 25, "knob", this.module.frequency.value, modIndex, 0));
+        this.controllers.push(new Controller(0, 1000, 40, "knob", this.module.frequency.value, modIndex, 0));
 
         this.outputs.push(document.createElement("div"));
         this.outputs[0].innerHTML = "<div id='inner'></div><div id='label'>Out</div>";

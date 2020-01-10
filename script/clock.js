@@ -34,7 +34,12 @@ class ClockModule
                         module.module.triggerAttackRelease();
                     }else
                     {
-                        module.module.triggerAttackRelease(module.module.oscillator.frequency.value,time);
+                        if(module.module.oscillator != undefined){
+                            module.module.triggerAttackRelease(module.module.oscillator.frequency.value,time);
+
+                        }else{
+                            module.module.triggerAttackRelease();
+                        }
                     }
                     
                 }
