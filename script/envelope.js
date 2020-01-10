@@ -90,6 +90,7 @@ class EnvelopeModule
         this.outputs.push(document.createElement("div"));
         this.inputs.push(document.createElement("div"));
         this.inputs.push(document.createElement("div"));
+        this.inputs.push(document.createElement("div"));
 
         this.outputs[0].innerHTML = "<div id='inner'></div><div id='label'>Out</div>";
         this.outputs[0].classList.add("output");
@@ -109,8 +110,13 @@ class EnvelopeModule
         this.controllers.push(new Controller(0.1, 1, 0.1, "knob", this.module.release, modIndex, 3));
 
         
+        this.inputs[2].innerHTML = "<div id='inner'></div><div id='label'>Effect</div>";
+        this.inputs[2].classList.add("input");
+        this.inputs[2].onclick = function(){Connect(mod, this, "effect")};
+
         document.getElementById(modIndex).appendChild(this.outputs[0]);
         document.getElementById(modIndex).children[10].appendChild(this.inputs[0]);
+        document.getElementById(modIndex).children[10].appendChild(this.inputs[2]);
         
         document.getElementById(modIndex).children[2].appendChild(this.controllers[0].element);
         document.getElementById(modIndex).children[4].appendChild(this.controllers[1].element);

@@ -62,6 +62,11 @@ function AddModule(type)
             m.setVolume(-16);
             Modules.push(m);
             break;
+        case "synthmem":
+            var m = new SynthModuleMembrane();
+            m.setVolume(-16);
+            Modules.push(m);
+            break;
         case "lfo":
             var m = new LFOModule();
             m.module.start();
@@ -74,6 +79,11 @@ function AddModule(type)
             break;
         case "env":
             var m = new EnvelopeModule();
+            
+            Modules.push(m);
+            break;
+        case "seq4":
+            var m = new SequencerModule4();
             
             Modules.push(m);
             break;
