@@ -31,14 +31,14 @@ class ClockModule
                         light.id = "off";
 
                     if(module.module.envelope == undefined){
-                        module.module.triggerAttackRelease();
+                        module.module.triggerAttackRelease("8n", time);
                     }else
                     {
                         if(module.module.oscillator != undefined){
-                            module.module.triggerAttackRelease(module.module.oscillator.frequency.value,time);
+                            module.module.triggerAttackRelease(module.module.oscillator.frequency.value, "8n", time);
 
                         }else{
-                            module.module.triggerAttackRelease();
+                            module.module.triggerAttackRelease("8n", time);
                         }
                     }
                     
@@ -97,27 +97,27 @@ class ClockModule
         }
         
         this.outputs[0].onclick = function(){
-            Connect(mod, this); Modules[modIndex].triggerFreq = "1n"; 
+            Connect(mod, this); Modules[modIndex].triggerFreq = Tone.TransportTime("1n"); 
             Modules[modIndex].lightIndex = 0};
 
         this.outputs[1].onclick = function(){
-            Connect(mod, this); Modules[modIndex].triggerFreq = "2n"; 
+            Connect(mod, this); Modules[modIndex].triggerFreq = Tone.TransportTime("2n"); 
             Modules[modIndex].lightIndex = 1};
 
         this.outputs[2].onclick = function(){
-            Connect(mod, this); Modules[modIndex].triggerFreq = "4n"; 
+            Connect(mod, this); Modules[modIndex].triggerFreq = Tone.TransportTime("4n"); 
             Modules[modIndex].lightIndex = 2};
 
         this.outputs[3].onclick = function(){
-            Connect(mod, this); Modules[modIndex].triggerFreq = "8n"; 
+            Connect(mod, this); Modules[modIndex].triggerFreq = Tone.TransportTime("8n"); 
             Modules[modIndex].lightIndex = 3};
 
         this.outputs[4].onclick = function(){
-            Connect(mod,this); Modules[modIndex].triggerFreq = "16n"; 
+            Connect(mod,this); Modules[modIndex].triggerFreq = Tone.TransportTime("16n"); 
             Modules[modIndex].lightIndex = 4};
 
         this.outputs[5].onclick = function(){
-            Connect(mod,this); Modules[modIndex].triggerFreq = "32n"; 
+            Connect(mod,this); Modules[modIndex].triggerFreq = Tone.TransportTime("32n"); 
             Modules[modIndex].lightIndex = 5};
 
 

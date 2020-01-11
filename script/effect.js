@@ -224,7 +224,7 @@ class DelayModule
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
 
-        this.controllers.push(new Controller(0, 2, 0.1, "knob", this.module.delayTime.value, modIndex, 0));
+        this.controllers.push(new Controller(0, 1, 0.25, "knob", this.module.delayTime.value, modIndex, 0));
         this.controllers.push(new Controller(0, 1, 0.1, "knob", this.module.wet.value, modIndex, 1));
 
         this.outputs.push(document.createElement("div"));
