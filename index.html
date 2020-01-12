@@ -18,6 +18,7 @@
     <script src="script/noise.js"></script>
     <script src="script/filter.js"></script>
     <script src="script/mixer.js"></script>
+    <script src="script/midi.js"></script>
     <script src="script/main.js"></script>
     
     
@@ -30,6 +31,7 @@
             <div class="dropContent">
                 <div class="menuButton" onclick="AddModule('synthmetal')">+ SYN-3M</div>
                 <div class="menuButton" onclick="AddModule('synthmem')">+ SYN-2M</div>
+                <div class="menuButton" onclick="AddModule('synthpoly')">+ SYN-P12</div>
                 <div class="menuButton" onclick="AddModule('synth')">+ SYN-1</div>
                 <div class="menuButton" onclick="AddModule('noise')">+ NOISE-1</div>
                 <div class="menuButton" onclick="AddModule('vco')">+ VCO-1</div>
@@ -64,6 +66,7 @@
 
         <div class="menuButton" onclick="AddModule('env')" style="display:none">+ ENV-1</div>
         <div class="menuButton" onclick="AddModule('lfo')" style="display:none">+ LFO-1</div>
+        <div class="menuButton" onclick="AddModule('midi')" style="display:none">+ MIDI-1</div>
     </div>
     <div id="wrapper">
         <svg id="draw" height="100%" width="100%">

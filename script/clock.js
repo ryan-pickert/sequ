@@ -37,6 +37,9 @@ class ClockModule
                         if(module.module.oscillator != undefined){
                             module.module.triggerAttackRelease(module.module.oscillator.frequency.value, "8n", time);
 
+                        }else if(module.module.voices != undefined){
+                            module.module.triggerAttackRelease(module.module.voices[0].frequency.value, "8n", time);
+
                         }else{
                             module.module.triggerAttackRelease("8n", time);
                         }

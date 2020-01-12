@@ -42,10 +42,13 @@ function Init()
     document.getElementById("start").innerHTML = "Stop";
     Tone.Transport.start();
     
-    for(let i = 0; i < 7; i++){
+    for(let i = 0; i < 8; i++){
         document.getElementById("menu").children[i].style.display = "";
-
     }
+
+    //Get MIDI access
+    MIDIInit();
+
     AddModule("master");
 }
 function AddModule(type)
@@ -69,6 +72,11 @@ function AddModule(type)
             break;
         case "synthmetal":
             var m = new SynthModuleMetal();
+            m.setVolume(-16);
+            Modules.push(m);
+            break;
+        case "synthpoly":
+            var m = new SynthModulePoly();
             m.setVolume(-16);
             Modules.push(m);
             break;
@@ -131,6 +139,10 @@ function AddModule(type)
             break;
         case "cross":
             var m = new CrossFadeModule();
+            Modules.push(m);
+            break;
+        case "midi":
+            var m = new MIDIModule();
             Modules.push(m);
             break;
         case "master":

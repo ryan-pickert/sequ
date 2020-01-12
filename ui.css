@@ -20,6 +20,7 @@ body
     margin: 2px;
     background-color: #3e4b2d;
     color: #daf73a;
+    position: relative;
 }
 .button:hover
 {
@@ -45,10 +46,8 @@ body
 .name
 {
     font-size: 16px;
-    
-    margin-bottom: 5px;
-    
-    padding: 5px;
+    margin-bottom: 3px;
+    padding: 3px;
     text-align: center;
 }
 .box
@@ -112,7 +111,7 @@ body
 .module
 {
     float: left;
-    height: 250px;
+    height: 264px;
     margin-left: 0px;
     border: 2px solid #444444;
     border-radius: 2px;
@@ -181,7 +180,7 @@ body
 
 }
 .dropButton{
-    background-color: #cccccc;
+    background-color: #aaaaaa;
 }
 .drop{
     position: relative;
@@ -201,7 +200,7 @@ body
 
 path
 {
-    stroke: #b2ca2b;
+    stroke: #aaaaaa;
     stroke-width: 4;
     fill: transparent;
     pointer-events: stroke;

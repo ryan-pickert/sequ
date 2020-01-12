@@ -8,6 +8,9 @@ class SequencerModule4
         this.noteLabels = [];
         this.outputs =[];
         this.inputs = [];
+        this.buttons = [];
+        this.programStep = 0;
+        this.program = false;
         this.stepIndex = -1;//Current step in the sequence
         this.sequence = [48,48,48,48]; //Array of frequencies(notes)
         this.module;
@@ -24,6 +27,17 @@ class SequencerModule4
                 break;
         }   
     }
+    programSequence(note)
+    {
+        if(this.programStep == this.sequence.length){
+            this.program = false;
+            this.programStep=0;
+        }else{
+            this.sequence[this.programStep] = Tone.Frequency(note, "midi");
+            this.noteLabels[this.programStep].innerHTML = this.sequence[this.programStep].toNote();
+            this.programStep++;
+        }
+    }
     stepSequence()
     {
         //Step through sequence
@@ -33,7 +47,14 @@ class SequencerModule4
             this.stepIndex = 0;
         }
 
-        this.module.frequency.value = this.sequence[this.stepIndex];  
+        if(this.module.oscillator != undefined){
+            this.module.oscillator.frequency.value = this.sequence[this.stepIndex]; 
+            
+        }else if(this.module.voices != undefined){
+            this.module.set({"oscillator":{"frequency":this.sequence[this.stepIndex]}});
+        }else{
+            this.module.frequency.value = this.sequence[this.stepIndex];  
+        }
 
         if(this.stepIndex == 0)
             this.lights[this.lights.length-1].id = "on";
@@ -83,7 +104,7 @@ class SequencerModule4
         var layout = "<div class='module' id='"+modIndex+"'>"+
                       "<div class='name'>SEQ-4</div>"+
                       "<div class='section'>Notes</div>"+
-                      "<div style='width:320px; height: 38px'></div>"+
+                      "<div style='width:320px; height: 60px'></div>"+
                       "<div class='section'>Trigger In</div>"+
                       "<div></div>"+
                       "<div class='section'>Freq Out</div>"+
@@ -125,9 +146,16 @@ class SequencerModule4
         this.inputs[0].classList.add("input");
         this.inputs[0].onclick = function(){Connect(mod, this, "sequence")};
 
+        this.buttons.push(document.createElement("div"));
+
+        this.buttons[0].innerHTML = "PROGRAM";
+        this.buttons[0].classList.add("button");
+        this.buttons[0].onclick = function(){Modules[modIndex].program = true};
+
         
         document.getElementById(modIndex).appendChild(this.outputs[0]);
         document.getElementById(modIndex).children[4].appendChild(this.inputs[0]);
+        document.getElementById(modIndex).children[2].appendChild(this.buttons[0]);
     }
 }
 
@@ -141,6 +169,9 @@ class SequencerModule8
         this.noteLabels = [];
         this.outputs =[];
         this.inputs = [];
+        this.buttons = [];
+        this.programStep = 0;
+        this.program = false;
         this.stepIndex = -1;//Current step in the sequence
         this.sequence = [48,48,48,48,48,48,48,48]; //Array of frequencies(notes)
         this.module;
@@ -157,6 +188,17 @@ class SequencerModule8
                 break;
         }   
     }
+    programSequence(note)
+    {
+        if(this.programStep == this.sequence.length){
+            this.program = false;
+            this.programStep=0;
+        }else{
+            this.sequence[this.programStep] = Tone.Frequency(note, "midi");
+            this.noteLabels[this.programStep].innerHTML = this.sequence[this.programStep].toNote();
+            this.programStep++;
+        }
+    }
     stepSequence()
     {
         //Step through sequence
@@ -166,7 +208,14 @@ class SequencerModule8
             this.stepIndex = 0;
         }
 
-        this.module.frequency.value = this.sequence[this.stepIndex];  
+        if(this.module.oscillator != undefined){
+            this.module.oscillator.frequency.value = this.sequence[this.stepIndex]; 
+            
+        }else if(this.module.voices != undefined){
+            this.module.set({"oscillator":{"frequency":this.sequence[this.stepIndex]}});
+        }else{
+            this.module.frequency.value = this.sequence[this.stepIndex];  
+        }
 
         if(this.stepIndex == 0)
             this.lights[this.lights.length-1].id = "on";
@@ -214,7 +263,7 @@ class SequencerModule8
                       "<div class='name'>SEQ-8</div>"+
                       "<div class='section'>Notes</div>"+
                       "<div style='width:320px; height: 38px'></div>"+
-                      "<div style='width:320px; height: 35px'></div>"+
+                      "<div style='width:320px; height: 60px'></div>"+
                       "<div class='section'>Trigger In</div>"+
                       "<div></div>"+
                       "<div class='section'>Freq Out</div>"+
@@ -263,9 +312,15 @@ class SequencerModule8
         this.inputs[0].classList.add("input");
         this.inputs[0].onclick = function(){Connect(mod, this, "sequence")};
 
+        this.buttons.push(document.createElement("div"));
+
+        this.buttons[0].innerHTML = "PROGRAM";
+        this.buttons[0].classList.add("button");
+        this.buttons[0].onclick = function(){Modules[modIndex].program = true};
         
         document.getElementById(modIndex).appendChild(this.outputs[0]);
         document.getElementById(modIndex).children[5].appendChild(this.inputs[0]);
+        document.getElementById(modIndex).children[3].appendChild(this.buttons[0]);
     }
 }
 
