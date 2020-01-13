@@ -76,10 +76,12 @@ class MIDIModule
     constructor()
     {
         this.name = "midi";
-        this.modules = [3];
+        this.modules = [];
         this.outputs = [];
         this.inputs = [];
         this.buttons = [];
+        this.oscillators = [];
+        this.envelopes = [];
         this.on = true;
         this.controllers = []; //Array of controllers (knobs, etc)
         this.createUI();
@@ -90,14 +92,19 @@ class MIDIModule
             case "frequency":
                 console.log("connected");
                 //Connect output to new module
-                this.modules[0] = module.module;
+                //this.modules.push(module.module);
                 break;
             case "trigger":
                 console.log("connected");
                 //Connect output to new module
-                this.modules[1] = module.module;
+                //if(this.modules.find)
+                this.modules.push(module.module);
                 break;
-            
+            case "env":
+                    console.log("connected");
+                    //Connect output to new module
+                    this.modules[1] = module.module;
+                    break;
             default:
                 break;
         }   
@@ -126,37 +133,44 @@ class MIDIModule
     }
     triggerOn(note, velocity)
     {
-        if(this.modules[0].voices != undefined){
-            //Poly synth
-            this.modules[0].triggerAttack(Tone.Frequency(note, "midi"), undefined, (velocity/127));
-        }else{
-            //Set pitch
-            if(this.modules[0].oscillator != undefined){
-
-                this.modules[0].oscillator.frequency.value = Tone.Frequency(note, "midi");
+        for(let i = 0; i < this.modules.length; i++){
+            if(this.modules[i].voices != undefined){
+                //Poly synth
+                this.modules[i].triggerAttack(Tone.Frequency(note, "midi"), undefined, (velocity/127));
             }else{
-                this.modules[0].frequency.value = Tone.Frequency(note, "midi");
-            }
-
-            if(this.modules[1].envelope == undefined){
-                //Envelope
-                this.modules[1].triggerAttack();
-            }else{
-                //Synth
-                this.modules[1].triggerAttack(this.modules[1].oscillator.frequency.value, undefined, (velocity/127));
+                //Set pitch
+                if(this.modules[i].oscillator != undefined){
+    
+                    this.modules[i].oscillator.frequency.value = Tone.Frequency(note, "midi");
+                }else if(this.modules[i].frequency != undefined){
+                    this.modules[i].frequency.value = Tone.Frequency(note, "midi");
+                }
+    
+                if(this.modules[i].envelope == undefined){
+                    //Envelope
+                    this.modules[i].triggerAttack();
+                }else{
+                    //Synth
+                    this.modules[i].triggerAttack(this.modules[i].oscillator.frequency.value, undefined, (velocity/127));
+                }
             }
         }
+        
         
         
     }
     triggerOff(note)
     {
-        if(this.modules[0].voices != undefined){
-            this.modules[0].triggerRelease(Tone.Frequency(note, "midi"), undefined, 0.5);
-        }else{
-            this.modules[1].triggerRelease();
-
+        for(let i = 0; i < this.modules.length; i++){
+            if(this.modules[i].voices != undefined){
+                this.modules[i].triggerRelease(Tone.Frequency(note, "midi"), undefined, 0.5);
+            }else{
+                this.modules[i].triggerRelease();
+    
+            }
         }
+
+        
     }
     createUI()
     {

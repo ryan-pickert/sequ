@@ -143,7 +143,7 @@ class ReverbModule
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
 
-        this.controllers.push(new Controller(1, 5, 0.5, "knob", this.module.decay, modIndex, 0));
+        this.controllers.push(new Controller(1, 20, 1, "knob", this.module.decay, modIndex, 0));
         this.controllers.push(new Controller(0, 1, 0.1, "knob", this.module.wet.value, modIndex, 1));
 
         this.outputs.push(document.createElement("div"));
@@ -206,6 +206,9 @@ class DelayModule
             case 1:
                 this.module.wet.value = this.controllers[cIndex].value;
                 break;
+            case 2:
+                this.module.feedback.value = this.controllers[cIndex].value;
+                break;
         }
     }
     createUI()
@@ -226,6 +229,8 @@ class DelayModule
 
         this.controllers.push(new Controller(0, 1, 0.25, "knob", this.module.delayTime.value, modIndex, 0));
         this.controllers.push(new Controller(0, 1, 0.1, "knob", this.module.wet.value, modIndex, 1));
+        this.controllers.push(new Controller(0.1, 0.9, 0.1, "knob", this.module.feedback.value, modIndex, 2));
+
 
         this.outputs.push(document.createElement("div"));
         this.outputs[0].innerHTML = "<div id='inner'></div><div id='label'>Out</div>";
@@ -234,6 +239,8 @@ class DelayModule
 
         document.getElementById(modIndex).children[2].appendChild(this.controllers[0].element);
         document.getElementById(modIndex).children[4].appendChild(this.controllers[1].element);
+        document.getElementById(modIndex).children[4].appendChild(this.controllers[2].element);
+
         document.getElementById(modIndex).appendChild(this.outputs[0]);
     }
 }

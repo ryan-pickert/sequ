@@ -18,18 +18,11 @@ class ClockModule
         //What this module is being connected to
         switch(type){
             case "trigger":
-                var light = this.lights[this.lightIndex];
-                light.id = "off";
                 var c = new Tone.Loop(trigger, this.triggerFreq).start("1m");
                 this.clocks.push(c);
                 this.module = c;
                 function trigger(time)
                 {
-                    if(light.id == "off")
-                        light.id = "on";
-                    else
-                        light.id = "off";
-
                     if(module.module.envelope == undefined){
                         module.module.triggerAttackRelease("8n", time);
                     }else
@@ -48,19 +41,11 @@ class ClockModule
                 }
                 break;
             case "sequence":
-                var light = this.lights[this.lightIndex];
-                light.id = "off";
                 var c = new Tone.Loop(step, this.triggerFreq).start("1m");
                 this.clocks.push(c);
                 this.module = c;
                 function step()
                 {
-                    if(light.id == "off")
-                        light.id = "on";
-                    else
-                        light.id = "off";
-                    
-                    
                     module.stepSequence();
                 }
                 break;
@@ -98,6 +83,21 @@ class ClockModule
             light.classList.add("light");
             this.lights.push(light);
         }
+
+        var l1 = this.lights[0];
+        var l2 = this.lights[1];
+        var l3 = this.lights[2];
+        var l4 = this.lights[3];
+        var l5 = this.lights[4];
+        var l6 = this.lights[5];
+
+        var c = new Tone.Loop(function(){if(l1.id=="off"){l1.id = "on";}else{l1.id = "off";}}, Tone.TransportTime("1n")).start("1m");
+        var c = new Tone.Loop(function(){if(l2.id=="off"){l2.id = "on";}else{l2.id = "off";}}, Tone.TransportTime("2n")).start("1m");
+        var c = new Tone.Loop(function(){if(l3.id=="off"){l3.id = "on";}else{l3.id = "off";}}, Tone.TransportTime("4n")).start("1m");
+        var c = new Tone.Loop(function(){if(l4.id=="off"){l4.id = "on";}else{l4.id = "off";}}, Tone.TransportTime("8n")).start("1m");
+        var c = new Tone.Loop(function(){if(l5.id=="off"){l5.id = "on";}else{l5.id = "off";}}, Tone.TransportTime("16n")).start("1m");
+        var c = new Tone.Loop(function(){if(l6.id=="off"){l6.id = "on";}else{l6.id = "off";}}, Tone.TransportTime("32n")).start("1m");
+
         
         this.outputs[0].onclick = function(){
             Connect(mod, this); Modules[modIndex].triggerFreq = Tone.TransportTime("1n"); 
