@@ -57,7 +57,7 @@ class FilterModuleBand
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
-
+        mod.children[0].children[0].onmousedown = function(){Move(event, this)};
         //secName.onmousedown = function(){move(event, mod)};
 
         this.controllers.push(new Controller(200, 1500, 60, "knob", this.module.frequency.value, modIndex, 0));
@@ -150,7 +150,7 @@ class FilterModuleHigh
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
-
+        mod.children[0].children[0].onmousedown = function(){Move(event, this)};
         //secName.onmousedown = function(){move(event, mod)};
 
         this.controllers.push(new Controller(250, 2000, 50, "knob", this.module.frequency.value, modIndex, 0));
@@ -243,7 +243,7 @@ class FilterModuleLow
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
-
+        mod.children[0].children[0].onmousedown = function(){Move(event, this)};
         //secName.onmousedown = function(){move(event, mod)};
 
         this.controllers.push(new Controller(250, 2000, 50, "knob", this.module.frequency.value, modIndex, 0));

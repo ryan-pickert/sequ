@@ -29,9 +29,14 @@ class SequencerModule4
     }
     programSequence(note)
     {
-        if(this.programStep == this.sequence.length){
+        if(this.programStep == this.sequence.length-1){
+            this.sequence[this.programStep] = Tone.Frequency(note, "midi");
+            this.noteLabels[this.programStep].innerHTML = this.sequence[this.programStep].toNote();
+            this.programStep++;
+            
             this.program = false;
             this.programStep=0;
+            this.buttons[0].innerHTML = "PROGRAM";
         }else{
             this.sequence[this.programStep] = Tone.Frequency(note, "midi");
             this.noteLabels[this.programStep].innerHTML = this.sequence[this.programStep].toNote();
@@ -40,6 +45,10 @@ class SequencerModule4
     }
     stepSequence()
     {
+        if(this.program){
+            this.buttons[0].innerHTML = "INPUT...";
+        }
+        
         //Step through sequence
         this.stepIndex++;
         if(this.stepIndex == this.sequence.length){
@@ -112,7 +121,7 @@ class SequencerModule4
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);       
-        
+        mod.children[0].children[0].onmousedown = function(){Move(event, this)};
         for(let i = 0; i < this.sequence.length; i++){
             var l = document.createElement("div");
             var kLabel = document.createElement("div");
@@ -280,7 +289,7 @@ class SequencerModule8
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);       
-        
+        mod.children[0].children[0].onmousedown = function(){Move(event, this)};
         for(let i = 0; i < this.sequence.length; i++){
             var l = document.createElement("div");
             var kLabel = document.createElement("div");

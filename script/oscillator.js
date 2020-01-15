@@ -91,7 +91,7 @@ class VCOModule
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
-
+        mod.children[0].children[0].onmousedown = function(){Move(event, this)};
         //secName.onmousedown = function(){move(event, mod)};
 
         this.controllers.push(new Controller(15, 6000, 15, "knob", this.module.frequency.value, modIndex, 0));

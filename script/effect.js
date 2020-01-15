@@ -60,7 +60,7 @@ class LFOModule
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
-
+        mod.children[0].children[0].onmousedown = function(){Move(event, this)};
         this.controllers.push(new Controller(1, 10, 1, "knob", this.module.frequency.value, modIndex, 0));
 
         this.outputs.push(document.createElement("div"));
@@ -142,7 +142,7 @@ class ReverbModule
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
-
+        mod.children[0].children[0].onmousedown = function(){Move(event, this)};
         this.controllers.push(new Controller(1, 20, 1, "knob", this.module.decay, modIndex, 0));
         this.controllers.push(new Controller(0, 1, 0.1, "knob", this.module.wet.value, modIndex, 1));
 
@@ -226,7 +226,7 @@ class DelayModule
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
-
+        mod.children[0].children[0].onmousedown = function(){Move(event, this)};
         this.controllers.push(new Controller(0, 1, 0.25, "knob", this.module.delayTime.value, modIndex, 0));
         this.controllers.push(new Controller(0, 1, 0.1, "knob", this.module.wet.value, modIndex, 1));
         this.controllers.push(new Controller(0.1, 0.9, 0.1, "knob", this.module.feedback.value, modIndex, 2));

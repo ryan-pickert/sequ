@@ -71,7 +71,7 @@ class ClockModule
         mod.innerHTML = layout;
         
         document.getElementById("wrapper").appendChild(mod);
-
+        mod.children[0].children[0].onmousedown = function(){Move(event, this)};
         for(let i = 0; i < 6; i++){
             var out = document.createElement("div");
             var light = document.createElement("div");

@@ -85,6 +85,7 @@ class SynthModuleMono
     createUI()
     {
         var mod = document.createElement("div");
+        
         var modIndex = Modules.length;
         var layout = "<div class='module' id='"+modIndex+"' style='width:323px'>"+
                       "<div class='name'>SYN-1</div>"+
@@ -113,7 +114,7 @@ class SynthModuleMono
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
-
+        mod.children[0].children[0].onmousedown = function(){Move(event, this)};
         //secName.onmousedown = function(){move(event, mod)};
 
         this.controllers.push(new Controller(15, 6000, 15, "knob", this.module.oscillator.frequency.value, modIndex, 0));
@@ -301,7 +302,7 @@ class SynthModuleMembrane
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
-
+        mod.children[0].children[0].onmousedown = function(){Move(event, this)};
         //secName.onmousedown = function(){move(event, mod)};
 
         this.controllers.push(new Controller(15, 6000, 15, "knob", this.module.oscillator.frequency.value, modIndex, 0));
@@ -490,7 +491,7 @@ class SynthModuleMetal
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
-
+        mod.children[0].children[0].onmousedown = function(){Move(event, this)};
         //secName.onmousedown = function(){move(event, mod)};
 
         this.controllers.push(new Controller(20, 400, 20, "knob", this.module.frequency.value, modIndex, 0));
@@ -678,7 +679,7 @@ class SynthModulePoly
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
-
+        mod.children[0].children[0].onmousedown = function(){Move(event, this)};
         //secName.onmousedown = function(){move(event, mod)};
 
         this.controllers.push(new Controller(15, 6000, 15, "knob", this.module.voices[0].frequency.value, modIndex, 0));

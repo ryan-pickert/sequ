@@ -47,7 +47,7 @@ class MasterModule
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
-
+        mod.children[0].children[0].onmousedown = function(){Move(event, this)};
         this.controllers.push(new Controller(70, 160, 2, "knob", Tone.Transport.bpm.value, modIndex, 0));
         
         var kLabel = document.createElement("div");

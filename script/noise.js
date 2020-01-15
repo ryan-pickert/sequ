@@ -81,7 +81,7 @@ class NoiseModule
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
-
+        mod.children[0].children[0].onmousedown = function(){Move(event, this)};
         //secName.onmousedown = function(){move(event, mod)};
 
         this.controllers.push(new Controller(-50, 0, 1, "knob", this.module.volume.value, modIndex, 0));

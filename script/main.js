@@ -152,24 +152,6 @@ function AddModule(type)
             break;
     }
 }
-function SyncClocks()
-{
-    for(let i = 0; i<Modules.length; i++){
-        if(Modules[i].name == "Clock-1"){
-            if(Modules[i].module != undefined){
-                for(let c = 0; c < Modules[i].clocks.length; c++){
-                    Modules[i].clocks[c].stop();
-                    Modules[i].clocks[c].start();
-                }
-                
-            }
-        }else if(Modules[i].name == "SEQ-8"){
-            if(Modules[i].module != undefined){
-                Modules[i].module.stepIndex = 0;
-            }
-        }
-    }
-}
 function GetRandom(min, max)
 {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -228,11 +210,68 @@ function GetNoteValue(n, oct, scale)
     
 }
 
-function move(e,t)
+function Move(e,t)
 {
+    var mouseXOffset = e.clientX-t.parentElement.getBoundingClientRect().left;
+    var mouseYOffset = e.clientY-t.parentElement.getBoundingClientRect().top;
+    console.log(mouseXOffset);
+
     document.onmousemove = function(e){
-        t.style.top = e.clientY + "px";
-        t.style.left = e.clientX + "px";
+        t.parentElement.style.top = e.clientY-mouseYOffset + "px";
+        t.parentElement.style.left = e.clientX-mouseXOffset + "px";
+        
+        for(let i = 0; i < Wires.length; i++){
+            var moduleStart = "";
+            var moduleEnd = "";
+            var split = 0;
+            
+            for(let c = 0; c < Wires[i].line.id.length; c++){
+                if(Wires[i].line.id[c] == ','){
+                    split++;
+                }
+        
+                if(split == 0){
+                    moduleStart += Wires[i].line.id[c];
+                }else if(split == 1){
+                    moduleEnd += Wires[i].line.id[c];
+                }
+            }
+            //Clean up commas
+            moduleEnd = moduleEnd[1];
+
+            if(t.parentElement.id == moduleStart){
+                //Move the start position
+                var wX = t.parentElement.getBoundingClientRect().left+Wires[i].offsetX;
+                var wY = t.parentElement.getBoundingClientRect().top + Wires[i].offsetY;
+
+                Wires[i].startX = wX;
+                Wires[i].startY = wY;
+
+                if(Wires[i].startX > Wires[i].endX){
+                    Wires[i].line.setAttribute('d', "M "+(wX+9)+" "+(wY+19) + " C "+(wX-9)+" "+(wY+150)+
+                    ", "+(Wires[i].endX+80)+" "+(Wires[i].endY+150)+", "+(Wires[i].endX+18)+" "+(Wires[i].endY+19));
+                }else if(Wires[i].startX < Wires[i].endX){
+                    Wires[i].line.setAttribute('d', "M "+(wX+18)+" "+(wY+19) + " C "+(wX+80)+" "+(wY+150)+
+                    ", "+(Wires[i].endX-9)+" "+(Wires[i].endY+150)+", "+(Wires[i].endX+9)+" "+(Wires[i].endY+19));
+                }
+                
+                
+            }else if(t.parentElement.id == moduleEnd){
+                var wX = t.parentElement.getBoundingClientRect().left+Wires[i].offsetXEnd;
+                var wY = t.parentElement.getBoundingClientRect().top+ Wires[i].offsetYEnd;
+
+                Wires[i].endX = wX;
+                Wires[i].endY = wY;
+
+                if(Wires[i].startX > Wires[i].endX){
+                    Wires[i].line.setAttribute('d', "M "+(Wires[i].startX+9)+" "+(Wires[i].startY+19) + " C "+(Wires[i].startX-9)+" "+(Wires[i].startY+150)+
+                    ", "+(wX+80)+" "+(wY+150)+", "+(wX+18)+" "+(wY+19));
+                }else if(Wires[i].startX < Wires[i].endX){
+                    Wires[i].line.setAttribute('d', "M "+(Wires[i].startX+18)+" "+(Wires[i].startY+19) + " C "+(Wires[i].startX+80)+" "+(Wires[i].startY+150)+
+                    ", "+(wX-9)+" "+(wY+150)+", "+(wX+9)+" "+(wY+19));
+                }
+            }
+        }
     };
     document.onmouseup = function(e){
         document.onmousemove = null;
@@ -241,7 +280,7 @@ function move(e,t)
     
 }
 var line;
-var startX, startY;
+var startX, startY, offXStart,offYStart,offXEnd,offYEnd;
 function Connect(m, jack, type)
 {
     if(connectStart == undefined && type == undefined){
@@ -257,8 +296,11 @@ function Connect(m, jack, type)
         elemRect = jack.getBoundingClientRect();
         startY   = elemRect.top - bodyRect.top,
         startX   = elemRect.left - bodyRect.left;
-
+        offXStart = startX-m.children[0].getBoundingClientRect().left;
+        offYStart = startY-m.children[0].getBoundingClientRect().top;
+        console.log();
         line = document.createElementNS('http://www.w3.org/2000/svg', "path");
+        line.id = connectStart;
         
     }else if(connectStart != undefined && type != undefined){
         //Type of connection
@@ -269,6 +311,8 @@ function Connect(m, jack, type)
         console.log("Connection end " + connectEnd + connectType);
         Modules[connectStart].connect(Modules[connectEnd], connectType);
 
+        line.id += ","+connectEnd+","+connectType;
+        line.onclick = function(){Disconnect(this)};
         //Stop connections
         connectStart = undefined;
         connectEnd = undefined;
@@ -283,10 +327,13 @@ function Connect(m, jack, type)
         elemRect = jack.getBoundingClientRect(),
         endY   = elemRect.top - bodyRect.top,
         endX   = elemRect.left - bodyRect.left;
+        offXEnd = endX-m.children[0].getBoundingClientRect().left;
+        offYEnd = endY-m.children[0].getBoundingClientRect().top;
         
         if(startX > endX){
             line.setAttribute('d', "M "+(startX+9)+" "+(startY+19) + " C "+(startX-9)+" "+(startY+150)+
             ", "+(endX+80)+" "+(endY+150)+", "+(endX+18)+" "+(endY+19));
+
         }else if(startX < endX)
         {
             line.setAttribute('d', "M "+(startX+18)+" "+(startY+19) + " C "+(startX+80)+" "+(startY+150)+
@@ -298,8 +345,56 @@ function Connect(m, jack, type)
         }
         
         
+        var w= new Wire(startX, startY, endX, endY, line, offXStart, offYStart, offXEnd, offYEnd);
+        Wires.push(w);
 
         document.getElementById("draw").append(line);
+    }
+}
+
+function Disconnect(path)
+{
+    var string = path.id;
+    var moduleStart = "";
+    var moduleEnd = "";
+    var type = "";
+    var split = 0;
+
+    //Connection information is stored in the line's id
+    //We need to parse that information
+    for(let c = 0; c < string.length; c++){
+        if(string[c] == ','){
+            split++;
+        }
+
+        if(split == 0){
+            moduleStart += string[c];
+        }else if(split == 1){
+            moduleEnd += string[c];
+        }else{
+            type += string[c];
+        }
+    }
+    //Clean up commas
+    moduleEnd = moduleEnd[1];
+    
+    //Now we can use the data to disconnect modules properly
+    switch(type){
+        case ",signal":
+            Modules[moduleStart].module.disconnect(Modules[moduleEnd].module);
+            path.remove();
+            break;
+        case ",frequency":
+            if(Modules[moduleStart].name == "seq"){
+                //Sequencer
+            }else if(Modules[moduleStart].name == "midi"){
+                //Midi module
+            }else{
+                Modules[moduleStart].module.disconnect(Modules[moduleEnd].module);
+            }
+            
+            path.remove();
+            break;
     }
     
 }

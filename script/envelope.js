@@ -86,7 +86,7 @@ class EnvelopeModule
 
         mod.innerHTML = layout;
         document.getElementById("wrapper").appendChild(mod);
-
+        mod.children[0].children[0].onmousedown = function(){Move(event, this)};
         this.outputs.push(document.createElement("div"));
         this.inputs.push(document.createElement("div"));
         this.inputs.push(document.createElement("div"));
