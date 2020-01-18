@@ -56,6 +56,9 @@ function noteOn(note, vel)
         }else if(Modules[i].program){
             //Seq
             Modules[i].programSequence(note);
+        }else if(Modules[i].record){
+            //Seq
+            Modules[i].recordNotes(note, "on");
         }
     }
 }
@@ -67,6 +70,9 @@ function noteOff(note)
                 Modules[i].triggerOff(note);
             }
             
+        }else if(Modules[i].record){
+            //Seq
+            Modules[i].recordNotes(note, "off");
         }
     }
 }

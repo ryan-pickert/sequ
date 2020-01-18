@@ -3,11 +3,14 @@ class NoiseModule
     constructor(type)
     {
         this.module = new Tone.Noise(type);
+        this.module.volume.value = -20;
         this.module.sync();
         this.module.start();
         this.outputs = [];
         this.inputs = [];
         this.buttons = [];
+        this.effects = [];
+        this.on = false;
         this.controllers = []; //Array of controllers (knobs, etc)
         this.createUI();
     }
@@ -40,6 +43,31 @@ class NoiseModule
             default:
                 break;
         }   
+    }
+    updateChain()
+    {
+        //Disconnect all effects
+        for(let i = 0; i < this.effects.length; i++){
+            this.effects[i].disconnect();
+        }
+
+        //Reconnect effects
+        //Sound sources support up to 5 effects at once
+        if(this.on){
+            if(this.effects.length == 1){
+                this.module.chain(this.effects[0], Tone.Master);
+            }else if(this.effects.length == 2){
+                this.module.chain(this.effects[0], this.effects[1], Tone.Master);
+            }else if(this.effects.length == 3){
+                this.module.chain(this.effects[0], this.effects[1], this.effects[2], Tone.Master);
+            }else if(this.effects.length == 4){
+                this.module.chain(this.effects[0], this.effects[1], this.effects[2], this.effects[3], Tone.Master);
+            }else if(this.effects.length == 5){
+                this.module.chain(this.effects[0], this.effects[1], this.effects[2], this.effects[3], this.effects[4], Tone.Master);
+            }else{
+                this.module.toMaster();
+            }
+        }
     }
     control(value, cIndex)
     {
@@ -102,6 +130,21 @@ class NoiseModule
         this.buttons[2].classList.add("button");
         this.buttons[2].onclick = function(){Modules[modIndex].module.type = "brown"};
 
+        this.buttons.push(document.createElement("div"));
+        this.buttons[3].innerHTML = "ON";
+        this.buttons[3].classList.add("button");
+        this.buttons[3].onclick = function(){
+            if(Modules[modIndex].on){
+                Modules[modIndex].on = false;
+                this.innerHTML = "ON";
+                Modules[modIndex].module.disconnect();
+            }else{
+                Modules[modIndex].on = true;
+                this.innerHTML = "OFF";
+                Modules[modIndex].updateChain();
+            }
+        };
+
         this.outputs.push(document.createElement("div"));
         this.outputs[0].innerHTML = "<div id='inner'></div><div id='label'>Out</div>";
         this.outputs[0].classList.add("output");
@@ -134,7 +177,7 @@ class NoiseModule
         document.getElementById(modIndex).children[4].appendChild(this.buttons[0]);
         document.getElementById(modIndex).children[4].appendChild(this.buttons[1]);
         document.getElementById(modIndex).children[4].appendChild(this.buttons[2]);
-        document.getElementById(modIndex).appendChild(this.outputs[0]);
+        document.getElementById(modIndex).appendChild(this.buttons[3]);
         document.getElementById(modIndex).appendChild(this.controllers[0].element);
         document.getElementById(modIndex).appendChild(this.inputs[2]);
     }

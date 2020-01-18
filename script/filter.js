@@ -16,7 +16,8 @@ class FilterModuleBand
                 console.log("connected");
                 
                 //Connect output to new module
-                module.module.chain(this.module, Tone.Master);
+                module.effects.push(this.module);
+                module.updateChain();
                 break;
             default:
                 break;
@@ -109,7 +110,8 @@ class FilterModuleHigh
                 console.log("connected");
                 
                 //Connect output to new module
-                module.module.chain(this.module, Tone.Master);
+                module.effects.push(this.module);
+                module.updateChain();
                 break;
             default:
                 break;
@@ -202,7 +204,9 @@ class FilterModuleLow
                 console.log("connected");
                 
                 //Connect output to new module
-                module.module.chain(this.module, Tone.Master);
+                module.effects.push(this.module);
+                module.updateChain();
+                //module.module.chain(this.module, Tone.Master);
                 break;
             default:
                 break;

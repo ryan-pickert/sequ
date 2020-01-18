@@ -42,7 +42,7 @@ class MasterModule
                       "<div class='name'>Master</div>"+
                       "<div class='section'>BPM</div>"+
                       "<div></div>"+
-                      "<div class='section'>Signal Out</div>"+
+                      
                       "</div";
 
         mod.innerHTML = layout;
@@ -55,12 +55,6 @@ class MasterModule
         this.labels.push(kLabel);
         this.labels[0].innerHTML = Tone.Transport.bpm.value;
 
-        this.inputs.push(document.createElement("div"));
-
-        this.inputs[0].innerHTML = "<div id='inner'></div><div id='label'>In</div>";
-        this.inputs[0].classList.add("input");
-        this.inputs[0].onclick = function(){Connect(mod, this, "signal")};
-        document.getElementById(modIndex).appendChild(this.inputs[0]);
         document.getElementById(modIndex).children[2].appendChild(this.controllers[0].element);
         document.getElementById(modIndex).children[2].appendChild(this.labels[0]);
     }

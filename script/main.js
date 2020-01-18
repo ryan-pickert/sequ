@@ -2,21 +2,25 @@
 const {app, BrowserWindow} = require('electron');
 var window;
 
-app.on('ready', CreateWindow);
-app.on('window-all-closed', () => {
-    if(process.platform !== "darwin"){
-        app.quit();
-    }
-});
 
-app.on('activate', () => {
-    if(window === null){
-        CreateWindow();
-    }
-});
+
+app.on('ready', CreateWindow);
+
 
 function CreateWindow()
 {
+    app.commandLine.appendSwitch('ignore-gpu-blacklist');
+    app.on('window-all-closed', () => {
+        if(process.platform !== "darwin"){
+            app.quit();
+        }
+    });
+    
+    app.on('activate', () => {
+        if(window === null){
+            CreateWindow();
+        }
+    });
     window = new BrowserWindow({
         width: 1280,
         height: 720,
@@ -77,6 +81,11 @@ function AddModule(type)
             break;
         case "synthpoly":
             var m = new SynthModulePoly();
+            m.setVolume(-16);
+            Modules.push(m);
+            break;
+        case "sampler":
+            var m = new SamplerModule();
             m.setVolume(-16);
             Modules.push(m);
             break;
@@ -145,11 +154,16 @@ function AddModule(type)
             var m = new MIDIModule();
             Modules.push(m);
             break;
+        case "midirec":
+            var m = new MIDIRecordModule();
+            Modules.push(m);
+            break;
         case "master":
             var m = new MasterModule();
             
             Modules.push(m);
             break;
+
     }
 }
 function GetRandom(min, max)

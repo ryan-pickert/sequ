@@ -23,9 +23,13 @@ class ClockModule
                 this.module = c;
                 function trigger(time)
                 {
-                    if(module.module.envelope == undefined){
+                    if(module.samplePitch != undefined){
+                        module.module.triggerAttackRelease(module.samplePitch, "8n", time);
+                    }
+                    else if(module.module.envelope == undefined){
                         module.module.triggerAttackRelease("8n", time);
-                    }else
+                    }
+                    else
                     {
                         if(module.module.oscillator != undefined){
                             module.module.triggerAttackRelease(module.module.oscillator.frequency.value, "8n", time);
@@ -33,7 +37,8 @@ class ClockModule
                         }else if(module.module.voices != undefined){
                             module.module.triggerAttackRelease(module.module.voices[0].frequency.value, "8n", time);
 
-                        }else{
+                        }
+                        else{
                             module.module.triggerAttackRelease("8n", time);
                         }
                     }
@@ -44,9 +49,9 @@ class ClockModule
                 var c = new Tone.Loop(step, this.triggerFreq).start("1m");
                 this.clocks.push(c);
                 this.module = c;
-                function step()
+                function step(time)
                 {
-                    module.stepSequence();
+                    module.stepSequence(time);
                 }
                 break;
             default:
