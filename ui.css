@@ -1,232 +1,160 @@
-#start
-{
-    background-color: #3e4b2d;
-    color: #dddddd;
-}
-body
+html, body
 {
     margin: 0px;
-    background-color: #888888;
-    background-image: url("pic/backgrid.png");
-    user-select: none;
-    font-family: 'Baumans', cursive;
-}
-.button
-{
-    width: fit-content;
-    padding: 3px;
-    opacity: 100%;
-    border: 1px solid black;
-    float: left;
-    margin: 2px;
-    background-color: #3e4b2d;
-    color: #daf73a;
-    position: relative;
-}
-.button:hover
-{
-    
-    border-color: #daf73a;
-    cursor: pointer;
-}
-
-.section
-{
-    display: block;
-    text-align: center;
-    font-size: 14px;
-    padding-bottom: 2px;
-    padding-top: 2px;
-    border-bottom: 1px inset #777777;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
-.name
-{
-    background-color: #eeeeee;
-    font-size: 16px;
-    margin-bottom: 3px;
-    padding: 3px;
-    text-align: center;
-    transition: background-color 0.3s;
-}
-.name:hover{
-    background-color: #cccccc;
-    transition: background-color 0.3s;
-}
-.box
-{
-    margin-bottom: 10px;
-    display: table;
-}
-
-.input #inner, .output #inner
-{
-    border: 3px solid #bbbbbb;
-    background-color: #222222;
-    border-radius: 10px;
-    width: 10px;
-    height: 10px;
-    top: 1px;
-    left: 1px;
-    position: relative;
-}
-.input #label, .output #label
-{
-    position: relative;
-    left: 20px;
-    top: -15px;
-    font-size: 14px;
-    width: 25px;
-}
-.input, .output
-{
-    border-radius: 10px;
-    border: 2px solid #bbbbbb;
-    width: 18px;
-    height: 18px;
-    margin-top: 3px;
-    margin-bottom: 3px;
-}
-
-.output:hover
-{
-    cursor: pointer;
-    border-color: black;
-}
-
-.light
-{
-    width: 8px;
-    height: 8px;
-    border: 1px solid black;
-    border-radius: 10px;
-    background-color: #3e4b2d;
-}
-#off.light
-{
-    background-color: #daf73a;
-}
-#on.light
-{
-    background-color: #3e4b2d;
-}
-
-.module
-{
-    float: left;
-    height: 264px;
-    margin-left: 0px;
-    border: 2px solid #444444;
-    border-radius: 2px;
-    background-color: #eeeeee;
-    min-width: 100px;
-    position: absolute;
-    padding: 5px;
-    box-shadow: 4px 4px 1px 0px #555555;
-}
-
-.knob
-{
-    width: 30px;
-    height: 30px;
-    
-    border: 3px solid #bbbbbb;
-    border-radius: 20px;
-    transform: rotate(0deg);
-    color: white;
-    text-align: center;
-    background-color: #434546;
-    display: inline-block;
-}
-
-#knobLabel
-{
-    margin: 2px;
-    width: 28px;
+    overflow: hidden;
+    background-color: #333333;
     font-family: 'VT323', monospace;
-    border: 1px solid black;
-    background-color: #3e4b2d;
-    color: #daf73a;
-    display: inline-block;
+    height: 100%;
+    user-select: none;
+    background-image: url(pic/backgrid.png);
 }
 
 #menu
 {
-    left: 10px;
-    bottom: 10px;
-    height: auto;
-    
-    color: #dddddd;
-    position: fixed;
-    
+    position: absolute;
     z-index: 2;
+    width: 100%;
+    bottom: 0px;
 }
-.menuButton
+.menu_button, .drop_button
 {
-    height: 40px;
-    width: 86px;
-    background-color: #eeeeee;
-    color: #333333;
-    border: 1px solid #333333;
-    border-radius: 4px;
-    margin-top: 2px;
-    text-align: center;
-    opacity: 80%;
-    line-height: 40px;
-    display: inline-block;
-    transition: width 0.1s;
-    box-shadow: 2px 2px 1px 0px #555555;
+    width: 120px;
+    padding: 5px;
+    height: 25px;
+    font-size: 18px;
+    border-bottom: 1px dashed #333333;
+    color: #dddddd;
+    line-height: 25px;
 }
-.menuButton:hover
+.menu_button{
+    cursor: pointer;
+}
+.menu_button:hover
 {
-    opacity: 100%;
-    width: 92px;
-    transition: width 0.1s;
-
+    background-color: #555555;
 }
-.dropButton{
-    background-color: #aaaaaa;
+.drop_button{
+    background-color: #333333;
+    border-left: 1px solid #666666;
+    border-right: 1px solid #666666;
+    border-top: 1px solid #666666;
 }
 
 .drop{
     position: relative;
     display: inline-block;
 }
-.dropContent{
+.drop_menu{
     position: absolute;
+    background-color: #444444;
     display: none;
-    bottom: 44px;
+    bottom: 36px;
+    border-left: 1px solid #666666;
+    border-right: 1px solid #666666;
+    border-top: 1px solid #666666;
     z-index: 1;
 }
-.drop:hover .dropContent
+.drop:hover .drop_menu
 {
     display: block;
 }
 
-
-path
+#grid
 {
-    stroke: #e2cf21;
-    stroke-width: 4;
-    fill: transparent;
-    pointer-events: stroke;
-    opacity: 65%;
-}
-path:hover
-{
-    stroke: #e2cf21;
-    cursor: pointer;
-    opacity: 100%;
-}
-
-#draw
-{
-    pointer-events: none;
     position: absolute;
-    z-index: 1;
-    
+    width: 100%;
+    height: 100%;
+}
+
+.window
+{
+    width: 150px;
+    border: 2px solid #666666;
+    background-color: #333333;
+    color: #dddddd;
+    padding: 3px;
+    position: absolute;
+    box-shadow: 5px 5px 1px 1px #111111;
+}
+.window_title
+{
+    text-align: center;
+    border-bottom: 1px solid #888888;
+    margin-bottom: 5px;
+    background-color: #444444;
+    height: 18px;
+}
+.parameter
+{
+    width: 100%;
+}
+.parameter_label
+{
+    font-size: 14px;
+    position: relative;
+    color: #dddddd;
+    width: 150px;
+    height: 15px;
+}
+.parameter_slider
+{
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 145px;
+    height: 10px;
+    border: 1px solid #aaaaaa;
+    background-color: #333333;
+    outline: none;
+}
+.parameter_slider::-webkit-slider-thumb
+{
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    background-color: #dddddd;
+    width: 25px;
+    height: 10px;
+    cursor: pointer;
+}
+.parameter_slider::hover
+{
+    background-color: #bbbbbb;
+}
+
+.parameter_input, .parameter_output
+{
+    position: absolute;
+    width: 22px;
+    height: 10px;
+    bottom: -10px;
+    text-align: center;
+    line-height: -15px;
+    font-size: 10px;
+    background-color: #333333;
+    border: 1px solid;
+    box-shadow: 2px 2px 1px 1px #111111;
+}
+.parameter_input
+{  
+    left: -25px;
+}
+.parameter_output
+{
+    right: -25px;
+}
+
+#lfo.parameter_input, #lfo.parameter_output
+{
+    border-color: #ccec16;
+    color: #ccec16;
+}
+#signal.parameter_input, #signal.parameter_output 
+{
+    border-color: #39ec16;
+    color: #39ec16;
+}
+
+#trigger.parameter_input, #trigger.parameter_output
+{
+    border-color: #16eca5;
+    color: #16eca5;
 }
