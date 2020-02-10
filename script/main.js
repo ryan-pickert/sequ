@@ -47,5 +47,5 @@ function Init()
 function test()
 {
     device = WebMidi.outputs[1];
-    device.playNote("");
+    device.playNote("c4");
 }
