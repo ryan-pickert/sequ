@@ -2,8 +2,6 @@
 const {app, BrowserWindow} = require('electron');
 var window;
 
-
-
 app.on('ready', CreateWindow);
 
 
@@ -33,33 +31,17 @@ function CreateWindow()
 }
 //-----------------------
 //GLOBAL VARS
-var Windows;
-
 
 function Init()
 {
-    Windows = [];
-
     //document.getElementById("play").innerHTML = "Stop";
     Tone.Transport.start();
 
     //Get MIDI access
     MIDIInit();
-    Windows.push(new BasicOscillator());
-    Windows.push(new LFO());
 }
 
-function Move(e,t)
+function test()
 {
-    //Move window
-    var mouseXOffset = e.clientX-t.parentElement.getBoundingClientRect().left;
-    var mouseYOffset = e.clientY-t.parentElement.getBoundingClientRect().top;
-
-    document.onmousemove = function(e){
-        t.parentElement.style.top = e.clientY-mouseYOffset + "px";
-        t.parentElement.style.left = e.clientX-mouseXOffset + "px";
-    };
-    document.onmouseup = function(e){
-        document.onmousemove = null;
-    };
+    sendNote(40);
 }

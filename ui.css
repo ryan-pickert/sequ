@@ -8,153 +8,38 @@ html, body
     user-select: none;
     background-image: url(pic/backgrid.png);
 }
-
-#menu
+#options
 {
-    position: absolute;
-    z-index: 2;
     width: 100%;
-    bottom: 0px;
+    height: 59%;
+    border: 2px solid white;
 }
-.menu_button, .drop_button
+#steps
 {
-    width: 120px;
-    padding: 5px;
-    height: 25px;
-    font-size: 18px;
-    border-bottom: 1px dashed #333333;
-    color: #dddddd;
-    line-height: 25px;
+    width: 1024px;
+    height: 255px;
+    margin: 0px auto;
 }
-.menu_button{
-    cursor: pointer;
-}
-.menu_button:hover
+.num
 {
-    background-color: #555555;
-}
-.drop_button{
-    background-color: #333333;
-    border-left: 1px solid #666666;
-    border-right: 1px solid #666666;
-    border-top: 1px solid #666666;
-}
-
-.drop{
     position: relative;
-    display: inline-block;
+    top: 110px;
+    left: 2px;
 }
-.drop_menu{
-    position: absolute;
-    background-color: #444444;
-    display: none;
-    bottom: 36px;
-    border-left: 1px solid #666666;
-    border-right: 1px solid #666666;
-    border-top: 1px solid #666666;
-    z-index: 1;
-}
-.drop:hover .drop_menu
+.step
 {
-    display: block;
-}
-
-#grid
-{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
-
-.window
-{
-    width: 150px;
-    border: 2px solid #666666;
-    background-color: #333333;
-    color: #dddddd;
-    padding: 3px;
-    position: absolute;
-    box-shadow: 5px 5px 1px 1px #111111;
-}
-.window_title
-{
-    text-align: center;
-    border-bottom: 1px solid #888888;
-    margin-bottom: 5px;
-    background-color: #444444;
-    height: 18px;
-}
-.parameter
-{
-    width: 100%;
-}
-.parameter_label
-{
-    font-size: 14px;
-    position: relative;
-    color: #dddddd;
-    width: 150px;
-    height: 15px;
-}
-.parameter_slider
-{
-    -webkit-appearance: none;  /* Override default CSS styles */
-    appearance: none;
-    width: 145px;
-    height: 10px;
+    float: left;
+    width: 11%;
+    height: 50%;
+    background-color: #666666;
+    margin-left: 12px;
+    margin-top: 10px;
     border: 1px solid #aaaaaa;
-    background-color: #333333;
-    outline: none;
+    border-bottom: 3px solid #aaaaaa;
+    color: #dddddd;
 }
-.parameter_slider::-webkit-slider-thumb
+.step:hover
 {
-    -webkit-appearance: none;  /* Override default CSS styles */
-    appearance: none;
-    background-color: #dddddd;
-    width: 25px;
-    height: 10px;
+    background-color: #888888;
     cursor: pointer;
-}
-.parameter_slider::hover
-{
-    background-color: #bbbbbb;
-}
-
-.parameter_input, .parameter_output
-{
-    position: absolute;
-    width: 22px;
-    height: 10px;
-    bottom: -10px;
-    text-align: center;
-    line-height: -15px;
-    font-size: 10px;
-    background-color: #333333;
-    border: 1px solid;
-    box-shadow: 2px 2px 1px 1px #111111;
-}
-.parameter_input
-{  
-    left: -25px;
-}
-.parameter_output
-{
-    right: -25px;
-}
-
-#lfo.parameter_input, #lfo.parameter_output
-{
-    border-color: #ccec16;
-    color: #ccec16;
-}
-#signal.parameter_input, #signal.parameter_output 
-{
-    border-color: #39ec16;
-    color: #39ec16;
-}
-
-#trigger.parameter_input, #trigger.parameter_output
-{
-    border-color: #16eca5;
-    color: #16eca5;
 }

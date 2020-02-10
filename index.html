@@ -8,58 +8,30 @@
 
     <!--Dependencies-->
     <script src="script/Tone.js"></script>
-    <script src="script/sequencer.js"></script>
-    <script src="script/effect.js"></script>
-    <script src="script/window.js"></script>
-    <script src="script/oscillator.js"></script>
     <script src="script/midi.js"></script>
     <script src="script/main.js"></script>
 </head>
 <body onload="Init()">
-    <div id="menu">
-        <div class="drop">
-            <div class="drop_button"><i class="fa fa-plus" style="font-size: 12px; margin-right: 5px;"></i>Oscillator</div>
-            <div class="drop_menu">
-                <div class="menu_button">LFO</div>
-                <div class="menu_button">FM Oscillator</div>
-                <div class="menu_button">FAT Oscillator</div>
-                <div class="menu_button">Basic Oscillator</div>
-            </div>
-        </div>
-        <div class="drop">
-            <div class="drop_button"><i class="fa fa-plus" style="font-size: 12px; margin-right: 5px;"></i>Envelope</div>
-            <div class="drop_menu">
-                <div class="menu_button">Amplitude</div>
-                <div class="menu_button">Frequency</div>
-            </div>
-        </div>
-        <div class="drop">
-            <div class="drop_button"><i class="fa fa-plus" style="font-size: 12px; margin-right: 5px;"></i>Filter</div>
-            <div class="drop_menu">
-                <div class="menu_button">Band Pass</div>
-                <div class="menu_button">Low Pass</div>
-                <div class="menu_button">High Pass</div>
-            </div>
-        </div>
-        <div class="drop">
-            <div class="drop_button"><i class="fa fa-plus" style="font-size: 12px; margin-right: 5px;"></i>Effect</div>
-            <div class="drop_menu">
-                <div class="menu_button">Reverb</div>
-                <div class="menu_button">Delay</div>
-                <div class="menu_button">Chorus</div>
-                <div class="menu_button">Distortion</div>
-            </div>
-        </div>
-        <div class="drop">
-            <div class="drop_button"><i class="fa fa-plus" style="font-size: 12px; margin-right: 5px;"></i>Sequencer</div>
-            <div class="drop_menu">
-                <div class="menu_button">16-Step</div>
-                <div class="menu_button">8-Step</div>
-                <div class="menu_button">4-Step</div>
-            </div>
-        </div>
+    <div id="options">
+
     </div>
-    <div id="grid">
+    <div id="steps">
+        <div class="step" id="1" onclick="test()"><div class="num">1</div></div>
+        <div class="step" id="2"><div class="num">2</div></div>
+        <div class="step" id="3"><div class="num">3</div></div>
+        <div class="step" id="4"><div class="num">4</div></div>
+        <div class="step" id="5"><div class="num">5</div></div>
+        <div class="step" id="6"><div class="num">6</div></div>
+        <div class="step" id="7"><div class="num">7</div></div>
+        <div class="step" id="8"><div class="num">8</div></div>
+        <div class="step" id="9"><div class="num">9</div></div>
+        <div class="step" id="10"><div class="num">10</div></div>
+        <div class="step" id="11"><div class="num">11</div></div>
+        <div class="step" id="12"><div class="num">12</div></div>
+        <div class="step" id="13"><div class="num">13</div></div>
+        <div class="step" id="14"><div class="num">14</div></div>
+        <div class="step" id="15"><div class="num">15</div></div>
+        <div class="step" id="16"><div class="num">16</div></div>
     </div>
+    
 </body>
-</html>
