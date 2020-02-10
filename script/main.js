@@ -4,7 +4,7 @@ var window;
 
 app.on('ready', CreateWindow);
 
-
+var device;
 function CreateWindow()
 {
     app.commandLine.appendSwitch('ignore-gpu-blacklist');
@@ -38,10 +38,14 @@ function Init()
     Tone.Transport.start();
 
     //Get MIDI access
-    MIDIInit();
+    WebMidi.enable(function (err) {
+        console.log(WebMidi.inputs);
+        console.log(WebMidi.outputs);
+    });
 }
 
 function test()
 {
-    sendNote(40);
+    device = WebMidi.outputs[1];
+    device.playNote("");
 }
