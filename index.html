@@ -14,25 +14,87 @@
 </head>
 <body onload="Init()">
     <div id="options">
-
+        <div class="section" style="width: 190px;">
+            <div class="title">TEMPO</div>
+            <div class="sliders">
+                <div class="slider">
+                    <div class="title">BPM [<span>120</span>]</div>
+                    <input type="range" min="80" max="132" oninput="UpdateRange(this, 'tempo')">
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="title">SCALE</div>
+            <div class="sliders">
+                <div class="slider">
+                    <div class="title">TYPE[<span>MAJOR</span>]</div>
+                    <input type="range" min="1" max="5" oninput="UpdateRange(this, 'scale')">
+                </div>
+                <div class="slider">
+                    <div class="title">ROOT[<span>C</span>]</div>
+                    <input type="range" min="1" max="12" oninput="UpdateRange(this, 'root')">
+                </div>
+                <div class="slider">
+                    <div class="title">OCTAVE[<span>1</span>]</div>
+                    <input type="range" min="0" max="7" oninput="UpdateRange(this, 'octave')">
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="title">SEQUENCE</div>
+            <div class="sliders">
+                <div class="slider">
+                    <div class="title">CLOCK[<span>1/4</span>]</div>
+                    <input type="range" min="1" max="5" oninput="UpdateRange(this, 'clock')">
+                </div>
+                <div class="slider">
+                    <div class="title">MAX NOTES[<span>8</span>]</div>
+                    <input type="range" min="1" max="16" oninput="UpdateRange(this, 'maxNotes')">
+                </div>
+                <div class="slider">
+                    <div class="title">OCTAVES[<span>1</span>]</div>
+                    <input type="range" min="1" max="3" oninput="UpdateRange(this, 'sequenceOctaves')">
+                </div>
+                <div class="button" onclick="CreateSequence()">GENERATE</div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="title">LAYER</div>
+            <div class="sliders">
+                <div class="slider">
+                    <div class="title">CURR LAYER[<span>1</span>]</div>
+                    <input type="range" min="1" max="4" oninput="UpdateRange(this, 'layer')">
+                </div>
+                <div class="slider">
+                    <div class="title">MIDI CHANNEL[<span>1</span>]</div>
+                    <input type="range" min="1" max="16" oninput="UpdateRange(this, 'channel')">
+                </div>
+                <div class="slider">
+                    <div class="title">DEVICE[<span>1</span>]</div>
+                    <input type="range" min="1" max="3" oninput="UpdateRange(this, 'device')">
+                </div>
+                <div class="button" onclick="Play()">PLAY</div>
+                <div class="button">STOP</div>
+            </div>
+        </div>
     </div>
     <div id="steps">
-        <div class="step" id="1" onclick="test()"><div class="num">1</div></div>
-        <div class="step" id="2"><div class="num">2</div></div>
-        <div class="step" id="3"><div class="num">3</div></div>
-        <div class="step" id="4"><div class="num">4</div></div>
-        <div class="step" id="5"><div class="num">5</div></div>
-        <div class="step" id="6"><div class="num">6</div></div>
-        <div class="step" id="7"><div class="num">7</div></div>
-        <div class="step" id="8"><div class="num">8</div></div>
-        <div class="step" id="9"><div class="num">9</div></div>
-        <div class="step" id="10"><div class="num">10</div></div>
-        <div class="step" id="11"><div class="num">11</div></div>
-        <div class="step" id="12"><div class="num">12</div></div>
-        <div class="step" id="13"><div class="num">13</div></div>
-        <div class="step" id="14"><div class="num">14</div></div>
-        <div class="step" id="15"><div class="num">15</div></div>
-        <div class="step" id="16"><div class="num">16</div></div>
+        <div class="step" id="1" onclick="Step(this)"><div class="note">..</div><div class="num">1</div></div>
+        <div class="step" id="2" onclick="Step(this)"><div class="note">..</div><div class="num">2</div></div>
+        <div class="step" id="3" onclick="Step(this)"><div class="note">..</div><div class="num">3</div></div>
+        <div class="step" id="4" onclick="Step(this)"><div class="note">..</div><div class="num">4</div></div>
+        <div class="step" id="5" onclick="Step(this)"><div class="note">..</div><div class="num">5</div></div>
+        <div class="step" id="6" onclick="Step(this)"><div class="note">..</div><div class="num">6</div></div>
+        <div class="step" id="7" onclick="Step(this)"><div class="note">..</div><div class="num">7</div></div>
+        <div class="step" id="8" onclick="Step(this)"><div class="note">..</div><div class="num">8</div></div>
+        <div class="step" id="9" onclick="Step(this)"><div class="note">..</div><div class="num">9</div></div>
+        <div class="step" id="10" onclick="Step(this)"><div class="note">..</div><div class="num">10</div></div>
+        <div class="step" id="11" onclick="Step(this)"><div class="note">..</div><div class="num">11</div></div>
+        <div class="step" id="12" onclick="Step(this)"><div class="note">..</div><div class="num">12</div></div>
+        <div class="step" id="13" onclick="Step(this)"><div class="note">..</div><div class="num">13</div></div>
+        <div class="step" id="14" onclick="Step(this)"><div class="note">..</div><div class="num">14</div></div>
+        <div class="step" id="15" onclick="Step(this)"><div class="note">..</div><div class="num">15</div></div>
+        <div class="step" id="16" onclick="Step(this)"><div class="note">..</div><div class="num">16</div></div>
     </div>
     
 </body>
