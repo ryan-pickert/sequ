@@ -42,7 +42,7 @@ var Layers;
 var LayerSteps;
 var CurrentLayer = 0;
 var ScaleRoot;
-
+var PerCycle;
 var MajorScale = [];
 var MinorScale = [];
 var MajorSeven = [];
@@ -71,6 +71,7 @@ function Init()
     MidiChannel = 1;
     SequenceOctaves = 1;
     ScaleRoot = 0;
+    PerCycle = false;
     StepTime = Tone.Time("4n");
     NoteTime = Tone.Time("4n").toSeconds()*1000;
 
@@ -78,8 +79,8 @@ function Init()
     MinorScale = ["C", "Eb", "G"];
     MajorSeven = ["C", "E", "G", "B"];
     MinorSeven = ["C", "Eb", "G", "Bb"];
-    Sus2 = ["C", "D", "E", "G"];
-    Sus4 = ["C", "E", "F", "G"];
+    Sus2 = ["C", "D", "G"];
+    Sus4 = ["C", "F", "G"];
 
     //Get MIDI access
     WebMidi.enable(function (err) {
@@ -90,11 +91,19 @@ function Init()
     });
 }
 
-function test()
+function SetCycle(button)
 {
-    device = WebMidi.outputs[1];
-    device.playNote("c4");
-    device.stopNote("c4");
+    if(PerCycle == false){
+        PerCycle = true;
+        button.style.backgroundColor = "#bbbbbb";
+        button.style.color = "#333333";
+        button.style.border = "2px solid #333333";
+    }else{
+        PerCycle = false;
+        button.style.backgroundColor = "#333333";
+        button.style.color = "#bbbbbb";
+        button.style.border = "";
+    }
 }
 
 function UpdateRange(slider, type)
@@ -292,21 +301,48 @@ function UpdateLayer()
         }
     }
 }
+function UpdateSteps(layer, nNotes)
+{
+    //Generate active steps
+    for(let i = 0; i < 16; i++){
+        LayerSteps[layer][i] = 0;
+    }
+    for(let i = 0; i < nNotes; i++){
+        var s = getRandom(0, 16);
+        LayerSteps[layer][s] = 1;
+    }
 
-function Play()
+    UpdateLayer();
+}
+function Play(l)
 {
     Tone.Transport.start();
     var step = 0;
-    var layer = CurrentLayer;
-    var sequence = Layers[CurrentLayer];
-    var steps = LayerSteps[CurrentLayer];
+    var layer = l;
+    var sequence = Layers[layer];
+    var steps = LayerSteps[layer];
     var layerChannel = MidiChannel;
+    var nTime = NoteTime;
+    var nNotes = NumNotes;
+    var cycle = PerCycle;
 
-    if(LayerLoops[CurrentLayer] != 1){
+    if(LayerLoops[layer] != 1){
         LayerLoops[CurrentLayer].dispose();
     }
-    LayerLoops[CurrentLayer] = new Tone.Loop(function(time){
+    LayerLoops[layer] = new Tone.Loop(function(time){
         if(step == 16){
+            if(cycle){
+                document.getElementById(step).style.border = "";
+                //Generate active steps
+                for(let i = 0; i < 16; i++){
+                    steps[layer][i] = 0;
+                }
+                for(let i = 0; i < NumNotes; i++){
+                    var s = getRandom(0, 16);
+                    steps[layer][s] = 1;
+                }
+                UpdateSteps(layer, nNotes);
+            }
             document.getElementById(step).style.border = "";
             step = 0;
         }
@@ -326,7 +362,7 @@ function Play()
             
         //Send midi
         if(steps[step] == 1)
-            SendNote(sequence[step], layerChannel);
+            SendNote(sequence[step], layerChannel, nTime);
 
         step++;
     }, StepTime).start(0);
@@ -366,9 +402,9 @@ function Step(s)
 }
 
 
-function SendNote(note, channel)
+function SendNote(note, channel, nTime)
 {
-    MidiDevice.playNote(note, channel, {duration: NoteTime});
+    MidiDevice.playNote(note, channel, {duration: nTime});
 }
 
 function getRandom(min, max) {

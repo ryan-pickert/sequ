@@ -84,9 +84,10 @@ html, body
     border: 2px solid #333333;
     border-radius: 5px;
     width: 190px;
-    height: 350px;
+    height: fit-content;
     margin: 5px;
     float: left;
+    padding-bottom: 5px;
 }
 .section .title
 {

@@ -60,6 +60,7 @@
                     <input type="range" min="1" max="4" value="3" oninput="UpdateRange(this, 'noteTime')">
                 </div>
                 <div class="button" onclick="CreateSequence()">GENERATE</div>
+                <div class="button" onclick="SetCycle(this)">CYCLE</div>
             </div>
         </div>
         <div class="section">
@@ -77,14 +78,14 @@
                     <div class="title">DEVICE[<span>1</span>]</div>
                     <input type="range" min="1" max="2" value="1" oninput="UpdateRange(this, 'device')">
                 </div>
-                <div class="button" onclick="Play()">PLAY</div>
+                <div class="button" onclick="Play(CurrentLayer)">PLAY</div>
                 <div class="button" onclick="Stop()">STOP</div>
             </div>
         </div>
         <div id="transport">
             
         </div>
-        <div id="version">Version 0.22b-pre-alpha</div>
+        <div id="version">Version 0.23-pre-alpha</div>
     </div>
     <div id="steps">
         <div class="step" id="1" onclick="Step(this)"><div class="note">..</div><div class="num">1</div></div>
