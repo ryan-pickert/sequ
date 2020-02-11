@@ -28,7 +28,7 @@
             <div class="sliders">
                 <div class="slider">
                     <div class="title">TYPE[<span>MAJOR</span>]</div>
-                    <input type="range" min="1" max="6" value="1" oninput="UpdateRange(this, 'scale')">
+                    <input type="range" min="1" max="7" value="1" oninput="UpdateRange(this, 'scale')">
                 </div>
                 <div class="slider">
                     <div class="title">ROOT[<span>C</span>]</div>
@@ -82,10 +82,39 @@
                 <div class="button" onclick="Stop()">STOP</div>
             </div>
         </div>
+        <div class="section">
+            <div class="title">CUSTOM SCALE</div>
+            <div class="sliders">
+                <div class="slider">
+                    <div class="title">NOTE 1[<span>C</span>]</div>
+                    <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'custom1')">
+                </div>
+                <div class="slider">
+                    <div class="title">NOTE 2[<span>C</span>]</div>
+                    <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'custom2')">
+                </div>
+                <div class="slider">
+                    <div class="title">NOTE 3[<span>C</span>]</div>
+                    <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'custom3')">
+                </div>
+                <div class="slider">
+                    <div class="title">NOTE 4[<span>C</span>]</div>
+                    <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'custom4')">
+                </div>
+                <div class="slider">
+                    <div class="title">NOTE 5[<span>C</span>]</div>
+                    <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'custom5')">
+                </div>
+                <div class="slider">
+                    <div class="title">NOTE 6[<span>C</span>]</div>
+                    <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'custom6')">
+                </div>
+            </div>
+        </div>
         <div id="transport">
             
         </div>
-        <div id="version">Version 0.23-pre-alpha</div>
+        <div id="version">Version 0.3-pre-alpha</div>
     </div>
     <div id="steps">
         <div class="step" id="1" onclick="Step(this)"><div class="note">..</div><div class="num">1</div></div>

@@ -49,6 +49,7 @@ var MajorSeven = [];
 var MinorSeven = [];
 var Sus2 = [];
 var Sus4 = [];
+var CustomScale = [];
 
 var NoteTime;
 
@@ -81,6 +82,7 @@ function Init()
     MinorSeven = ["C", "Eb", "G", "Bb"];
     Sus2 = ["C", "D", "G"];
     Sus4 = ["C", "F", "G"];
+    CustomScale = ["C", "C", "C", "C", "C", "C",];
 
     //Get MIDI access
     WebMidi.enable(function (err) {
@@ -179,6 +181,8 @@ function UpdateRange(slider, type)
                 value = "SUS2";
             }else if(slider.value == 6){
                 value = "SUS4";
+            }else if(slider.value == 7){
+                value = "CUSTOM";
             }
             ScaleType = slider.value;
             break;
@@ -209,6 +213,174 @@ function UpdateRange(slider, type)
                 value = "B";
             }
             ScaleRoot = slider.value-1;
+            break;
+        case "custom1":
+            if(slider.value == 1){
+                value = "C";
+            }else if(slider.value == 2){
+                value = "C#";
+            }else if(slider.value == 3){
+                value = "D";
+            }else if(slider.value == 4){
+                value = "D#";
+            }else if(slider.value == 5){
+                value = "E";
+            }else if(slider.value == 6){
+                value = "F";
+            }else if(slider.value == 7){
+                value = "F#";
+            }else if(slider.value == 8){
+                value = "G";
+            }else if(slider.value == 9){
+                value = "G#";
+            }else if(slider.value == 10){
+                value = "A";
+            }else if(slider.value == 11){
+                value = "A#";
+            }else if(slider.value == 12){
+                value = "B";
+            }
+            CustomScale[0] = value;
+            break;
+        case "custom2":
+            if(slider.value == 1){
+                value = "C";
+            }else if(slider.value == 2){
+                value = "C#";
+            }else if(slider.value == 3){
+                value = "D";
+            }else if(slider.value == 4){
+                value = "D#";
+            }else if(slider.value == 5){
+                value = "E";
+            }else if(slider.value == 6){
+                value = "F";
+            }else if(slider.value == 7){
+                value = "F#";
+            }else if(slider.value == 8){
+                value = "G";
+            }else if(slider.value == 9){
+                value = "G#";
+            }else if(slider.value == 10){
+                value = "A";
+            }else if(slider.value == 11){
+                value = "A#";
+            }else if(slider.value == 12){
+                value = "B";
+            }
+            CustomScale[1] = value;
+            break;
+        case "custom3":
+            if(slider.value == 1){
+                value = "C";
+            }else if(slider.value == 2){
+                value = "C#";
+            }else if(slider.value == 3){
+                value = "D";
+            }else if(slider.value == 4){
+                value = "D#";
+            }else if(slider.value == 5){
+                value = "E";
+            }else if(slider.value == 6){
+                value = "F";
+            }else if(slider.value == 7){
+                value = "F#";
+            }else if(slider.value == 8){
+                value = "G";
+            }else if(slider.value == 9){
+                value = "G#";
+            }else if(slider.value == 10){
+                value = "A";
+            }else if(slider.value == 11){
+                value = "A#";
+            }else if(slider.value == 12){
+                value = "B";
+            }
+            CustomScale[2] = value;
+            break;
+        case "custom4":
+            if(slider.value == 1){
+                value = "C";
+            }else if(slider.value == 2){
+                value = "C#";
+            }else if(slider.value == 3){
+                value = "D";
+            }else if(slider.value == 4){
+                value = "D#";
+            }else if(slider.value == 5){
+                value = "E";
+            }else if(slider.value == 6){
+                value = "F";
+            }else if(slider.value == 7){
+                value = "F#";
+            }else if(slider.value == 8){
+                value = "G";
+            }else if(slider.value == 9){
+                value = "G#";
+            }else if(slider.value == 10){
+                value = "A";
+            }else if(slider.value == 11){
+                value = "A#";
+            }else if(slider.value == 12){
+                value = "B";
+            }
+            CustomScale[3] = value;
+            break;
+        case "custom5":
+            if(slider.value == 1){
+                value = "C";
+            }else if(slider.value == 2){
+                value = "C#";
+            }else if(slider.value == 3){
+                value = "D";
+            }else if(slider.value == 4){
+                value = "D#";
+            }else if(slider.value == 5){
+                value = "E";
+            }else if(slider.value == 6){
+                value = "F";
+            }else if(slider.value == 7){
+                value = "F#";
+            }else if(slider.value == 8){
+                value = "G";
+            }else if(slider.value == 9){
+                value = "G#";
+            }else if(slider.value == 10){
+                value = "A";
+            }else if(slider.value == 11){
+                value = "A#";
+            }else if(slider.value == 12){
+                value = "B";
+            }
+            CustomScale[4] = value;
+            break;
+        case "custom6":
+            if(slider.value == 1){
+                value = "C";
+            }else if(slider.value == 2){
+                value = "C#";
+            }else if(slider.value == 3){
+                value = "D";
+            }else if(slider.value == 4){
+                value = "D#";
+            }else if(slider.value == 5){
+                value = "E";
+            }else if(slider.value == 6){
+                value = "F";
+            }else if(slider.value == 7){
+                value = "F#";
+            }else if(slider.value == 8){
+                value = "G";
+            }else if(slider.value == 9){
+                value = "G#";
+            }else if(slider.value == 10){
+                value = "A";
+            }else if(slider.value == 11){
+                value = "A#";
+            }else if(slider.value == 12){
+                value = "B";
+            }
+            CustomScale[5] = value;
             break;
         case "channel":
             value = slider.value;
@@ -257,6 +429,11 @@ function CreateSequence()
     }else if (ScaleType == 6){
         for(let i = 0; i < Sus4.length; i++){
             var n = Tone.Frequency(Sus4[i] + (Number(Octave) + Number(getRandom(0, SequenceOctaves)))).transpose(ScaleRoot).toNote();
+            pool.push(n);
+        }
+    }else if (ScaleType == 7){
+        for(let i = 0; i < CustomScale.length; i++){
+            var n = Tone.Frequency(CustomScale[i] + (Number(Octave) + Number(getRandom(0, SequenceOctaves)))).transpose(ScaleRoot).toNote();
             pool.push(n);
         }
     }
@@ -352,13 +529,13 @@ function Play(l)
         }
 
         if(layer == 0)
-            document.getElementById(step+1).style.borderBottom = "12px solid #5BA6C6";
+            document.getElementById(step+1).style.borderTop = "6px solid #0092D1";
         else if(layer == 1)
-            document.getElementById(step+1).style.borderBottom = "12px solid #FDE74C";
+            document.getElementById(step+1).style.borderTop = "6px solid #FDE74C";
         else if(layer == 2)
-            document.getElementById(step+1).style.borderBottom = "12px solid #84C049";
+            document.getElementById(step+1).style.borderTop = "6px solid #84C049";
         else if(layer == 3)
-            document.getElementById(step+1).style.borderBottom = "12px solid #F3722D";
+            document.getElementById(step+1).style.borderTop = "6px solid #F3722D";
             
         //Send midi
         if(steps[step] == 1)
