@@ -19,7 +19,7 @@
             <div class="sliders">
                 <div class="slider">
                     <div class="title">BPM [<span>120</span>]</div>
-                    <input type="range" min="80" max="132" oninput="UpdateRange(this, 'tempo')">
+                    <input type="range" min="80" max="132" value="120" oninput="UpdateRange(this, 'tempo')">
                 </div>
             </div>
         </div>
@@ -28,15 +28,15 @@
             <div class="sliders">
                 <div class="slider">
                     <div class="title">TYPE[<span>MAJOR</span>]</div>
-                    <input type="range" min="1" max="5" oninput="UpdateRange(this, 'scale')">
+                    <input type="range" min="1" max="6" value="1" oninput="UpdateRange(this, 'scale')">
                 </div>
                 <div class="slider">
                     <div class="title">ROOT[<span>C</span>]</div>
-                    <input type="range" min="1" max="12" oninput="UpdateRange(this, 'root')">
+                    <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'root')">
                 </div>
                 <div class="slider">
-                    <div class="title">OCTAVE[<span>1</span>]</div>
-                    <input type="range" min="0" max="7" oninput="UpdateRange(this, 'octave')">
+                    <div class="title">OCTAVE[<span>4</span>]</div>
+                    <input type="range" min="0" max="7" value="4" oninput="UpdateRange(this, 'octave')">
                 </div>
             </div>
         </div>
@@ -45,15 +45,15 @@
             <div class="sliders">
                 <div class="slider">
                     <div class="title">CLOCK[<span>1/4</span>]</div>
-                    <input type="range" min="1" max="5" oninput="UpdateRange(this, 'clock')">
+                    <input type="range" min="1" max="5" value="3" oninput="UpdateRange(this, 'clock')">
                 </div>
                 <div class="slider">
                     <div class="title">MAX NOTES[<span>8</span>]</div>
-                    <input type="range" min="1" max="16" oninput="UpdateRange(this, 'maxNotes')">
+                    <input type="range" min="1" max="16" value="8" oninput="UpdateRange(this, 'maxNotes')">
                 </div>
                 <div class="slider">
                     <div class="title">OCTAVES[<span>1</span>]</div>
-                    <input type="range" min="1" max="3" oninput="UpdateRange(this, 'sequenceOctaves')">
+                    <input type="range" min="1" max="3" value="1" oninput="UpdateRange(this, 'sequenceOctaves')">
                 </div>
                 <div class="button" onclick="CreateSequence()">GENERATE</div>
             </div>
@@ -63,22 +63,24 @@
             <div class="sliders">
                 <div class="slider">
                     <div class="title">CURR LAYER[<span>1</span>]</div>
-                    <input type="range" min="1" max="4" oninput="UpdateRange(this, 'layer')">
+                    <input type="range" min="1" max="4" value="1" oninput="UpdateRange(this, 'layer')">
                 </div>
                 <div class="slider">
                     <div class="title">MIDI CHANNEL[<span>1</span>]</div>
-                    <input type="range" min="1" max="16" oninput="UpdateRange(this, 'channel')">
+                    <input type="range" min="1" max="16" value="1" oninput="UpdateRange(this, 'channel')">
                 </div>
                 <div class="slider">
                     <div class="title">DEVICE[<span>1</span>]</div>
-                    <input type="range" min="1" max="3" oninput="UpdateRange(this, 'device')">
+                    <input type="range" min="1" max="2" value="1" oninput="UpdateRange(this, 'device')">
                 </div>
                 <div class="button" onclick="Play()">PLAY</div>
-                <div class="button">STOP</div>
+                <div class="button" onclick="Stop()">STOP</div>
             </div>
         </div>
-
-        <div id="version">Version 0.11-pre-alpha</div>
+        <div id="transport">
+            
+        </div>
+        <div id="version">Version 0.22-pre-alpha</div>
     </div>
     <div id="steps">
         <div class="step" id="1" onclick="Step(this)"><div class="note">..</div><div class="num">1</div></div>

@@ -32,11 +32,12 @@ function CreateWindow()
 //-----------------------
 //GLOBAL VARS
 var MidiDevice;
-var NumNotes = 8;
-var ScaleType = 1;
-var StepTime = Tone.Time("8n");
-var Octave = 4;
-var SequenceOctaves = 1;
+var MidiChannel;
+var NumNotes;
+var ScaleType;
+var StepTime;
+var Octave;
+var SequenceOctaves;
 var Layers;
 var LayerSteps;
 var CurrentLayer = 0;
@@ -44,6 +45,10 @@ var ScaleRoot;
 
 var MajorScale = [];
 var MinorScale = [];
+var MajorSeven = [];
+var MinorSeven = [];
+var Sus2 = [];
+var Sus4 = [];
 
 var LayerLoops;
 
@@ -56,12 +61,22 @@ function Init()
         LayerSteps[i] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         LayerLoops.push(1);
     }
+
+    ScaleType = 1;
+    NumNotes = 8;
     CurrentLayer = 0;
     Octave = 4;
+    MidiChannel = 1;
+    SequenceOctaves = 1;
+    ScaleRoot = 0;
+    StepTime = Tone.Time("4n");
+
     MajorScale = ["C", "E", "G"];
     MinorScale = ["C", "Eb", "G"];
-    //document.getElementById("play").innerHTML = "Stop";
-    
+    MajorSeven = ["C", "E", "G", "B"];
+    MinorSeven = ["C", "Eb", "G", "Bb"];
+    Sus2 = ["C", "D", "E", "G"];
+    Sus4 = ["C", "E", "F", "G"];
 
     //Get MIDI access
     WebMidi.enable(function (err) {
@@ -70,8 +85,6 @@ function Init()
 
         MidiDevice = WebMidi.outputs[1];
     });
-
-    
 }
 
 function test()
@@ -109,6 +122,14 @@ function UpdateRange(slider, type)
             value = slider.value;
             NumNotes = value;
             break;
+        case "octave":
+            value = slider.value;
+            Octave = value;
+            break;
+        case "sequenceOctaves":
+            value = slider.value;
+            SequenceOctaves = value;
+            break;
         case "layer":
             value = slider.value;
             CurrentLayer = value-1;
@@ -128,6 +149,8 @@ function UpdateRange(slider, type)
             }else if(slider.value == 4){
                 value = "MINOR7";
             }else if(slider.value == 5){
+                value = "SUS2";
+            }else if(slider.value == 6){
                 value = "SUS4";
             }
             ScaleType = slider.value;
@@ -160,6 +183,10 @@ function UpdateRange(slider, type)
             }
             ScaleRoot = slider.value-1;
             break;
+        case "channel":
+            value = slider.value;
+            MidiChannel = value;
+            break;
         default:
             value = slider.value;
             break;
@@ -177,16 +204,36 @@ function CreateSequence()
     //Get notes from scales
     if (ScaleType == 1){
         for(let i = 0; i < MajorScale.length; i++){
-            var n = Tone.Frequency(MajorScale[i] + Octave).transpose(ScaleRoot).toNote();
+            var n = Tone.Frequency(MajorScale[i] + (Number(Octave) + Number(getRandom(0, SequenceOctaves)))).transpose(ScaleRoot).toNote();
             pool.push(n);
-            
         }
     }else if (ScaleType == 2){
         for(let i = 0; i < MinorScale.length; i++){
-            var n = Tone.Frequency(MinorScale[i] + Octave).transpose(ScaleRoot).toNote();
+            var n = Tone.Frequency(MinorScale[i] + (Number(Octave) + Number(getRandom(0, SequenceOctaves)))).transpose(ScaleRoot).toNote();
+            pool.push(n);
+        }
+    }else if (ScaleType == 3){
+        for(let i = 0; i < MajorSeven.length; i++){
+            var n = Tone.Frequency(MajorSeven[i] + (Number(Octave) + Number(getRandom(0, SequenceOctaves)))).transpose(ScaleRoot).toNote();
+            pool.push(n);
+        }
+    }else if (ScaleType == 4){
+        for(let i = 0; i < MinorSeven.length; i++){
+            var n = Tone.Frequency(MinorSeven[i] + (Number(Octave) + Number(getRandom(0, SequenceOctaves)))).transpose(ScaleRoot).toNote();
+            pool.push(n);
+        }
+    }else if (ScaleType == 5){
+        for(let i = 0; i < Sus2.length; i++){
+            var n = Tone.Frequency(Sus2[i] + (Number(Octave) + Number(getRandom(0, SequenceOctaves)))).transpose(ScaleRoot).toNote();
+            pool.push(n);
+        }
+    }else if (ScaleType == 6){
+        for(let i = 0; i < Sus4.length; i++){
+            var n = Tone.Frequency(Sus4[i] + (Number(Octave) + Number(getRandom(0, SequenceOctaves)))).transpose(ScaleRoot).toNote();
             pool.push(n);
         }
     }
+    
 
     //Generate sequence
     for(var i = 0; i < 16; i++){
@@ -200,9 +247,7 @@ function CreateSequence()
     }
     for(let i = 0; i < NumNotes; i++){
         var s = getRandom(0, 16);
-        console.log(LayerSteps[CurrentLayer][s]);
         LayerSteps[CurrentLayer][s] = 1;
-
     }
 
     Layers[CurrentLayer] = sequence;
@@ -212,14 +257,20 @@ function CreateSequence()
 function UpdateLayer()
 {
     for(let i = 0; i < Layers[CurrentLayer].length; i++){
-        console.log(Layers[CurrentLayer][i] + ", " + LayerSteps[CurrentLayer][i]);
         document.getElementById(i+1).children[0].innerHTML = Layers[CurrentLayer][i];
     }
     for(let i = 0; i < LayerSteps[CurrentLayer].length; i++){
         if(LayerSteps[CurrentLayer][i] == 1){
-            document.getElementById(i+1).classList.add("active");
+            if(CurrentLayer == 0)
+                document.getElementById(i+1).style.backgroundColor = "#4B9EC1";
+            else if(CurrentLayer == 1)
+                document.getElementById(i+1).style.backgroundColor = "#B9A938";
+            else if(CurrentLayer == 2)
+                document.getElementById(i+1).style.backgroundColor = "#69B221";
+            else if(CurrentLayer == 3)
+                document.getElementById(i+1).style.backgroundColor = "#DC5B17";
         }else{
-            document.getElementById(i+1).classList.remove("active");
+            document.getElementById(i+1).style.backgroundColor = "";
         }
     }
 }
@@ -231,6 +282,7 @@ function Play()
     var layer = CurrentLayer;
     var sequence = Layers[CurrentLayer];
     var steps = LayerSteps[CurrentLayer];
+    var layerChannel = MidiChannel;
 
     if(LayerLoops[CurrentLayer] != 1){
         LayerLoops[CurrentLayer].dispose();
@@ -246,21 +298,59 @@ function Play()
         }
 
         if(layer == 0)
-            document.getElementById(step+1).style.border = "2px solid #5BC0EB";
+            document.getElementById(step+1).style.borderBottom = "12px solid #5BA6C6";
         else if(layer == 1)
-            document.getElementById(step+1).style.border = "2px solid #FDE74C";
+            document.getElementById(step+1).style.borderBottom = "12px solid #FDE74C";
+        else if(layer == 2)
+            document.getElementById(step+1).style.borderBottom = "12px solid #84C049";
+        else if(layer == 3)
+            document.getElementById(step+1).style.borderBottom = "12px solid #F3722D";
             
         //Send midi
         if(steps[step] == 1)
-            SendNote(sequence[step]);
+            SendNote(sequence[step], layerChannel);
 
         step++;
     }, StepTime).start(0);
 }
 
-function SendNote(note)
+function Stop()
 {
-    MidiDevice.playNote(note).stopNote(note, {time: 50});
+    LayerLoops[CurrentLayer].dispose();
+    LayerLoops[CurrentLayer] = 1;
+
+    for(let i = 0; i < 16; i++)
+        document.getElementById(i+1).style.border = "";
+}
+
+function Step(s)
+{
+    var index = Number(s.id) - 1;
+    
+    if(LayerSteps[CurrentLayer][index] == 1){
+        LayerSteps[CurrentLayer][index] = 0;
+    }else{
+        LayerSteps[CurrentLayer][index] = 1;
+    }
+
+    if(LayerSteps[CurrentLayer][index] == 1){
+        if(CurrentLayer == 0)
+            document.getElementById(index+1).style.backgroundColor = "#4B9EC1";
+        else if(CurrentLayer == 1)
+            document.getElementById(index+1).style.backgroundColor = "#B9A938";
+        else if(CurrentLayer == 2)
+            document.getElementById(index+1).style.backgroundColor = "#69B221";
+        else if(CurrentLayer == 3)
+            document.getElementById(index+1).style.backgroundColor = "#DC5B17";
+    }else{
+        document.getElementById(index+1).style.backgroundColor = "";
+    }
+}
+
+
+function SendNote(note, channel)
+{
+    MidiDevice.playNote(note, channel).stopNote(note, channel, {time: 50});
 }
 
 function getRandom(min, max) {
