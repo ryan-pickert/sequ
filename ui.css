@@ -53,7 +53,13 @@ html, body
     cursor: pointer;
 }
 
-
+#version
+{
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    color: #bbbbbb;
+}
 .optionColumn{
     font-size: 40px;
     width: fit-content;
