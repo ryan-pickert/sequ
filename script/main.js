@@ -260,8 +260,7 @@ function Play()
 
 function SendNote(note)
 {
-    MidiDevice.playNote(note);
-    MidiDevice.stopNote(note);
+    MidiDevice.playNote(note).stopNote(note, {time: 50});
 }
 
 function getRandom(min, max) {
