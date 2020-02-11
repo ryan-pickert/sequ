@@ -50,6 +50,8 @@ var MinorSeven = [];
 var Sus2 = [];
 var Sus4 = [];
 
+var NoteTime;
+
 var LayerLoops;
 
 function Init()
@@ -70,6 +72,7 @@ function Init()
     SequenceOctaves = 1;
     ScaleRoot = 0;
     StepTime = Tone.Time("4n");
+    NoteTime = 250;
 
     MajorScale = ["C", "E", "G"];
     MinorScale = ["C", "Eb", "G"];
@@ -350,7 +353,7 @@ function Step(s)
 
 function SendNote(note, channel)
 {
-    MidiDevice.playNote(note, channel).stopNote(note, channel, {time: 50});
+    MidiDevice.playNote(note, channel).stopNote(note, channel, {time: NoteTime});
 }
 
 function getRandom(min, max) {
