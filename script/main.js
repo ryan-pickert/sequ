@@ -72,7 +72,7 @@ function Init()
     SequenceOctaves = 1;
     ScaleRoot = 0;
     StepTime = Tone.Time("4n");
-    NoteTime = 250;
+    NoteTime = Tone.Time("4n").toSeconds()*1000;
 
     MajorScale = ["C", "E", "G"];
     MinorScale = ["C", "Eb", "G"];
@@ -119,6 +119,21 @@ function UpdateRange(slider, type)
             }else if(slider.value == 5){
                 value = "1/16";
                 StepTime = "16n";
+            }
+            break;
+        case "noteTime":
+            if(slider.value == 1){
+                value = "1 bar";
+                NoteTime = Tone.Time("1m").toSeconds()*1000;
+            }else if(slider.value == 2){
+                value = "1/2";
+                NoteTime = Tone.Time("2n").toSeconds()*1000;
+            }else if(slider.value == 3){
+                value = "1/4";
+                NoteTime = Tone.Time("4n").toSeconds()*1000;
+            }else if(slider.value == 4){
+                value = "1/8";
+                NoteTime = Tone.Time("8n").toSeconds()*1000;
             }
             break;
         case "maxNotes":
@@ -353,7 +368,7 @@ function Step(s)
 
 function SendNote(note, channel)
 {
-    MidiDevice.playNote(note, channel).stopNote(note, channel, {time: NoteTime});
+    MidiDevice.playNote(note, channel, {duration: NoteTime});
 }
 
 function getRandom(min, max) {
