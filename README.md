@@ -1,9 +1,18 @@
 <h1 align="center">SEQU</h1>
-<h4 align="center">Current Version: <a href="https://ryan-pickert.github.io/sequ/">[0.1.0-pre-alpha]</a></h4>
+<h4 align="center">Current Version: <a href="https://ryan-pickert.github.io/sequ/">[0.4.1-pre-alpha]</a></h4>
 
-SEQU is a modular synth designer and sequencing program built on <a href="https://tonejs.github.io/">Tone.js</a>.
+SEQU multi-track step sequencer with a focus on randomization.
+SEQU uses <a href="https://tonejs.github.io/">Tone.js</a> as a clock source and <a href="https://github.com/djipco/webmidi">WebMidi.js</a> to send midi data.
 
-**Undergoing heavy refactoring so the app is currently broken.**
+<img src="pic/screen1.png">
+<img src="pic/screen2.png">
+
+**Features**
+* Generate random squences using a set scale
+* Generate a new sequence every cycle
+* Activate/deactivate steps to your liking
+* Up to four tracks playing simultaniously
+* Send tracks to different devices or midi channels
 
 I am constantly working on SEQU in my spare time as a passion project.
-This project is in very early development so there are a lot of bugs and missing features!
+This project is in very early development so there are some bugs and missing features!
