@@ -9,7 +9,6 @@
     <!--Dependencies-->
     <script src="script/Tone.js"></script>
     <script src="script/webmidi.min.js"></script>
-    <script src="script/midi.js"></script>
     <script src="script/main.js"></script>
 </head>
 <body onload="Init()">
@@ -64,10 +63,10 @@
             </div>
         </div>
         <div class="section">
-            <div class="title">LAYER</div>
+            <div class="title">TRACK</div>
             <div class="sliders">
                 <div class="slider">
-                    <div class="title">CURR LAYER[<span>1</span>]</div>
+                    <div class="title">CUR TRACK[<span>1</span>]</div>
                     <input type="range" min="1" max="4" value="1" oninput="UpdateRange(this, 'layer')">
                 </div>
                 <div class="slider">
@@ -76,7 +75,7 @@
                 </div>
                 <div class="slider">
                     <div class="title">DEVICE[<span>1</span>]</div>
-                    <input type="range" min="1" max="2" value="1" oninput="UpdateRange(this, 'device')">
+                    <input id="midiDeviceSelect" type="range" min="1" max="2" value="1" oninput="UpdateRange(this, 'device')">
                 </div>
                 <div class="button" onclick="Play(CurrentLayer)">PLAY</div>
                 <div class="button" onclick="Stop()">STOP</div>
@@ -111,10 +110,7 @@
                 </div>
             </div>
         </div>
-        <div id="transport">
-            
-        </div>
-        <div id="version">Version 0.3-pre-alpha</div>
+        <div id="version">Version 0.4.1-pre-alpha</div>
     </div>
     <div id="steps">
         <div class="step" id="1" onclick="Step(this)"><div class="note">..</div><div class="num">1</div></div>

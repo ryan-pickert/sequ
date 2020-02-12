@@ -31,7 +31,8 @@ function CreateWindow()
 }
 //-----------------------
 //GLOBAL VARS
-var MidiDevice;
+var MidiDevices = [];
+var CurrentDevice;
 var MidiChannel;
 var NumNotes;
 var ScaleType;
@@ -57,6 +58,7 @@ var LayerLoops;
 
 function Init()
 {
+    //Initialize defaults
     Layers = [0, 0, 0, 0];
     LayerSteps = [0,0,0,0];
     LayerLoops = [];
@@ -84,17 +86,29 @@ function Init()
     Sus4 = ["C", "F", "G"];
     CustomScale = ["C", "C", "C", "C", "C", "C",];
 
+    MidiDevices = [];
+
     //Get MIDI access
     WebMidi.enable(function (err) {
         console.log(WebMidi.inputs);
         console.log(WebMidi.outputs);
 
-        MidiDevice = WebMidi.outputs[1];
+        for(let i = 0; i < WebMidi.outputs.length; i++)
+            MidiDevices.push(WebMidi.outputs[i]);
+
+        //Default to the last midi device
+        //The first is usually the computer's thru port
+        CurrentDevice = WebMidi.outputs.length-1;
+        document.getElementById("midiDeviceSelect").max = WebMidi.outputs.length;
+        document.getElementById("midiDeviceSelect").value = WebMidi.outputs.length;
+        UpdateRange(document.getElementById("midiDeviceSelect"), "device");
     });
 }
 
 function SetCycle(button)
 {
+    //Determines if a new set of active steps should be generated
+    //every time the sequence ends
     if(PerCycle == false){
         PerCycle = true;
         button.style.backgroundColor = "#bbbbbb";
@@ -110,6 +124,7 @@ function SetCycle(button)
 
 function UpdateRange(slider, type)
 {
+    //Set parameters based on the sliders
     var value = 0;
 
     switch(type)
@@ -386,6 +401,10 @@ function UpdateRange(slider, type)
             value = slider.value;
             MidiChannel = value;
             break;
+        case "device":
+            value = slider.value;
+            CurrentDevice = value-1;
+            break;
         default:
             value = slider.value;
             break;
@@ -460,10 +479,12 @@ function CreateSequence()
 
 function UpdateLayer()
 {
+    //Update the steps on screen
     for(let i = 0; i < Layers[CurrentLayer].length; i++){
         document.getElementById(i+1).children[0].innerHTML = Layers[CurrentLayer][i];
     }
     for(let i = 0; i < LayerSteps[CurrentLayer].length; i++){
+        document.getElementById(i+1).style.border = "";
         if(LayerSteps[CurrentLayer][i] == 1){
             if(CurrentLayer == 0)
                 document.getElementById(i+1).style.backgroundColor = "#4B9EC1";
@@ -491,9 +512,20 @@ function UpdateSteps(layer, nNotes)
 
     UpdateLayer();
 }
+function GetCurrentLayer()
+{
+    //Return the current layer
+    //Used to show the progress of the current sequence only
+    return CurrentLayer;
+}
 function Play(l)
 {
-    Tone.Transport.start();
+    //Start the transport if not started already
+    if(Tone.Transport.state != "started")
+        Tone.Transport.start();
+
+    //Grab parameters that were set
+    //These are exclusive to the loop
     var step = 0;
     var layer = l;
     var sequence = Layers[layer];
@@ -502,12 +534,17 @@ function Play(l)
     var nTime = NoteTime;
     var nNotes = NumNotes;
     var cycle = PerCycle;
+    var device = CurrentDevice;
 
+    //If there is already a loop present, get rid of it
     if(LayerLoops[layer] != 1){
         LayerLoops[CurrentLayer].dispose();
     }
+
+    //Start a new loop
     LayerLoops[layer] = new Tone.Loop(function(time){
         if(step == 16){
+            //Activate random steps
             if(cycle){
                 document.getElementById(step).style.border = "";
                 //Generate active steps
@@ -520,26 +557,22 @@ function Play(l)
                 }
                 UpdateSteps(layer, nNotes);
             }
+
             document.getElementById(step).style.border = "";
             step = 0;
         }
 
-        if(document.getElementById(step) != undefined){
-            document.getElementById(step).style.border = "";
-        }
-
-        if(layer == 0)
+        //Change the border for the current step
+        if(layer == GetCurrentLayer()){
+            if(document.getElementById(step) != undefined){
+                document.getElementById(step).style.borderTop = "";
+            }
             document.getElementById(step+1).style.borderTop = "6px solid #0092D1";
-        else if(layer == 1)
-            document.getElementById(step+1).style.borderTop = "6px solid #FDE74C";
-        else if(layer == 2)
-            document.getElementById(step+1).style.borderTop = "6px solid #84C049";
-        else if(layer == 3)
-            document.getElementById(step+1).style.borderTop = "6px solid #F3722D";
+        }
             
         //Send midi
         if(steps[step] == 1)
-            SendNote(sequence[step], layerChannel, nTime);
+            SendNote(sequence[step], layerChannel, nTime, MidiDevices[device]);
 
         step++;
     }, StepTime).start(0);
@@ -547,6 +580,7 @@ function Play(l)
 
 function Stop()
 {
+    //Stop current sequence
     LayerLoops[CurrentLayer].dispose();
     LayerLoops[CurrentLayer] = 1;
 
@@ -556,6 +590,7 @@ function Stop()
 
 function Step(s)
 {
+    //Activate or deactivate a step when clicked on
     var index = Number(s.id) - 1;
     
     if(LayerSteps[CurrentLayer][index] == 1){
@@ -579,9 +614,9 @@ function Step(s)
 }
 
 
-function SendNote(note, channel, nTime)
+function SendNote(note, channel, nTime, device)
 {
-    MidiDevice.playNote(note, channel, {duration: nTime});
+    device.playNote(note, channel, {duration: nTime});
 }
 
 function getRandom(min, max) {
