@@ -17,8 +17,9 @@ SEQU uses <a href="https://tonejs.github.io/">Tone.js</a> as a clock source and 
 **Quick Start Guide**
 
 Connect your midi devices (if they aren't already) and restart the page.
-The 'devices' slider will default to the last midi device. If the slider is on '1', then no devices were detected.
-Device '1' is usually the computer's thru port. All devices after '1' are your external devices.
+The 'device' slider will default to the last midi device. 
+>If the slider is on '1', then no devices were detected.
+>Device '1' is usually the computer's thru port. All devices after '1' are your external devices.
 
 To generate a sequence:
 1. Set the parameters to your liking and hit the 'generate' button.
