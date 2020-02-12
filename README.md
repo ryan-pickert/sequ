@@ -15,6 +15,7 @@ SEQU uses <a href="https://tonejs.github.io/">Tone.js</a> as a clock source and 
 * Send tracks to different devices or midi channels
 
 **Quick Start Guide**
+
 To generate a sequence:
 1. Set the parameters to your liking and hit the generate button.
 2. Choose the desired device and midi channel
