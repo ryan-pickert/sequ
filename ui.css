@@ -3,7 +3,7 @@ html, body
     margin: 0px;
     overflow: hidden;
     background-color: #333333;
-    font-family: 'VT323', monospace;
+    font-family: 'Baumans', monospace;
     height: 100%;
     user-select: none;
     
@@ -60,6 +60,7 @@ html, body
     bottom: 5px;
     left: 10px;
     color: #bbbbbb;
+    font-size: 12px;
 }
 .optionColumn{
     font-size: 40px;
@@ -92,7 +93,7 @@ html, body
 }
 .section .title
 {
-    font-size: 28px;
+    font-size: 22px;
     background-color: #333333;
     color: #bbbbbb;
     text-align: center;
@@ -148,7 +149,7 @@ html, body
       color: #bbbbbb;
       border-radius: 5px;
       width: 100px;
-      font-size: 30px;
+      font-size: 20px;
       height: 35px;
       line-height: 35px;
       margin: 0px auto;
