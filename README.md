@@ -1,5 +1,5 @@
 <h1 align="center">SEQU</h1>
-<h4 align="center">Current Version: <a href="https://ryan-pickert.github.io/sequ/">[0.4.1-pre-alpha]</a></h4>
+<h4 align="center">Current Version: <a href="https://ryan-pickert.github.io/sequ/">[0.4.2-pre-alpha]</a></h4>
 
 Sequ is a multi-track step sequencer with a focus on randomization.
 
@@ -18,9 +18,9 @@ Sequ uses <a href="https://tonejs.github.io/">Tone.js</a> as a clock source and 
 **Quick Start Guide**
 
 Connect your MIDI devices (if they aren't already) and restart the page.
-The 'device' slider will default to the last MIDI device. 
->If the slider is on '1', then no devices were detected.
->Device '1' is usually the computer's thru port. All devices after '1' are your external devices.
+All availiable devices will be listed under 'DEVICES' on the left.
+>The 'device' slider will default to the last MIDI device. 
+
 
 To generate a sequence:
 1. Set the parameters to your liking and hit the 'generate' button.

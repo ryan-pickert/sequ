@@ -58,6 +58,8 @@ var LayerLoops;
 
 function Init()
 {
+    if(window.innerWidth < 1025)
+        document.getElementById("wrapper").style.zoom = "0.94";
     //Initialize defaults
     Layers = [0, 0, 0, 0];
     LayerSteps = [0,0,0,0];
@@ -93,8 +95,10 @@ function Init()
         console.log(WebMidi.inputs);
         console.log(WebMidi.outputs);
 
-        for(let i = 0; i < WebMidi.outputs.length; i++)
+        for(let i = 0; i < WebMidi.outputs.length; i++){
             MidiDevices.push(WebMidi.outputs[i]);
+            document.getElementById("deviceList").innerHTML += "["+(i+1)+"] " + MidiDevices[i].name + "<br>";
+        }
 
         //Default to the last midi device
         //The first is usually the computer's thru port
@@ -567,7 +571,7 @@ function Play(l)
             if(document.getElementById(step) != undefined){
                 document.getElementById(step).style.borderTop = "";
             }
-            document.getElementById(step+1).style.borderTop = "6px solid #0092D1";
+            document.getElementById(step+1).style.borderTop = "6px solid #bbbbbb";
         }
             
         //Send midi
