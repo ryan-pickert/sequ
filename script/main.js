@@ -44,6 +44,7 @@ var LayerSteps;
 var CurrentLayer = 0;
 var ScaleRoot;
 var PerCycle;
+var ShiftSequence;
 var MajorScale = [];
 var MinorScale = [];
 var MajorSeven = [];
@@ -58,6 +59,7 @@ var LayerLoops;
 
 function Init()
 {
+
     if(window.innerWidth < 1025)
         document.getElementById("wrapper").style.zoom = "0.94";
     //Initialize defaults
@@ -77,6 +79,7 @@ function Init()
     SequenceOctaves = 1;
     ScaleRoot = 0;
     PerCycle = false;
+    ShiftSequence = false;
     StepTime = Tone.Time("4n");
     NoteTime = Tone.Time("4n").toSeconds()*1000;
 
@@ -120,6 +123,22 @@ function SetCycle(button)
         button.style.border = "2px solid #333333";
     }else{
         PerCycle = false;
+        button.style.backgroundColor = "#333333";
+        button.style.color = "#bbbbbb";
+        button.style.border = "";
+    }
+}
+function SetShift(button)
+{
+    //Determines if the sequence's notes should shift to the left
+    //every time the sequence ends
+    if(ShiftSequence == false){
+        ShiftSequence = true;
+        button.style.backgroundColor = "#bbbbbb";
+        button.style.color = "#333333";
+        button.style.border = "2px solid #333333";
+    }else{
+        ShiftSequence = false;
         button.style.backgroundColor = "#333333";
         button.style.color = "#bbbbbb";
         button.style.border = "";
@@ -503,6 +522,11 @@ function UpdateLayer()
         }
     }
 }
+function UpdateSequence(layer, sequence)
+{
+    Layers[layer] = sequence;
+    UpdateLayer();
+}
 function UpdateSteps(layer, nNotes)
 {
     //Generate active steps
@@ -539,6 +563,7 @@ function Play(l)
     var nNotes = NumNotes;
     var cycle = PerCycle;
     var device = CurrentDevice;
+    var shift = ShiftSequence;
 
     //If there is already a loop present, get rid of it
     if(LayerLoops[layer] != 1){
@@ -561,11 +586,18 @@ function Play(l)
                 }
                 UpdateSteps(layer, nNotes);
             }
+            if(shift){
+                //Shift sequence to the left
+                var s = sequence.shift();
+                sequence.push(s);
+
+                UpdateSequence(layer, sequence);
+            }
 
             document.getElementById(step).style.border = "";
             step = 0;
         }
-
+        
         //Change the border for the current step
         if(layer == GetCurrentLayer()){
             if(document.getElementById(step) != undefined){
