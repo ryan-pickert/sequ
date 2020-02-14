@@ -21,10 +21,11 @@ html, body
     text-align: left;
     padding: 5px;
     width: 170px;
-    border-radius: 5px;
-    background-color: #333333;
-    color: #bbbbbb;
+    border-radius: 2px;
+    
+    color: #333333;
     font-size: 16px;
+    border: 2px solid #333333;
 }
 #options
 {
@@ -56,7 +57,7 @@ html, body
     margin-left: 1%;
   
     border: 1px solid #aaaaaa;
-    border-radius: 8px;
+    border-radius: 3px;
     border-bottom: 3px solid #aaaaaa;
     color: #dddddd;
 }
@@ -103,7 +104,8 @@ html, body
 .section
 {
     border: 2px solid #333333;
-    border-radius: 5px;
+    box-shadow: 3px 3px 0px 0px #888888;
+    border-radius: 0px;
     width: 190px;
     height: fit-content;
     margin: 5px;
@@ -114,15 +116,17 @@ html, body
 {
     font-size: 22px;
     background-color: #333333;
-    color: #bbbbbb;
+    color: #dddddd;
     text-align: center;
+    border-bottom: 2px solid #dddddd;
 }
 .slider .title
 {
-    border-radius: 5px;
+    font-size: 20px;
     text-align: center;
     color: #333333;
     background-color: #bbbbbb;
+    border: none;
 }
 .slider
 {
@@ -144,9 +148,11 @@ html, body
     -webkit-appearance: none;  /* Override default CSS styles */
     appearance: none;
     outline: none;
-    background-color: #333333;
-    border-radius: 5px;
-    height: 32px;
+    background-color: #dddddd;
+    border: 2px solid #333333;
+    border-radius: 1px;
+    box-shadow: 0px 2px 0px 0px #666666;
+    height: 26px;
     width: 180px;
     padding: 0px;
 }
@@ -154,11 +160,11 @@ html, body
 .sliders input::-webkit-slider-thumb {
     -webkit-appearance: none; 
     appearance: none;
-    width: 32px;
-    height: 40px; 
-    background: #bbbbbb; 
-    border-radius: 6px;
-    border: 3px solid #333333;
+    width: 28px;
+    height: 38px; 
+    background: #333333; 
+    border-radius: 0px;
+    border: 0px solid #333333;
     cursor: pointer;
   }
 
@@ -166,7 +172,7 @@ html, body
   {
       background-color: #333333;
       color: #bbbbbb;
-      border-radius: 5px;
+      border-radius: 4px;
       width: 100px;
       font-size: 20px;
       height: 35px;
