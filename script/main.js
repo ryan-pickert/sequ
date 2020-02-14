@@ -183,6 +183,9 @@ function UpdateRange(slider, type)
             }else if(slider.value == 4){
                 value = "1/8";
                 NoteTime = Tone.Time("8n").toSeconds()*1000;
+            }else if(slider.value == 5){
+                value = "1/16";
+                NoteTime = Tone.Time("16n").toSeconds()*1000;
             }
             break;
         case "maxNotes":

@@ -1,5 +1,5 @@
 <h1 align="center">SEQU</h1>
-<h4 align="center">Current Version: <a href="https://ryan-pickert.github.io/sequ/">[0.5.0-pre-alpha]</a></h4>
+<h4 align="center">Current Version: <a href="https://ryan-pickert.github.io/sequ/">[0.5.1-pre-alpha]</a></h4>
 
 Sequ is a multi-track step sequencer with a focus on randomization.
 
