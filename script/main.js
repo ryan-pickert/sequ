@@ -59,7 +59,7 @@ var LayerLoops;
 
 function Init()
 {
-
+    Tone.Transport.start();
     if(window.innerWidth < 1025)
         document.getElementById("wrapper").style.zoom = "0.94";
     //Initialize defaults
@@ -551,10 +551,6 @@ function GetCurrentLayer()
 }
 function Play(l)
 {
-    //Start the transport if not started already
-    if(Tone.Transport.state != "started")
-        Tone.Transport.start();
-
     //Grab parameters that were set
     //These are exclusive to the loop
     var step = 0;
@@ -570,11 +566,11 @@ function Play(l)
 
     //If there is already a loop present, get rid of it
     if(LayerLoops[layer] != 1){
-        LayerLoops[CurrentLayer].dispose();
+        clearInterval(LayerLoops[CurrentLayer]);
     }
 
     //Start a new loop
-    LayerLoops[layer] = new Tone.Loop(function(time){
+    LayerLoops[layer] = setInterval(function(){
         if(step == 16){
             //Activate random steps
             if(cycle){
@@ -614,13 +610,13 @@ function Play(l)
             SendNote(sequence[step], layerChannel, nTime, MidiDevices[device]);
 
         step++;
-    }, StepTime).start(0);
+    }, (Tone.Time(StepTime).toSeconds()*1000));
 }
 
 function Stop()
 {
     //Stop current sequence
-    LayerLoops[CurrentLayer].dispose();
+    clearInterval(LayerLoops[CurrentLayer]);
     LayerLoops[CurrentLayer] = 1;
 
     for(let i = 0; i < 16; i++)

@@ -1,5 +1,5 @@
 <h1 align="center">SEQU</h1>
-<h4 align="center">Current Version: <a href="https://ryan-pickert.github.io/sequ/">[0.5.1-pre-alpha]</a></h4>
+<h4 align="center">Current Version: <a href="https://ryan-pickert.github.io/sequ/">[0.5.2-pre-alpha]</a></h4>
 
 Sequ is a multi-track step sequencer with a focus on randomization.
 
@@ -29,7 +29,7 @@ To generate a sequence:
 
 Notes:
 - A sequence MUST be generated before starting it. Generating a new sequence while it is playing will have no effect until you restart it.
-- All other parameters (including MIDI device and channel) must also be set before the sequence is started except for BPM.
+- All other parameters (including MIDI device and channel) must also be set before the sequence is started.
 - You can click on a step to activate/deactivate it.
 - Switch between different tracks by using the 'current track' slider.
 - Clicking the 'cycle' button will set the sequence to activate random steps every cycle.
