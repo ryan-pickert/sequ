@@ -9,7 +9,7 @@ Sequ uses <a href="https://tonejs.github.io/">Tone.js</a> as a clock source and 
 <img src="pic/screen2.png">
 
 **Features**
-* Generate random squences using a set scale
+* Generate random sequences using a set scale
 * Generate a new sequence every cycle
 * Activate/deactivate steps to your liking
 * Up to four tracks playing simultaneously
