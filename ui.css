@@ -168,26 +168,26 @@ html, body
     cursor: pointer;
   }
 
-  .button
-  {
-      background-color: #333333;
-      color: #bbbbbb;
-      border-radius: 4px;
-      width: 100px;
-      font-size: 20px;
-      height: 35px;
-      line-height: 35px;
-      margin: 0px auto;
-      margin-top: 8px;
-      border-bottom: 3px solid #666666;
-      cursor: pointer;
-      text-align: center;
-  }
+.button
+{
+    background-color: #333333;
+    color: #bbbbbb;
+    border-radius: 4px;
+    width: 120px;
+    font-size: 18px;
+    height: 35px;
+    line-height: 35px;
+    margin: 0px auto;
+    margin-top: 8px;
+    border-bottom: 3px solid #666666;
+    cursor: pointer;
+    text-align: center;
+}
 
-  .note
-  {
-      font-size: 20px;
-      position: relative;
-      top: 0px;
-      text-align: center;
-  }
+.note
+{
+    font-size: 20px;
+    position: relative;
+    top: 0px;
+    text-align: center;
+}

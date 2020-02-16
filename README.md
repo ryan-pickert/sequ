@@ -1,5 +1,5 @@
 <h1 align="center">SEQU</h1>
-<h4 align="center">Current Version: <a href="https://ryan-pickert.github.io/sequ/">[0.5.2-pre-alpha]</a></h4>
+<h4 align="center">Current Version: <a href="https://ryan-pickert.github.io/sequ/">[0.6.0-pre-alpha]</a></h4>
 
 Sequ is a multi-track step sequencer with a focus on randomization.
 
@@ -32,7 +32,7 @@ Notes:
 - All other parameters (including MIDI device and channel) must also be set before the sequence is started.
 - You can click on a step to activate/deactivate it.
 - Switch between different tracks by using the 'current track' slider.
-- Clicking the 'cycle' button will set the sequence to activate random steps every cycle.
-- Clicking the 'shift' button will set the sequence to shift it's notes to the left every cycle.
+- Clicking the 'rand steps' button will set the sequence to activate random steps every cycle.
+- Clicking the 'shift notes' button will set the sequence to shift it's notes to the left every cycle.
 
 This project is in very early development so there are some bugs and missing features!

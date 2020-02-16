@@ -12,7 +12,7 @@
     <script src="script/main.js"></script>
 </head>
 <body onload="Init()">
-    <div id="wrapper">
+    <div id="wrapper" oncontextmenu="return false">
         <div id="options">
             <div class="section" style="width: 190px;">
                 <div class="title">MAIN</div>
@@ -22,65 +22,69 @@
                         <input type="range" min="80" max="132" value="120" oninput="UpdateRange(this, 'tempo')">
                     </div>
                     <div class="slider">
-                        <div class="title">DEVICES</div>
+                        <div class="title">Devices</div>
                         <div id="deviceList"></div>
                     </div>
                 </div>
             </div>
             <div class="section">
-                <div class="title">SCALE</div>
+                <div class="title">NOTES</div>
                 <div class="sliders">
                     <div class="slider">
-                        <div class="title">TYPE[<span>MAJOR</span>]</div>
+                        <div class="title">Scale [<span>MAJOR</span>]</div>
                         <input type="range" min="1" max="7" value="1" oninput="UpdateRange(this, 'scale')">
                     </div>
                     <div class="slider">
-                        <div class="title">ROOT[<span>C</span>]</div>
+                        <div class="title">Root [<span>C</span>]</div>
                         <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'root')">
                     </div>
                     <div class="slider">
-                        <div class="title">OCTAVE[<span>4</span>]</div>
+                        <div class="title">Root Octave [<span>4</span>]</div>
                         <input type="range" min="0" max="7" value="4" oninput="UpdateRange(this, 'octave')">
                     </div>
+                    <div class="slider">
+                        <div class="title">Max Notes [<span>8</span>]</div>
+                        <input type="range" min="1" max="16" value="8" oninput="UpdateRange(this, 'maxNotes')">
+                    </div>
+                    <div class="slider">
+                        <div class="title">Octave Range [<span>1</span>]</div>
+                        <input type="range" min="1" max="3" value="1" oninput="UpdateRange(this, 'sequenceOctaves')">
+                    </div>
+                    <div class="button" onclick="CreateSequence()">GENERATE</div>
                 </div>
             </div>
             <div class="section">
                 <div class="title">SEQUENCE</div>
                 <div class="sliders">
                     <div class="slider">
-                        <div class="title">CLOCK[<span>1/4</span>]</div>
+                        <div class="title">Clock [<span>1/4</span>]</div>
                         <input type="range" min="1" max="5" value="3" oninput="UpdateRange(this, 'clock')">
                     </div>
                     <div class="slider">
-                        <div class="title">MAX NOTES[<span>8</span>]</div>
-                        <input type="range" min="1" max="16" value="8" oninput="UpdateRange(this, 'maxNotes')">
+                        <div class="title">Note Length [<span>1/4</span>]</div>
+                        <input type="range" min="1" max="6" value="3" oninput="UpdateRange(this, 'noteTime')">
                     </div>
                     <div class="slider">
-                        <div class="title">OCTAVES[<span>1</span>]</div>
-                        <input type="range" min="1" max="3" value="1" oninput="UpdateRange(this, 'sequenceOctaves')">
+                        <div class="title">Cycle Delay [<span>0</span>]</div>
+                        <input type="range" min="0" max="8" value="0" oninput="UpdateRange(this, 'delay')">
                     </div>
-                    <div class="slider">
-                        <div class="title">NOTE TIME[<span>1/4</span>]</div>
-                        <input type="range" min="1" max="5" value="3" oninput="UpdateRange(this, 'noteTime')">
-                    </div>
-                    <div class="button" onclick="CreateSequence()">GENERATE</div>
-                    <div class="button" onclick="SetCycle(this)">CYCLE</div>
-                    <div class="button" onclick="SetShift(this)">SHIFT</div>
+                    <div class="button" onclick="SetCycle(this)">RAND STEPS</div>
+                    <div class="button" onclick="SetShift(this)">SHIFT NOTES</div>
                 </div>
             </div>
             <div class="section">
                 <div class="title">TRACK</div>
                 <div class="sliders">
                     <div class="slider">
-                        <div class="title">CUR TRACK[<span>1</span>]</div>
+                        <div class="title">Cur. Track [<span>1</span>]</div>
                         <input type="range" min="1" max="4" value="1" oninput="UpdateRange(this, 'layer')">
                     </div>
                     <div class="slider">
-                        <div class="title">MIDI CHANNEL[<span>1</span>]</div>
+                        <div class="title">MIDI Channel [<span>1</span>]</div>
                         <input type="range" min="1" max="16" value="1" oninput="UpdateRange(this, 'channel')">
                     </div>
                     <div class="slider">
-                        <div class="title">DEVICE[<span>1</span>]</div>
+                        <div class="title">MIDI Device [<span>1</span>]</div>
                         <input id="midiDeviceSelect" type="range" min="1" max="2" value="1" oninput="UpdateRange(this, 'device')">
                     </div>
                     <div class="button" onclick="Play(CurrentLayer)">PLAY</div>
@@ -91,27 +95,27 @@
                 <div class="title">CUSTOM SCALE</div>
                 <div class="sliders">
                     <div class="slider">
-                        <div class="title">NOTE 1[<span>C</span>]</div>
+                        <div class="title">Note 1 [<span>C</span>]</div>
                         <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'custom1')">
                     </div>
                     <div class="slider">
-                        <div class="title">NOTE 2[<span>C</span>]</div>
+                        <div class="title">Note 2 [<span>C</span>]</div>
                         <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'custom2')">
                     </div>
                     <div class="slider">
-                        <div class="title">NOTE 3[<span>C</span>]</div>
+                        <div class="title">Note 3 [<span>C</span>]</div>
                         <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'custom3')">
                     </div>
                     <div class="slider">
-                        <div class="title">NOTE 4[<span>C</span>]</div>
+                        <div class="title">Note 4 [<span>C</span>]</div>
                         <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'custom4')">
                     </div>
                     <div class="slider">
-                        <div class="title">NOTE 5[<span>C</span>]</div>
+                        <div class="title">Note 5 [<span>C</span>]</div>
                         <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'custom5')">
                     </div>
                     <div class="slider">
-                        <div class="title">NOTE 6[<span>C</span>]</div>
+                        <div class="title">Note 6 [<span>C</span>]</div>
                         <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'custom6')">
                     </div>
                 </div>
@@ -138,5 +142,5 @@
         </div>
         
     </div>
-    <div id="version">Version 0.5.2-pre-alpha</div>
+    <div id="version">Version 0.6.0-pre-alpha</div>
 </body>

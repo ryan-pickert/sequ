@@ -44,6 +44,7 @@ var LayerSteps;
 var CurrentLayer = 0;
 var ScaleRoot;
 var PerCycle;
+var StepDelay;
 var ShiftSequence;
 var MajorScale = [];
 var MinorScale = [];
@@ -82,6 +83,7 @@ function Init()
     ShiftSequence = false;
     StepTime = Tone.Time("4n");
     NoteTime = Tone.Time("4n").toSeconds()*1000;
+    StepDelay = 0;
 
     MajorScale = ["C", "E", "G"];
     MinorScale = ["C", "Eb", "G"];
@@ -186,7 +188,14 @@ function UpdateRange(slider, type)
             }else if(slider.value == 5){
                 value = "1/16";
                 NoteTime = Tone.Time("16n").toSeconds()*1000;
+            }else if(slider.value == 6){
+                value = "1/32";
+                NoteTime = Tone.Time("32n").toSeconds()*1000;
             }
+            break;
+        case "delay":
+            value = slider.value * 4;
+            StepDelay = value;
             break;
         case "maxNotes":
             value = slider.value;
@@ -563,6 +572,7 @@ function Play(l)
     var cycle = PerCycle;
     var device = CurrentDevice;
     var shift = ShiftSequence;
+    var delay = StepDelay;
 
     //If there is already a loop present, get rid of it
     if(LayerLoops[layer] != 1){
@@ -571,7 +581,7 @@ function Play(l)
 
     //Start a new loop
     LayerLoops[layer] = setInterval(function(){
-        if(step == 16){
+        if(step == (16 + delay)){
             //Activate random steps
             if(cycle){
                 document.getElementById(step).style.border = "";
@@ -593,21 +603,27 @@ function Play(l)
                 UpdateSequence(layer, sequence);
             }
 
-            document.getElementById(step).style.border = "";
+
+            document.getElementById(16).style.border = "";
+
+            
             step = 0;
         }
         
-        //Change the border for the current step
-        if(layer == GetCurrentLayer()){
-            if(document.getElementById(step) != undefined){
-                document.getElementById(step).style.borderTop = "";
+        if(step <= 15){
+            //Change the border for the current step
+            if(layer == GetCurrentLayer()){
+                if(document.getElementById(step) != undefined){
+                    document.getElementById(step).style.borderTop = "";
+                }
+                document.getElementById(step+1).style.borderTop = "6px solid #bbbbbb";
             }
-            document.getElementById(step+1).style.borderTop = "6px solid #bbbbbb";
+                
+            //Send midi
+            if(steps[step] == 1)
+                SendNote(sequence[step], layerChannel, nTime, MidiDevices[device]);
         }
-            
-        //Send midi
-        if(steps[step] == 1)
-            SendNote(sequence[step], layerChannel, nTime, MidiDevices[device]);
+        
 
         step++;
     }, (Tone.Time(StepTime).toSeconds()*1000));
