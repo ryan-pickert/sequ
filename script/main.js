@@ -32,58 +32,28 @@ function CreateWindow()
 //-----------------------
 //GLOBAL VARS
 var MidiDevices = [];
-var CurrentDevice;
-var MidiChannel;
-var NumNotes;
-var ScaleType;
-var StepTime;
-var Octave;
-var SequenceOctaves;
-var Layers;
-var LayerSteps;
-var CurrentLayer = 0;
-var ScaleRoot;
-var PerCycle;
-var StepDelay;
-var ShiftSequence;
+
 var MajorScale = [];
 var MinorScale = [];
 var MajorSeven = [];
 var MinorSeven = [];
 var Sus2 = [];
 var Sus4 = [];
-var CustomScale = [];
 
-var NoteTime;
-
-var LayerLoops;
+var CurrentTrack;
+var Tracks = [];
 
 function Init()
 {
     Tone.Transport.start();
     if(window.innerWidth < 1025)
         document.getElementById("wrapper").style.zoom = "0.94";
+    
     //Initialize defaults
-    Layers = [0, 0, 0, 0];
-    LayerSteps = [0,0,0,0];
-    LayerLoops = [];
-    for(let i = 0; i < 4; i++){
-        LayerSteps[i] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-        LayerLoops.push(1);
-    }
 
-    ScaleType = 1;
-    NumNotes = 8;
-    CurrentLayer = 0;
-    Octave = 4;
-    MidiChannel = 1;
-    SequenceOctaves = 1;
-    ScaleRoot = 0;
-    PerCycle = false;
-    ShiftSequence = false;
-    StepTime = Tone.Time("4n");
-    NoteTime = Tone.Time("4n").toSeconds()*1000;
-    StepDelay = 0;
+    Tracks = [];
+    CurrentTrack = 0;
+    
 
     MajorScale = ["C", "E", "G"];
     MinorScale = ["C", "Eb", "G"];
@@ -91,10 +61,10 @@ function Init()
     MinorSeven = ["C", "Eb", "G", "Bb"];
     Sus2 = ["C", "D", "G"];
     Sus4 = ["C", "F", "G"];
-    CustomScale = ["C", "C", "C", "C", "C", "C",];
 
     MidiDevices = [];
 
+    //var WebMidi = new require('webmidi');
     //Get MIDI access
     WebMidi.enable(function (err) {
         console.log(WebMidi.inputs);
@@ -102,49 +72,22 @@ function Init()
 
         for(let i = 0; i < WebMidi.outputs.length; i++){
             MidiDevices.push(WebMidi.outputs[i]);
-            document.getElementById("deviceList").innerHTML += "["+(i+1)+"] " + MidiDevices[i].name + "<br>";
         }
 
         //Default to the last midi device
         //The first is usually the computer's thru port
-        CurrentDevice = WebMidi.outputs.length-1;
-        document.getElementById("midiDeviceSelect").max = WebMidi.outputs.length;
-        document.getElementById("midiDeviceSelect").value = WebMidi.outputs.length;
-        UpdateRange(document.getElementById("midiDeviceSelect"), "device");
-    });
-}
+        var deviceSlider = document.getElementById("midiSection").children[1].children[1];
+        deviceSlider.max = WebMidi.outputs.length;
+        deviceSlider.value = WebMidi.outputs.length;
+        UpdateRange(deviceSlider, "device");
 
-function SetCycle(button)
-{
-    //Determines if a new set of active steps should be generated
-    //every time the sequence ends
-    if(PerCycle == false){
-        PerCycle = true;
-        button.style.backgroundColor = "#bbbbbb";
-        button.style.color = "#333333";
-        button.style.border = "2px solid #333333";
-    }else{
-        PerCycle = false;
-        button.style.backgroundColor = "#333333";
-        button.style.color = "#bbbbbb";
-        button.style.border = "";
+        
+    });
+
+    for(let i = 0; i < 8; i++){
+        Tracks.push(new Track(i));
     }
-}
-function SetShift(button)
-{
-    //Determines if the sequence's notes should shift to the left
-    //every time the sequence ends
-    if(ShiftSequence == false){
-        ShiftSequence = true;
-        button.style.backgroundColor = "#bbbbbb";
-        button.style.color = "#333333";
-        button.style.border = "2px solid #333333";
-    }else{
-        ShiftSequence = false;
-        button.style.backgroundColor = "#333333";
-        button.style.color = "#bbbbbb";
-        button.style.border = "";
-    }
+    
 }
 
 function UpdateRange(slider, type)
@@ -157,62 +100,82 @@ function UpdateRange(slider, type)
         case "clock":
             if(slider.value == 1){
                 value = "1 bar";
-                StepTime = Tone.Time("1m");
+                Tracks[CurrentTrack].stepTime = GetStepTime("1m");
             }else if(slider.value == 2){
                 value = "1/2";
-                StepTime = "2n";
+                Tracks[CurrentTrack].stepTime = GetStepTime("2n");
             }else if(slider.value == 3){
                 value = "1/4";
-                StepTime = "4n";
+                Tracks[CurrentTrack].stepTime = GetStepTime("4n");
             }else if(slider.value == 4){
                 value = "1/8";
-                StepTime = "8n";
+                Tracks[CurrentTrack].stepTime = GetStepTime("8n");
             }else if(slider.value == 5){
                 value = "1/16";
-                StepTime = "16n";
+                Tracks[CurrentTrack].stepTime = GetStepTime("16n");
             }
+
+            Tracks[CurrentTrack].sliderValues[2] = slider.value;
             break;
         case "noteTime":
             if(slider.value == 1){
                 value = "1 bar";
-                NoteTime = Tone.Time("1m").toSeconds()*1000;
+                Tracks[CurrentTrack].noteTime = GetStepTime("1m");
             }else if(slider.value == 2){
                 value = "1/2";
-                NoteTime = Tone.Time("2n").toSeconds()*1000;
+                Tracks[CurrentTrack].noteTime = GetStepTime("2n");
             }else if(slider.value == 3){
                 value = "1/4";
-                NoteTime = Tone.Time("4n").toSeconds()*1000;
+                Tracks[CurrentTrack].noteTime = GetStepTime("4n");
             }else if(slider.value == 4){
                 value = "1/8";
-                NoteTime = Tone.Time("8n").toSeconds()*1000;
+                Tracks[CurrentTrack].noteTime = GetStepTime("8n");
             }else if(slider.value == 5){
                 value = "1/16";
-                NoteTime = Tone.Time("16n").toSeconds()*1000;
+                Tracks[CurrentTrack].noteTime = GetStepTime("16n");
             }else if(slider.value == 6){
                 value = "1/32";
-                NoteTime = Tone.Time("32n").toSeconds()*1000;
+                Tracks[CurrentTrack].noteTime = GetStepTime("32n");
             }
+
+            Tracks[CurrentTrack].sliderValues[3] = slider.value;
             break;
         case "delay":
             value = slider.value * 4;
-            StepDelay = value;
+            Tracks[CurrentTrack].cycleDelay = value;
+            Tracks[CurrentTrack].sliderValues[4] = slider.value;
+            break;
+        case "randSteps":
+            if(slider.value == 1){
+                value = "off";
+                Tracks[CurrentTrack].randSteps = false;
+            }else if(slider.value == 2){
+                value = "on";
+                Tracks[CurrentTrack].randSteps = true;
+            }
+
+            Tracks[CurrentTrack].sliderValues[5] = slider.value;
+            break;
+        case "shiftNotes":
+            if(slider.value == 1){
+                value = "off";
+                Tracks[CurrentTrack].shiftNotes = false;
+            }else if(slider.value == 2){
+                value = "on";
+                Tracks[CurrentTrack].shiftNotes = true;
+            }
+
+            Tracks[CurrentTrack].sliderValues[6] = slider.value;
             break;
         case "maxNotes":
             value = slider.value;
-            NumNotes = value;
+            Tracks[CurrentTrack].randSteps = value;
+            Tracks[CurrentTrack].sliderValues[10] = slider.value;
             break;
         case "octave":
             value = slider.value;
-            Octave = value;
-            break;
-        case "sequenceOctaves":
-            value = slider.value;
-            SequenceOctaves = value;
-            break;
-        case "layer":
-            value = slider.value;
-            CurrentLayer = value-1;
-            UpdateLayer();
+            Tracks[CurrentTrack].randOctave = value;
+            Tracks[CurrentTrack].sliderValues[9] = slider.value;
             break;
         case "tempo":
             value = slider.value;
@@ -231,10 +194,9 @@ function UpdateRange(slider, type)
                 value = "SUS2";
             }else if(slider.value == 6){
                 value = "SUS4";
-            }else if(slider.value == 7){
-                value = "CUSTOM";
             }
-            ScaleType = slider.value;
+            Tracks[CurrentTrack].randScale = slider.value;
+            Tracks[CurrentTrack].sliderValues[7] = slider.value;
             break;
         case "root":
             if(slider.value == 1){
@@ -262,412 +224,121 @@ function UpdateRange(slider, type)
             }else if(slider.value == 12){
                 value = "B";
             }
-            ScaleRoot = slider.value-1;
+            Tracks[CurrentTrack].randRoot = slider.value-1;
+            Tracks[CurrentTrack].sliderValues[8] = slider.value;
             break;
-        case "custom1":
-            if(slider.value == 1){
-                value = "C";
-            }else if(slider.value == 2){
-                value = "C#";
-            }else if(slider.value == 3){
-                value = "D";
-            }else if(slider.value == 4){
-                value = "D#";
-            }else if(slider.value == 5){
-                value = "E";
-            }else if(slider.value == 6){
-                value = "F";
-            }else if(slider.value == 7){
-                value = "F#";
-            }else if(slider.value == 8){
-                value = "G";
-            }else if(slider.value == 9){
-                value = "G#";
-            }else if(slider.value == 10){
-                value = "A";
-            }else if(slider.value == 11){
-                value = "A#";
-            }else if(slider.value == 12){
-                value = "B";
-            }
-            CustomScale[0] = value;
-            break;
-        case "custom2":
-            if(slider.value == 1){
-                value = "C";
-            }else if(slider.value == 2){
-                value = "C#";
-            }else if(slider.value == 3){
-                value = "D";
-            }else if(slider.value == 4){
-                value = "D#";
-            }else if(slider.value == 5){
-                value = "E";
-            }else if(slider.value == 6){
-                value = "F";
-            }else if(slider.value == 7){
-                value = "F#";
-            }else if(slider.value == 8){
-                value = "G";
-            }else if(slider.value == 9){
-                value = "G#";
-            }else if(slider.value == 10){
-                value = "A";
-            }else if(slider.value == 11){
-                value = "A#";
-            }else if(slider.value == 12){
-                value = "B";
-            }
-            CustomScale[1] = value;
-            break;
-        case "custom3":
-            if(slider.value == 1){
-                value = "C";
-            }else if(slider.value == 2){
-                value = "C#";
-            }else if(slider.value == 3){
-                value = "D";
-            }else if(slider.value == 4){
-                value = "D#";
-            }else if(slider.value == 5){
-                value = "E";
-            }else if(slider.value == 6){
-                value = "F";
-            }else if(slider.value == 7){
-                value = "F#";
-            }else if(slider.value == 8){
-                value = "G";
-            }else if(slider.value == 9){
-                value = "G#";
-            }else if(slider.value == 10){
-                value = "A";
-            }else if(slider.value == 11){
-                value = "A#";
-            }else if(slider.value == 12){
-                value = "B";
-            }
-            CustomScale[2] = value;
-            break;
-        case "custom4":
-            if(slider.value == 1){
-                value = "C";
-            }else if(slider.value == 2){
-                value = "C#";
-            }else if(slider.value == 3){
-                value = "D";
-            }else if(slider.value == 4){
-                value = "D#";
-            }else if(slider.value == 5){
-                value = "E";
-            }else if(slider.value == 6){
-                value = "F";
-            }else if(slider.value == 7){
-                value = "F#";
-            }else if(slider.value == 8){
-                value = "G";
-            }else if(slider.value == 9){
-                value = "G#";
-            }else if(slider.value == 10){
-                value = "A";
-            }else if(slider.value == 11){
-                value = "A#";
-            }else if(slider.value == 12){
-                value = "B";
-            }
-            CustomScale[3] = value;
-            break;
-        case "custom5":
-            if(slider.value == 1){
-                value = "C";
-            }else if(slider.value == 2){
-                value = "C#";
-            }else if(slider.value == 3){
-                value = "D";
-            }else if(slider.value == 4){
-                value = "D#";
-            }else if(slider.value == 5){
-                value = "E";
-            }else if(slider.value == 6){
-                value = "F";
-            }else if(slider.value == 7){
-                value = "F#";
-            }else if(slider.value == 8){
-                value = "G";
-            }else if(slider.value == 9){
-                value = "G#";
-            }else if(slider.value == 10){
-                value = "A";
-            }else if(slider.value == 11){
-                value = "A#";
-            }else if(slider.value == 12){
-                value = "B";
-            }
-            CustomScale[4] = value;
-            break;
-        case "custom6":
-            if(slider.value == 1){
-                value = "C";
-            }else if(slider.value == 2){
-                value = "C#";
-            }else if(slider.value == 3){
-                value = "D";
-            }else if(slider.value == 4){
-                value = "D#";
-            }else if(slider.value == 5){
-                value = "E";
-            }else if(slider.value == 6){
-                value = "F";
-            }else if(slider.value == 7){
-                value = "F#";
-            }else if(slider.value == 8){
-                value = "G";
-            }else if(slider.value == 9){
-                value = "G#";
-            }else if(slider.value == 10){
-                value = "A";
-            }else if(slider.value == 11){
-                value = "A#";
-            }else if(slider.value == 12){
-                value = "B";
-            }
-            CustomScale[5] = value;
-            break;
+        
         case "channel":
             value = slider.value;
-            MidiChannel = value;
+            Tracks[CurrentTrack].midiChannel = value;
+            Tracks[CurrentTrack].sliderValues[1] = slider.value;
             break;
         case "device":
-            value = slider.value;
-            CurrentDevice = value-1;
+            value = MidiDevices[slider.value-1].name;
+            Tracks[CurrentTrack].midiDevice = slider.value-1;
+            Tracks[CurrentTrack].sliderValues[0] = slider.value;
             break;
         default:
             value = slider.value;
             break;
     }
     var title = slider.parentElement;
-    title.children[0].children[0].innerHTML = value;
+    title.children[0].innerHTML = value;
 }
-
-function CreateSequence()
+function Edit(trackNum)
 {
-    //Generate a random sequence based on current parameters
-    var sequence = [];
-    var pool = []; //Pool of notes to choose from
+    CurrentTrack = trackNum;
+    document.getElementById("trackMenu").children[0].children[1].innerHTML = "Edit (Track " + (trackNum+1)+")";
 
-    //Get notes from scales
-    if (ScaleType == 1){
-        for(let i = 0; i < MajorScale.length; i++){
-            var n = Tone.Frequency(MajorScale[i] + (Number(Octave) + Number(getRandom(0, SequenceOctaves)))).transpose(ScaleRoot).toNote();
-            pool.push(n);
-        }
-    }else if (ScaleType == 2){
-        for(let i = 0; i < MinorScale.length; i++){
-            var n = Tone.Frequency(MinorScale[i] + (Number(Octave) + Number(getRandom(0, SequenceOctaves)))).transpose(ScaleRoot).toNote();
-            pool.push(n);
-        }
-    }else if (ScaleType == 3){
-        for(let i = 0; i < MajorSeven.length; i++){
-            var n = Tone.Frequency(MajorSeven[i] + (Number(Octave) + Number(getRandom(0, SequenceOctaves)))).transpose(ScaleRoot).toNote();
-            pool.push(n);
-        }
-    }else if (ScaleType == 4){
-        for(let i = 0; i < MinorSeven.length; i++){
-            var n = Tone.Frequency(MinorSeven[i] + (Number(Octave) + Number(getRandom(0, SequenceOctaves)))).transpose(ScaleRoot).toNote();
-            pool.push(n);
-        }
-    }else if (ScaleType == 5){
-        for(let i = 0; i < Sus2.length; i++){
-            var n = Tone.Frequency(Sus2[i] + (Number(Octave) + Number(getRandom(0, SequenceOctaves)))).transpose(ScaleRoot).toNote();
-            pool.push(n);
-        }
-    }else if (ScaleType == 6){
-        for(let i = 0; i < Sus4.length; i++){
-            var n = Tone.Frequency(Sus4[i] + (Number(Octave) + Number(getRandom(0, SequenceOctaves)))).transpose(ScaleRoot).toNote();
-            pool.push(n);
-        }
-    }else if (ScaleType == 7){
-        for(let i = 0; i < CustomScale.length; i++){
-            var n = Tone.Frequency(CustomScale[i] + (Number(Octave) + Number(getRandom(0, SequenceOctaves)))).transpose(ScaleRoot).toNote();
-            pool.push(n);
-        }
-    }
-    
+    //Update sliders for the track being edited
+    var midiSection = document.getElementById("midiSection");
+    var stepSection = document.getElementById("stepSection");
+    var randomSection = document.getElementById("randomSection");
 
-    //Generate sequence
-    for(var i = 0; i < 16; i++){
-        var note = getRandom(0, pool.length);
-        sequence.push(pool[note]);
-    }
+    midiSection.children[1].children[1].value = Tracks[CurrentTrack].sliderValues[0];
+    midiSection.children[2].children[1].value = Tracks[CurrentTrack].sliderValues[1];
+    UpdateRange(midiSection.children[1].children[1], "device");
+    UpdateRange(midiSection.children[2].children[1], "channel");
 
-    //Generate active steps
-    for(let i = 0; i < 16; i++){
-        LayerSteps[CurrentLayer][i] = 0;
-    }
-    for(let i = 0; i < NumNotes; i++){
-        var s = getRandom(0, 16);
-        LayerSteps[CurrentLayer][s] = 1;
-    }
+    stepSection.children[1].children[1].value = Tracks[CurrentTrack].sliderValues[2];
+    stepSection.children[2].children[1].value = Tracks[CurrentTrack].sliderValues[3];
+    stepSection.children[3].children[1].value = Tracks[CurrentTrack].sliderValues[4];
+    stepSection.children[4].children[1].value = Tracks[CurrentTrack].sliderValues[5];
+    stepSection.children[5].children[1].value = Tracks[CurrentTrack].sliderValues[6];
+    UpdateRange(stepSection.children[1].children[1], "clock");
+    UpdateRange(stepSection.children[2].children[1], "noteTime");
+    UpdateRange(stepSection.children[3].children[1], "delay");
+    UpdateRange(stepSection.children[4].children[1], "randSteps");
+    UpdateRange(stepSection.children[5].children[1], "shiftNotes");
 
-    Layers[CurrentLayer] = sequence;
-    UpdateLayer();
+    randomSection.children[1].children[1].value = Tracks[CurrentTrack].sliderValues[7];
+    randomSection.children[2].children[1].value = Tracks[CurrentTrack].sliderValues[8];
+    randomSection.children[3].children[1].value = Tracks[CurrentTrack].sliderValues[9];
+    randomSection.children[4].children[1].value = Tracks[CurrentTrack].sliderValues[10];
+    UpdateRange(randomSection.children[1].children[1], "scale");
+    UpdateRange(randomSection.children[2].children[1], "root");
+    UpdateRange(randomSection.children[3].children[1], "octave");
+    UpdateRange(randomSection.children[4].children[1], "maxNotes");
+
+    if(document.getElementById("trackMenu").style.display == "none")
+        document.getElementById("trackMenu").style.display = "block";
+
 }
-
-function UpdateLayer()
+function Play(trackNum)
 {
-    //Update the steps on screen
-    for(let i = 0; i < Layers[CurrentLayer].length; i++){
-        document.getElementById(i+1).children[0].innerHTML = Layers[CurrentLayer][i];
+    if(Tracks[trackNum].loop == undefined || Tracks[trackNum].loop == 0)
+        Tracks[trackNum].startLoop();
+}
+function PlayAll()
+{
+    for(let i = 0; i < Tracks.length; i++){
+        if(Tracks[i].loop == undefined || Tracks[i].loop == 0)
+            Tracks[i].startLoop();
     }
-    for(let i = 0; i < LayerSteps[CurrentLayer].length; i++){
-        document.getElementById(i+1).style.border = "";
-        if(LayerSteps[CurrentLayer][i] == 1){
-            if(CurrentLayer == 0)
-                document.getElementById(i+1).style.backgroundColor = "#4B9EC1";
-            else if(CurrentLayer == 1)
-                document.getElementById(i+1).style.backgroundColor = "#B9A938";
-            else if(CurrentLayer == 2)
-                document.getElementById(i+1).style.backgroundColor = "#69B221";
-            else if(CurrentLayer == 3)
-                document.getElementById(i+1).style.backgroundColor = "#DC5B17";
-        }else{
-            document.getElementById(i+1).style.backgroundColor = "";
+}
+function StopAll()
+{
+    for(let i = 0; i < Tracks.length; i++){
+        if(Tracks[i].loop != undefined){
+            clearInterval(Tracks[i].loop);
+            Tracks[i].loop = 0;
         }
     }
-}
-function UpdateSequence(layer, sequence)
-{
-    Layers[layer] = sequence;
-    UpdateLayer();
-}
-function UpdateSteps(layer, nNotes)
-{
-    //Generate active steps
-    for(let i = 0; i < 16; i++){
-        LayerSteps[layer][i] = 0;
+
+    for(let i = 0; i < Tracks.length; i++){
+        var stepElements = document.getElementById("track"+i);
+        for(let i = 0; i < 16; i++)
+            stepElements.children[i].style.border = "";
     }
-    for(let i = 0; i < nNotes; i++){
-        var s = getRandom(0, 16);
-        LayerSteps[layer][s] = 1;
-    }
-
-    UpdateLayer();
 }
-function GetCurrentLayer()
+function ChangeStep(stepElement, stepNum, trackNum)
 {
-    //Return the current layer
-    //Used to show the progress of the current sequence only
-    return CurrentLayer;
-}
-function Play(l)
-{
-    //Grab parameters that were set
-    //These are exclusive to the loop
-    var step = 0;
-    var layer = l;
-    var sequence = Layers[layer];
-    var steps = LayerSteps[layer];
-    var layerChannel = MidiChannel;
-    var nTime = NoteTime;
-    var nNotes = NumNotes;
-    var cycle = PerCycle;
-    var device = CurrentDevice;
-    var shift = ShiftSequence;
-    var delay = StepDelay;
-
-    //If there is already a loop present, get rid of it
-    if(LayerLoops[layer] != 1){
-        clearInterval(LayerLoops[CurrentLayer]);
+    if(Tracks[trackNum].steps[stepNum].active == false){
+        Tracks[trackNum].steps[stepNum].active = true;
+        stepElement.style.backgroundColor = "var(--dark-blue2)";
+    }else{
+        Tracks[trackNum].steps[stepNum].active = false;
+        stepElement.style.backgroundColor = "";
     }
-
-    //Start a new loop
-    LayerLoops[layer] = setInterval(function(){
-        if(step == (16 + delay)){
-            //Activate random steps
-            if(cycle){
-                document.getElementById(step).style.border = "";
-                //Generate active steps
-                for(let i = 0; i < 16; i++){
-                    steps[layer][i] = 0;
-                }
-                for(let i = 0; i < NumNotes; i++){
-                    var s = getRandom(0, 16);
-                    steps[layer][s] = 1;
-                }
-                UpdateSteps(layer, nNotes);
-            }
-            if(shift){
-                //Shift sequence to the left
-                var s = sequence.shift();
-                sequence.push(s);
-
-                UpdateSequence(layer, sequence);
-            }
-
-
-            document.getElementById(16).style.border = "";
-
-            
-            step = 0;
-        }
-        
-        if(step <= 15){
-            //Change the border for the current step
-            if(layer == GetCurrentLayer()){
-                if(document.getElementById(step) != undefined){
-                    document.getElementById(step).style.borderTop = "";
-                }
-                document.getElementById(step+1).style.borderTop = "6px solid #bbbbbb";
-            }
-                
-            //Send midi
-            if(steps[step] == 1)
-                SendNote(sequence[step], layerChannel, nTime, MidiDevices[device]);
-        }
-        
-
-        step++;
-    }, (Tone.Time(StepTime).toSeconds()*1000));
 }
-
-function Stop()
+function Stop(trackNum)
 {
     //Stop current sequence
-    clearInterval(LayerLoops[CurrentLayer]);
-    LayerLoops[CurrentLayer] = 1;
-
-    for(let i = 0; i < 16; i++)
-        document.getElementById(i+1).style.border = "";
-}
-
-function Step(s)
-{
-    //Activate or deactivate a step when clicked on
-    var index = Number(s.id) - 1;
-    
-    if(LayerSteps[CurrentLayer][index] == 1){
-        LayerSteps[CurrentLayer][index] = 0;
-    }else{
-        LayerSteps[CurrentLayer][index] = 1;
-    }
-
-    if(LayerSteps[CurrentLayer][index] == 1){
-        if(CurrentLayer == 0)
-            document.getElementById(index+1).style.backgroundColor = "#4B9EC1";
-        else if(CurrentLayer == 1)
-            document.getElementById(index+1).style.backgroundColor = "#B9A938";
-        else if(CurrentLayer == 2)
-            document.getElementById(index+1).style.backgroundColor = "#69B221";
-        else if(CurrentLayer == 3)
-            document.getElementById(index+1).style.backgroundColor = "#DC5B17";
-    }else{
-        document.getElementById(index+1).style.backgroundColor = "";
+    var stepElememts = document.getElementById("track"+trackNum);
+    if(Tracks[trackNum].loop != undefined){
+        clearInterval(Tracks[trackNum].loop);
+        Tracks[trackNum].loop = 0;
+        for(let i = 0; i < 16; i++)
+            stepElememts.children[i].style.border = "";
     }
 }
+
+
 
 
 function SendNote(note, channel, nTime, device)
 {
-    device.playNote(note, channel, {duration: nTime});
+    MidiDevices[device].playNote(note, channel, {duration: nTime});
 }
 
 function getRandom(min, max) {

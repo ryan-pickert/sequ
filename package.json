@@ -21,6 +21,7 @@
     "electron": "^7.1.7"
   },
   "dependencies": {
-    "tone": "^13.8.34"
+    "tone": "^13.8.34",
+    "webmidi": "^2.5.1"
   }
 }

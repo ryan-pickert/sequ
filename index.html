@@ -3,144 +3,385 @@
 <head>
     <title>SEQU</title>
     <link rel="stylesheet" type="text/css" href="ui.css">
-    <link href="https://fonts.googleapis.com/css?family=Baumans|VT323&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans|Tomorrow:300&display=swap" rel="stylesheet">
 
     <!--Dependencies-->
     <script src="script/Tone.js"></script>
     <script src="script/webmidi.min.js"></script>
     <script src="script/main.js"></script>
+    <script src="script/track.js"></script>
 </head>
 <body onload="Init()">
-    <div id="wrapper" oncontextmenu="return false">
-        <div id="options">
-            <div class="section" style="width: 190px;">
-                <div class="title">MAIN</div>
-                <div class="sliders">
-                    <div class="slider">
-                        <div class="title">BPM [<span>120</span>]</div>
-                        <input type="range" min="80" max="132" value="120" oninput="UpdateRange(this, 'tempo')">
-                    </div>
-                    <div class="slider">
-                        <div class="title">Devices</div>
-                        <div id="deviceList"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="section">
-                <div class="title">NOTES</div>
-                <div class="sliders">
-                    <div class="slider">
-                        <div class="title">Scale [<span>MAJOR</span>]</div>
-                        <input type="range" min="1" max="7" value="1" oninput="UpdateRange(this, 'scale')">
-                    </div>
-                    <div class="slider">
-                        <div class="title">Root [<span>C</span>]</div>
-                        <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'root')">
-                    </div>
-                    <div class="slider">
-                        <div class="title">Root Octave [<span>4</span>]</div>
-                        <input type="range" min="0" max="7" value="4" oninput="UpdateRange(this, 'octave')">
-                    </div>
-                    <div class="slider">
-                        <div class="title">Max Notes [<span>8</span>]</div>
-                        <input type="range" min="1" max="16" value="8" oninput="UpdateRange(this, 'maxNotes')">
-                    </div>
-                    <div class="slider">
-                        <div class="title">Octave Range [<span>1</span>]</div>
-                        <input type="range" min="1" max="3" value="1" oninput="UpdateRange(this, 'sequenceOctaves')">
-                    </div>
-                    <div class="button" onclick="CreateSequence()">GENERATE</div>
-                </div>
-            </div>
-            <div class="section">
-                <div class="title">SEQUENCE</div>
-                <div class="sliders">
-                    <div class="slider">
-                        <div class="title">Clock [<span>1/4</span>]</div>
-                        <input type="range" min="1" max="5" value="3" oninput="UpdateRange(this, 'clock')">
-                    </div>
-                    <div class="slider">
-                        <div class="title">Note Length [<span>1/4</span>]</div>
-                        <input type="range" min="1" max="6" value="3" oninput="UpdateRange(this, 'noteTime')">
-                    </div>
-                    <div class="slider">
-                        <div class="title">Cycle Delay [<span>0</span>]</div>
-                        <input type="range" min="0" max="8" value="0" oninput="UpdateRange(this, 'delay')">
-                    </div>
-                    <div class="button" onclick="SetCycle(this)">RAND STEPS</div>
-                    <div class="button" onclick="SetShift(this)">SHIFT NOTES</div>
-                </div>
-            </div>
-            <div class="section">
-                <div class="title">TRACK</div>
-                <div class="sliders">
-                    <div class="slider">
-                        <div class="title">Cur. Track [<span>1</span>]</div>
-                        <input type="range" min="1" max="4" value="1" oninput="UpdateRange(this, 'layer')">
-                    </div>
-                    <div class="slider">
-                        <div class="title">MIDI Channel [<span>1</span>]</div>
-                        <input type="range" min="1" max="16" value="1" oninput="UpdateRange(this, 'channel')">
-                    </div>
-                    <div class="slider">
-                        <div class="title">MIDI Device [<span>1</span>]</div>
-                        <input id="midiDeviceSelect" type="range" min="1" max="2" value="1" oninput="UpdateRange(this, 'device')">
-                    </div>
-                    <div class="button" onclick="Play(CurrentLayer)">PLAY</div>
-                    <div class="button" onclick="Stop()">STOP</div>
-                </div>
-            </div>
-            <div class="section">
-                <div class="title">CUSTOM SCALE</div>
-                <div class="sliders">
-                    <div class="slider">
-                        <div class="title">Note 1 [<span>C</span>]</div>
-                        <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'custom1')">
-                    </div>
-                    <div class="slider">
-                        <div class="title">Note 2 [<span>C</span>]</div>
-                        <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'custom2')">
-                    </div>
-                    <div class="slider">
-                        <div class="title">Note 3 [<span>C</span>]</div>
-                        <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'custom3')">
-                    </div>
-                    <div class="slider">
-                        <div class="title">Note 4 [<span>C</span>]</div>
-                        <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'custom4')">
-                    </div>
-                    <div class="slider">
-                        <div class="title">Note 5 [<span>C</span>]</div>
-                        <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'custom5')">
-                    </div>
-                    <div class="slider">
-                        <div class="title">Note 6 [<span>C</span>]</div>
-                        <input type="range" min="1" max="12" value="1" oninput="UpdateRange(this, 'custom6')">
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-        <div id="steps">
-            <div class="step" id="1" onclick="Step(this)"><div class="note">..</div><div class="num">1</div></div>
-            <div class="step" id="2" onclick="Step(this)"><div class="note">..</div><div class="num">2</div></div>
-            <div class="step" id="3" onclick="Step(this)"><div class="note">..</div><div class="num">3</div></div>
-            <div class="step" id="4" onclick="Step(this)"><div class="note">..</div><div class="num">4</div></div>
-            <div class="step" id="5" onclick="Step(this)"><div class="note">..</div><div class="num">5</div></div>
-            <div class="step" id="6" onclick="Step(this)"><div class="note">..</div><div class="num">6</div></div>
-            <div class="step" id="7" onclick="Step(this)"><div class="note">..</div><div class="num">7</div></div>
-            <div class="step" id="8" onclick="Step(this)"><div class="note">..</div><div class="num">8</div></div>
-            <div class="step" id="9" onclick="Step(this)"><div class="note">..</div><div class="num">9</div></div>
-            <div class="step" id="10" onclick="Step(this)"><div class="note">..</div><div class="num">10</div></div>
-            <div class="step" id="11" onclick="Step(this)"><div class="note">..</div><div class="num">11</div></div>
-            <div class="step" id="12" onclick="Step(this)"><div class="note">..</div><div class="num">12</div></div>
-            <div class="step" id="13" onclick="Step(this)"><div class="note">..</div><div class="num">13</div></div>
-            <div class="step" id="14" onclick="Step(this)"><div class="note">..</div><div class="num">14</div></div>
-            <div class="step" id="15" onclick="Step(this)"><div class="note">..</div><div class="num">15</div></div>
-            <div class="step" id="16" onclick="Step(this)"><div class="note">..</div><div class="num">16</div></div>
-        </div>
-        
+    <div id="master_controls">
+        <div class="button" onclick="PlayAll()">Play All</div>
+        <div class="button" onclick="StopAll()">Stop All</div>
     </div>
-    <div id="version">Version 0.6.0-pre-alpha</div>
+    <div id="wrapper" oncontextmenu="return false">
+        <div id="tracks">
+            <div class="track">
+                <div class="track_header">
+                    <div class="track_name">Track 1</div>
+                    <div class="track_controls">
+                        <div class="button" onclick="Play(0)">Play</div>
+                        <div class="button" onclick="Stop(0)">Stop</div>
+                        <div class="button" onclick="Edit(0)">Edit</div>
+                    </div>
+                </div>
+                <div class="track_steps" id="track0">
+                    <div class="step" onclick="ChangeStep(this, 0, 0)"></div>
+                    <div class="step" onclick="ChangeStep(this, 1, 0)"></div>
+                    <div class="step" onclick="ChangeStep(this, 2, 0)"></div>
+                    <div class="step" onclick="ChangeStep(this, 3, 0)"></div>
+                    <div class="step" onclick="ChangeStep(this, 4, 0)"></div>
+                    <div class="step" onclick="ChangeStep(this, 5, 0)"></div>
+                    <div class="step" onclick="ChangeStep(this, 6, 0)"></div>
+                    <div class="step" onclick="ChangeStep(this, 7, 0)"></div>
+                    <div class="step" onclick="ChangeStep(this, 8, 0)"></div>
+                    <div class="step" onclick="ChangeStep(this, 9, 0)"></div>
+                    <div class="step" onclick="ChangeStep(this, 10, 0)"></div>
+                    <div class="step" onclick="ChangeStep(this, 11, 0)"></div>
+                    <div class="step" onclick="ChangeStep(this, 12, 0)"></div>
+                    <div class="step" onclick="ChangeStep(this, 13, 0)"></div>
+                    <div class="step" onclick="ChangeStep(this, 14, 0)"></div>
+                    <div id="last" class="step" onclick="ChangeStep(this, 15, 0)"></div>
+                </div>
+            </div>
+            <div class="track">
+                <div class="track_header">
+                    <div class="track_name">Track 2</div>
+                    <div class="track_controls">
+                        <div class="button" onclick="Play(1)">Play</div>
+                        <div class="button" onclick="Stop(1)">Stop</div>
+                        <div class="button" onclick="Edit(1)">Edit</div>
+                    </div>
+                </div>
+                <div class="track_steps" id="track1">
+                    <div class="step" onclick="ChangeStep(this, 0, 1)"></div>
+                    <div class="step" onclick="ChangeStep(this, 1, 1)"></div>
+                    <div class="step" onclick="ChangeStep(this, 2, 1)"></div>
+                    <div class="step" onclick="ChangeStep(this, 3, 1)"></div>
+                    <div class="step" onclick="ChangeStep(this, 4, 1)"></div>
+                    <div class="step" onclick="ChangeStep(this, 5, 1)"></div>
+                    <div class="step" onclick="ChangeStep(this, 6, 1)"></div>
+                    <div class="step" onclick="ChangeStep(this, 7, 1)"></div>
+                    <div class="step" onclick="ChangeStep(this, 8, 1)"></div>
+                    <div class="step" onclick="ChangeStep(this, 9, 1)"></div>
+                    <div class="step" onclick="ChangeStep(this, 10, 1)"></div>
+                    <div class="step" onclick="ChangeStep(this, 11, 1)"></div>
+                    <div class="step" onclick="ChangeStep(this, 12, 1)"></div>
+                    <div class="step" onclick="ChangeStep(this, 13, 1)"></div>
+                    <div class="step" onclick="ChangeStep(this, 14, 1)"></div>
+                    <div id="last" class="step" onclick="ChangeStep(this, 15, 1)"></div>
+                </div>
+            </div>
+            <div class="track">
+                <div class="track_header">
+                    <div class="track_name">Track 3</div>
+                    <div class="track_controls">
+                        <div class="button" onclick="Play(2)">Play</div>
+                        <div class="button" onclick="Stop(2)">Stop</div>
+                        <div class="button" onclick="Edit(2)">Edit</div>
+                    </div>
+                </div>
+                <div class="track_steps" id="track2">
+                    <div class="step" onclick="ChangeStep(this, 0, 2)"></div>
+                    <div class="step" onclick="ChangeStep(this, 1, 2)"></div>
+                    <div class="step" onclick="ChangeStep(this, 2, 2)"></div>
+                    <div class="step" onclick="ChangeStep(this, 3, 2)"></div>
+                    <div class="step" onclick="ChangeStep(this, 4, 2)"></div>
+                    <div class="step" onclick="ChangeStep(this, 5, 2)"></div>
+                    <div class="step" onclick="ChangeStep(this, 6, 2)"></div>
+                    <div class="step" onclick="ChangeStep(this, 7, 2)"></div>
+                    <div class="step" onclick="ChangeStep(this, 8, 2)"></div>
+                    <div class="step" onclick="ChangeStep(this, 9, 2)"></div>
+                    <div class="step" onclick="ChangeStep(this, 10, 2)"></div>
+                    <div class="step" onclick="ChangeStep(this, 11, 2)"></div>
+                    <div class="step" onclick="ChangeStep(this, 12, 2)"></div>
+                    <div class="step" onclick="ChangeStep(this, 13, 2)"></div>
+                    <div class="step" onclick="ChangeStep(this, 14, 2)"></div>
+                    <div id="last" class="step" onclick="ChangeStep(this, 15, 2)"></div>
+                </div>
+            </div>
+            <div class="track">
+                <div class="track_header">
+                    <div class="track_name">Track 4</div>
+                    <div class="track_controls">
+                        <div class="button" onclick="Play(3)">Play</div>
+                        <div class="button" onclick="Stop(3)">Stop</div>
+                        <div class="button" onclick="Edit(3)">Edit</div>
+                    </div>
+                </div>
+                <div class="track_steps" id="track3">
+                    <div class="step" onclick="ChangeStep(this, 0, 3)"></div>
+                    <div class="step" onclick="ChangeStep(this, 1, 3)"></div>
+                    <div class="step" onclick="ChangeStep(this, 2, 3)"></div>
+                    <div class="step" onclick="ChangeStep(this, 3, 3)"></div>
+                    <div class="step" onclick="ChangeStep(this, 4, 3)"></div>
+                    <div class="step" onclick="ChangeStep(this, 5, 3)"></div>
+                    <div class="step" onclick="ChangeStep(this, 6, 3)"></div>
+                    <div class="step" onclick="ChangeStep(this, 7, 3)"></div>
+                    <div class="step" onclick="ChangeStep(this, 8, 3)"></div>
+                    <div class="step" onclick="ChangeStep(this, 9, 3)"></div>
+                    <div class="step" onclick="ChangeStep(this, 10, 3)"></div>
+                    <div class="step" onclick="ChangeStep(this, 11, 3)"></div>
+                    <div class="step" onclick="ChangeStep(this, 12, 3)"></div>
+                    <div class="step" onclick="ChangeStep(this, 13, 3)"></div>
+                    <div class="step" onclick="ChangeStep(this, 14, 3)"></div>
+                    <div id="last" class="step" onclick="ChangeStep(this, 15, 3)"></div>
+                </div>
+            </div>
+            <div class="track">
+                <div class="track_header">
+                    <div class="track_name">Track 5</div>
+                    <div class="track_controls">
+                        <div class="button" onclick="Play(4)">Play</div>
+                        <div class="button" onclick="Stop(4)">Stop</div>
+                        <div class="button" onclick="Edit(4)">Edit</div>
+                    </div>
+                </div>
+                <div class="track_steps" id="track4">
+                    <div class="step" onclick="ChangeStep(this, 0, 4)"></div>
+                    <div class="step" onclick="ChangeStep(this, 1, 4)"></div>
+                    <div class="step" onclick="ChangeStep(this, 2, 4)"></div>
+                    <div class="step" onclick="ChangeStep(this, 3, 4)"></div>
+                    <div class="step" onclick="ChangeStep(this, 4, 4)"></div>
+                    <div class="step" onclick="ChangeStep(this, 5, 4)"></div>
+                    <div class="step" onclick="ChangeStep(this, 6, 4)"></div>
+                    <div class="step" onclick="ChangeStep(this, 7, 4)"></div>
+                    <div class="step" onclick="ChangeStep(this, 8, 4)"></div>
+                    <div class="step" onclick="ChangeStep(this, 9, 4)"></div>
+                    <div class="step" onclick="ChangeStep(this, 10, 4)"></div>
+                    <div class="step" onclick="ChangeStep(this, 11, 4)"></div>
+                    <div class="step" onclick="ChangeStep(this, 12, 4)"></div>
+                    <div class="step" onclick="ChangeStep(this, 13, 4)"></div>
+                    <div class="step" onclick="ChangeStep(this, 14, 4)"></div>
+                    <div id="last" class="step" onclick="ChangeStep(this, 15, 4)"></div>
+                </div>
+            </div>
+            <div class="track">
+                <div class="track_header">
+                    <div class="track_name">Track 6</div>
+                    <div class="track_controls">
+                        <div class="button" onclick="Play(5)">Play</div>
+                        <div class="button" onclick="Stop(5)">Stop</div>
+                        <div class="button" onclick="Edit(5)">Edit</div>
+                    </div>
+                </div>
+                <div class="track_steps" id="track5">
+                    <div class="step" onclick="ChangeStep(this, 0, 5)"></div>
+                    <div class="step" onclick="ChangeStep(this, 1, 5)"></div>
+                    <div class="step" onclick="ChangeStep(this, 2, 5)"></div>
+                    <div class="step" onclick="ChangeStep(this, 3, 5)"></div>
+                    <div class="step" onclick="ChangeStep(this, 4, 5)"></div>
+                    <div class="step" onclick="ChangeStep(this, 5, 5)"></div>
+                    <div class="step" onclick="ChangeStep(this, 6, 5)"></div>
+                    <div class="step" onclick="ChangeStep(this, 7, 5)"></div>
+                    <div class="step" onclick="ChangeStep(this, 8, 5)"></div>
+                    <div class="step" onclick="ChangeStep(this, 9, 5)"></div>
+                    <div class="step" onclick="ChangeStep(this, 10, 5)"></div>
+                    <div class="step" onclick="ChangeStep(this, 11, 5)"></div>
+                    <div class="step" onclick="ChangeStep(this, 12, 5)"></div>
+                    <div class="step" onclick="ChangeStep(this, 13, 5)"></div>
+                    <div class="step" onclick="ChangeStep(this, 14, 5)"></div>
+                    <div id="last" class="step" onclick="ChangeStep(this, 15, 5)"></div>
+                </div>
+            </div>
+            <div class="track">
+                <div class="track_header">
+                    <div class="track_name">Track 7</div>
+                    <div class="track_controls">
+                        <div class="button" onclick="Play(6)">Play</div>
+                        <div class="button" onclick="Stop(6)">Stop</div>
+                        <div class="button" onclick="Edit(6)">Edit</div>
+                    </div>
+                </div>
+                <div class="track_steps" id="track6">
+                    <div class="step" onclick="ChangeStep(this, 0, 6)"></div>
+                    <div class="step" onclick="ChangeStep(this, 1, 6)"></div>
+                    <div class="step" onclick="ChangeStep(this, 2, 6)"></div>
+                    <div class="step" onclick="ChangeStep(this, 3, 6)"></div>
+                    <div class="step" onclick="ChangeStep(this, 4, 6)"></div>
+                    <div class="step" onclick="ChangeStep(this, 5, 6)"></div>
+                    <div class="step" onclick="ChangeStep(this, 6, 6)"></div>
+                    <div class="step" onclick="ChangeStep(this, 7, 6)"></div>
+                    <div class="step" onclick="ChangeStep(this, 8, 6)"></div>
+                    <div class="step" onclick="ChangeStep(this, 9, 6)"></div>
+                    <div class="step" onclick="ChangeStep(this, 10, 6)"></div>
+                    <div class="step" onclick="ChangeStep(this, 11, 6)"></div>
+                    <div class="step" onclick="ChangeStep(this, 12, 6)"></div>
+                    <div class="step" onclick="ChangeStep(this, 13, 6)"></div>
+                    <div class="step" onclick="ChangeStep(this, 14, 6)"></div>
+                    <div id="last" class="step" onclick="ChangeStep(this, 15, 6)"></div>
+                </div>
+            </div>
+            <div class="track">
+                <div class="track_header">
+                    <div class="track_name">Track 8</div>
+                    <div class="track_controls">
+                        <div class="button" onclick="Play(7)">Play</div>
+                        <div class="button" onclick="Stop(7)">Stop</div>
+                        <div class="button" onclick="Edit(7)">Edit</div>
+                    </div>
+                </div>
+                <div class="track_steps" id="track7">
+                    <div class="step" onclick="ChangeStep(this, 0, 7)"></div>
+                    <div class="step" onclick="ChangeStep(this, 1, 7)"></div>
+                    <div class="step" onclick="ChangeStep(this, 2, 7)"></div>
+                    <div class="step" onclick="ChangeStep(this, 3, 7)"></div>
+                    <div class="step" onclick="ChangeStep(this, 4, 7)"></div>
+                    <div class="step" onclick="ChangeStep(this, 5, 7)"></div>
+                    <div class="step" onclick="ChangeStep(this, 6, 7)"></div>
+                    <div class="step" onclick="ChangeStep(this, 7, 7)"></div>
+                    <div class="step" onclick="ChangeStep(this, 8, 7)"></div>
+                    <div class="step" onclick="ChangeStep(this, 9, 7)"></div>
+                    <div class="step" onclick="ChangeStep(this, 10, 7)"></div>
+                    <div class="step" onclick="ChangeStep(this, 11, 7)"></div>
+                    <div class="step" onclick="ChangeStep(this, 12, 7)"></div>
+                    <div class="step" onclick="ChangeStep(this, 13, 7)"></div>
+                    <div class="step" onclick="ChangeStep(this, 14, 7)"></div>
+                    <div id="last" class="step" onclick="ChangeStep(this, 15, 7)"></div>
+                </div>
+            </div>
+        </div>     
+        <div id="trackMenu" class="edit_menu" style="display: none;">
+            <div class="edit_title">
+                <div class="button" style="float: left;">Notes</div>
+                <span>Edit</span>
+                <div class="button" onclick="this.parentElement.parentElement.style.display='none'">Close</div>
+            </div>
+            <div class="edit_options">
+                <div id="midiSection" class="edit_section">
+                    <div class="section_title">MIDI</div>
+                    <div id="deviceSlider" class="slider">Device [<span>A49 MIDI</span>]<input type="range" min="1" max="1" oninput="UpdateRange(this, 'device')"></div>
+                    <div class="slider">Channel [<span>1</span>]<input type="range" min="1" max="16" value="1" oninput="UpdateRange(this, 'channel')"></div>
+                </div>
+                <div id="stepSection" class="edit_section">
+                    <div class="section_title">Steps</div>
+                    <div class="slider">Step Time [<span>1/4</span>]<input type="range" min="1" max="5" oninput="UpdateRange(this, 'clock')"></div>
+                    <div class="slider">Note Length [<span>1/4</span>]<input type="range" min="1" max="6" oninput="UpdateRange(this, 'noteTime')"></div>
+                    <div class="slider">Cycle Delay [<span>0</span>]<input type="range" min="0" max="4" oninput="UpdateRange(this, 'delay')"></div>
+                    <div class="slider">Random Steps [<span>off</span>]<input type="range" min="1" max="2" oninput="UpdateRange(this, 'randSteps')"></div>
+                    <div class="slider">Shift Notes [<span>off</span>]<input type="range" min="1" max="2" oninput="UpdateRange(this, 'shiftNotes')"></div>
+                </div>
+                <div id="randomSection" class="edit_section">
+                    <div class="section_title">Random Sequence</div>
+                    <div class="slider">Scale [<span>Major</span>]<input type="range" min="1" max="6" oninput="UpdateRange(this, 'scale')"></div>
+                    <div class="slider">Root [<span>C</span>]<input type="range" min="1" max="12" oninput="UpdateRange(this, 'root')"></div>
+                    <div class="slider">Root Octave [<span>4</span>]<input type="range" min="0" max="7" oninput="UpdateRange(this, 'octave')"></div>
+                    <div class="slider">Max Steps [<span>8</span>]<input type="range" min="1" max="16" oninput="UpdateRange(this, 'maxNotes')"></div>
+                    <div class="button" onclick="Tracks[CurrentTrack].generate()">Generate</div>
+                </div>
+            </div>
+        </div>
+        <div id="noteMenu" class="edit_menu" style="display: none;">
+            <div class="edit_title"><div class="button" style="float: left;">Back</div>Notes<div class="button">Close</div></div>
+            <div class="edit_options">
+                <div id="keys">
+                    <div class="key_w"></div>
+                    <div class="key_w"></div>
+                    <div class="key_b"></div>
+                    <div class="key_w"></div>
+                    <div class="key_b"></div>
+                    <div class="key_w"></div>
+                    <div class="key_b"></div>
+                    <div class="key_w"></div>
+                    <div class="key_w"></div>
+                    <div class="key_b"></div>
+                    <div class="key_w"></div>
+                    <div class="key_b"></div>
+                    <div class="key_w"></div>
+                </div>
+                <div id="grid">
+                    <div id="grid_steps">
+                        <div class="g_step">
+                            <div class="key_w"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b">1</div>
+                        </div>
+                        <div class="g_step">
+                            <div class="key_w"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b">2</div>
+                        </div>
+                        <div class="g_step">
+                            <div class="key_w"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b">3</div>
+                        </div>
+                        <div class="g_step">
+                            <div class="key_w"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b">4</div>
+                        </div>
+                        <div class="g_step">
+                            <div class="key_w"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b"></div>
+                            <div class="key_w"></div>
+                            <div class="key_b">5</div>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </div>   
+        <div id="footer">
+            Version 0.8.1-pre-alpha | <a href="#">Donate</a>
+        </div>
+    </div>
+    
 </body>
