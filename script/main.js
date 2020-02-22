@@ -280,9 +280,15 @@ function Edit(trackNum)
     UpdateRange(randomSection.children[3].children[1], "octave");
     UpdateRange(randomSection.children[4].children[1], "maxNotes");
 
-    if(document.getElementById("trackMenu").style.display == "none")
+    if(document.getElementById("trackMenu").style.display == "none"){
         document.getElementById("trackMenu").style.display = "block";
+        document.getElementById("trackMenu").style.bottom = "40px";
+    }
 
+    for(let i = 0; i < 16; i++)
+    {
+        ChangeOctave(0, i, document.getElementById("notes"+i).children[0]);
+    }
 }
 function Play(trackNum)
 {
@@ -332,7 +338,102 @@ function Stop(trackNum)
             stepElememts.children[i].style.border = "";
     }
 }
+function AddNote(note, step, button)
+{
+    var stepElement = document.getElementById("track" + CurrentTrack).children[step];
+    
+    if(Tracks[CurrentTrack].steps[step].addNote(note)){
+        button.innerHTML = note+Tracks[CurrentTrack].steps[step].octave;
+        button.style.backgroundColor = "var(--light-blue1)";
+        button.style.color = "var(--dark-blue1)";
+    }else{
+        Tracks[CurrentTrack].steps[step].removeNote(note);
+        button.innerHTML = "";
+        button.style.backgroundColor = "";
+        button.style.color = "";
+    }
+    
+    if(Tracks[CurrentTrack].steps[step].notes.length == 0){
+        stepElement.innerHTML = "";
+    }
+    else if(Tracks[CurrentTrack].steps[step].notes.length > 0){
+        stepElement.innerHTML = Tracks[CurrentTrack].steps[step].notes[Tracks[CurrentTrack].steps[step].notes.length-1];
+    }
 
+    if(Tracks[CurrentTrack].steps[step].notes.length > 1){
+        stepElement.innerHTML += "...";
+    }
+    
+    
+}
+function ChangeOctave(change, step, button)
+{
+    var trackStep = Tracks[CurrentTrack].steps[step];
+    var noteElements = button.parentElement;
+
+    trackStep.octave += change;
+
+    for(let i = 0; i < 12; i++){
+        noteElements.children[i].innerHTML = "";
+        noteElements.children[i].style.backgroundColor = "";
+        noteElements.children[i].style.color = "";
+    }
+
+    for(let i = 0; i < trackStep.notes.length; i++)
+    {
+        if(trackStep.notes[i] == ("B" + trackStep.octave)){
+            noteElements.children[0].innerHTML = trackStep.notes[i];
+            noteElements.children[0].style.backgroundColor = "var(--light-blue1)";
+            noteElements.children[0].style.color = "var(--dark-blue1)";
+        }else if(trackStep.notes[i] == ("A#" + trackStep.octave)){
+            noteElements.children[1].innerHTML = trackStep.notes[i];
+            noteElements.children[1].style.backgroundColor = "var(--light-blue1)";
+            noteElements.children[1].style.color = "var(--dark-blue1)";
+        }else if(trackStep.notes[i] == ("A" + trackStep.octave)){
+            noteElements.children[2].innerHTML = trackStep.notes[i];
+            noteElements.children[2].style.backgroundColor = "var(--light-blue1)";
+            noteElements.children[2].style.color = "var(--dark-blue1)";
+        }else if(trackStep.notes[i] == ("G#" + trackStep.octave)){
+            noteElements.children[3].innerHTML = trackStep.notes[i];
+            noteElements.children[3].style.backgroundColor = "var(--light-blue1)";
+            noteElements.children[3].style.color = "var(--dark-blue1)";
+        }else if(trackStep.notes[i] == ("G" + trackStep.octave)){
+            noteElements.children[4].innerHTML = trackStep.notes[i];
+            noteElements.children[4].style.backgroundColor = "var(--light-blue1)";
+            noteElements.children[4].style.color = "var(--dark-blue1)";
+        }else if(trackStep.notes[i] == ("F#" + trackStep.octave)){
+            noteElements.children[5].innerHTML = trackStep.notes[i];
+            noteElements.children[5].style.backgroundColor = "var(--light-blue1)";
+            noteElements.children[5].style.color = "var(--dark-blue1)";
+        }else if(trackStep.notes[i] == ("F" + trackStep.octave)){
+            noteElements.children[6].innerHTML = trackStep.notes[i];
+            noteElements.children[6].style.backgroundColor = "var(--light-blue1)";
+            noteElements.children[6].style.color = "var(--dark-blue1)";
+        }else if(trackStep.notes[i] == ("E" + trackStep.octave)){
+            noteElements.children[7].innerHTML = trackStep.notes[i];
+            noteElements.children[7].style.backgroundColor = "var(--light-blue1)";
+            noteElements.children[7].style.color = "var(--dark-blue1)";
+        }else if(trackStep.notes[i] == ("D#" + trackStep.octave)){
+            noteElements.children[8].innerHTML = trackStep.notes[i];
+            noteElements.children[8].style.backgroundColor = "var(--light-blue1)";
+            noteElements.children[8].style.color = "var(--dark-blue1)";
+        }else if(trackStep.notes[i] == ("D" + trackStep.octave)){
+            noteElements.children[9].innerHTML = trackStep.notes[i];
+            noteElements.children[9].style.backgroundColor = "var(--light-blue1)";
+            noteElements.children[9].style.color = "var(--dark-blue1)";
+        }else if(trackStep.notes[i] == ("C#" + trackStep.octave)){
+            noteElements.children[10].innerHTML = trackStep.notes[i];
+            noteElements.children[10].style.backgroundColor = "var(--light-blue1)";
+            noteElements.children[10].style.color = "var(--dark-blue1)";
+        }else if(trackStep.notes[i] == ("C" + trackStep.octave)){
+            noteElements.children[11].innerHTML = trackStep.notes[i];
+            noteElements.children[11].style.backgroundColor = "var(--light-blue1)";
+            noteElements.children[11].style.color = "var(--dark-blue1)";
+        }
+        
+    }
+    
+}
 
 
 

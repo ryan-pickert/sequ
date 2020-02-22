@@ -11,12 +11,12 @@
     <script src="script/main.js"></script>
     <script src="script/track.js"></script>
 </head>
-<body onload="Init()">
+<body onload="Init()" oncontextmenu="return false">
     <div id="master_controls">
         <div class="button" onclick="PlayAll()">Play All</div>
         <div class="button" onclick="StopAll()">Stop All</div>
     </div>
-    <div id="wrapper" oncontextmenu="return false">
+    <div id="wrapper">
         <div id="tracks">
             <div class="track">
                 <div class="track_header">
@@ -245,7 +245,7 @@
         </div>     
         <div id="trackMenu" class="edit_menu" style="display: none;">
             <div class="edit_title">
-                <div class="button" style="float: left;">Notes</div>
+                <div class="button" style="float: left;" onclick="document.getElementById('noteMenu').style.display='block'">Notes</div>
                 <span>Edit</span>
                 <div class="button" onclick="this.parentElement.parentElement.style.display='none'">Close</div>
             </div>
@@ -274,104 +274,298 @@
             </div>
         </div>
         <div id="noteMenu" class="edit_menu" style="display: none;">
-            <div class="edit_title"><div class="button" style="float: left;">Back</div>Notes<div class="button">Close</div></div>
+            <div class="edit_title">
+                <div class="button" style="float: left;" onclick="this.parentElement.parentElement.style.display='none'">Back</div>
+                Notes
+                <div class="button" onclick="this.parentElement.parentElement.style.display='none'; document.getElementById('trackMenu').style.display='none'">Close</div></div>
             <div class="edit_options">
                 <div id="keys">
-                    <div class="key_w"></div>
-                    <div class="key_w"></div>
-                    <div class="key_b"></div>
-                    <div class="key_w"></div>
-                    <div class="key_b"></div>
-                    <div class="key_w"></div>
-                    <div class="key_b"></div>
-                    <div class="key_w"></div>
-                    <div class="key_w"></div>
-                    <div class="key_b"></div>
-                    <div class="key_w"></div>
-                    <div class="key_b"></div>
-                    <div class="key_w"></div>
+                    <div class="key_w">B</div>
+                    <div class="key_b">A#</div>
+                    <div class="key_w">A</div>
+                    <div class="key_b">G#</div>
+                    <div class="key_w">G</div>
+                    <div class="key_b">F#</div>
+                    <div class="key_w">F</div>
+                    <div class="key_w">E</div>
+                    <div class="key_b">D#</div>
+                    <div class="key_w">D</div>
+                    <div class="key_b">C#</div>
+                    <div class="key_w">C</div>
                 </div>
                 <div id="grid">
                     <div id="grid_steps">
-                        <div class="g_step">
-                            <div class="key_w"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
+                        <div class="g_step" id="notes0">
+                            <div class="key_w" onclick="AddNote('B',0,this)"></div>
+                            <div class="key_b" onclick="AddNote('A#',0,this)"></div>
+                            <div class="key_w" onclick="AddNote('A',0,this)"></div>
+                            <div class="key_b" onclick="AddNote('G#',0,this)"></div>
+                            <div class="key_w" onclick="AddNote('G',0,this)"></div>
+                            <div class="key_b" onclick="AddNote('F#',0,this)"></div>
+                            <div class="key_w" onclick="AddNote('F',0,this)"></div>
+                            <div class="key_w" onclick="AddNote('E',0,this)"></div>
+                            <div class="key_b" onclick="AddNote('D#',0,this)"></div>
+                            <div class="key_w" onclick="AddNote('D',0,this)"></div>
+                            <div class="key_b" onclick="AddNote('C#',0,this)"></div>
+                            <div class="key_w" onclick="AddNote('C',0,this)"></div>
                             <div class="key_b">1</div>
+                            <div class="key_b" onclick="ChangeOctave(1, 0, this)">+</div>
+                            <div class="key_b" onclick="ChangeOctave(-1, 0, this)">-</div>
                         </div>
-                        <div class="g_step">
-                            <div class="key_w"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
+                        <div class="g_step" id="notes1">
+                            <div class="key_w" onclick="AddNote('B',1,this)"></div>
+                            <div class="key_b" onclick="AddNote('A#',1,this)"></div>
+                            <div class="key_w" onclick="AddNote('A',1,this)"></div>
+                            <div class="key_b" onclick="AddNote('G#',1,this)"></div>
+                            <div class="key_w" onclick="AddNote('G',1,this)"></div>
+                            <div class="key_b" onclick="AddNote('F#',1,this)"></div>
+                            <div class="key_w" onclick="AddNote('F',1,this)"></div>
+                            <div class="key_w" onclick="AddNote('E',1,this)"></div>
+                            <div class="key_b" onclick="AddNote('D#',1,this)"></div>
+                            <div class="key_w" onclick="AddNote('D',1,this)"></div>
+                            <div class="key_b" onclick="AddNote('C#',1,this)"></div>
+                            <div class="key_w" onclick="AddNote('C',1,this)"></div>
                             <div class="key_b">2</div>
+                            <div class="key_b" onclick="ChangeOctave(1, 1, this)">+</div>
+                            <div class="key_b" onclick="ChangeOctave(-1, 1, this)">-</div>
                         </div>
-                        <div class="g_step">
-                            <div class="key_w"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
+                        <div class="g_step" id="notes2">
+                            <div class="key_w" onclick="AddNote('B',2,this)"></div>
+                            <div class="key_b" onclick="AddNote('A#',2,this)"></div>
+                            <div class="key_w" onclick="AddNote('A',2,this)"></div>
+                            <div class="key_b" onclick="AddNote('G#',2,this)"></div>
+                            <div class="key_w" onclick="AddNote('G',2,this)"></div>
+                            <div class="key_b" onclick="AddNote('F#',2,this)"></div>
+                            <div class="key_w" onclick="AddNote('F',2,this)"></div>
+                            <div class="key_w" onclick="AddNote('E',2,this)"></div>
+                            <div class="key_b" onclick="AddNote('D#',2,this)"></div>
+                            <div class="key_w" onclick="AddNote('D',2,this)"></div>
+                            <div class="key_b" onclick="AddNote('C#',2,this)"></div>
+                            <div class="key_w" onclick="AddNote('C',2,this)"></div>
                             <div class="key_b">3</div>
+                            <div class="key_b" onclick="ChangeOctave(1, 2, this)">+</div>
+                            <div class="key_b" onclick="ChangeOctave(-1, 2, this)">-</div>
                         </div>
-                        <div class="g_step">
-                            <div class="key_w"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
+                        <div class="g_step" id="notes3">
+                            <div class="key_w" onclick="AddNote('B',3,this)"></div>
+                            <div class="key_b" onclick="AddNote('A#',3,this)"></div>
+                            <div class="key_w" onclick="AddNote('A',3,this)"></div>
+                            <div class="key_b" onclick="AddNote('G#',3,this)"></div>
+                            <div class="key_w" onclick="AddNote('G',3,this)"></div>
+                            <div class="key_b" onclick="AddNote('F#',3,this)"></div>
+                            <div class="key_w" onclick="AddNote('F',3,this)"></div>
+                            <div class="key_w" onclick="AddNote('E',3,this)"></div>
+                            <div class="key_b" onclick="AddNote('D#',3,this)"></div>
+                            <div class="key_w" onclick="AddNote('D',3,this)"></div>
+                            <div class="key_b" onclick="AddNote('C#',3,this)"></div>
+                            <div class="key_w" onclick="AddNote('C',3,this)"></div>
                             <div class="key_b">4</div>
+                            <div class="key_b" onclick="ChangeOctave(1, 3, this)">+</div>
+                            <div class="key_b" onclick="ChangeOctave(-1, 3, this)">-</div>
                         </div>
-                        <div class="g_step">
-                            <div class="key_w"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
-                            <div class="key_b"></div>
-                            <div class="key_w"></div>
+                        <div class="g_step" id="notes4">
+                            <div class="key_w" onclick="AddNote('B',4,this)"></div>
+                            <div class="key_b" onclick="AddNote('A#',4,this)"></div>
+                            <div class="key_w" onclick="AddNote('A',4,this)"></div>
+                            <div class="key_b" onclick="AddNote('G#',4,this)"></div>
+                            <div class="key_w" onclick="AddNote('G',4,this)"></div>
+                            <div class="key_b" onclick="AddNote('F#',4,this)"></div>
+                            <div class="key_w" onclick="AddNote('F',4,this)"></div>
+                            <div class="key_w" onclick="AddNote('E',4,this)"></div>
+                            <div class="key_b" onclick="AddNote('D#',4,this)"></div>
+                            <div class="key_w" onclick="AddNote('D',4,this)"></div>
+                            <div class="key_b" onclick="AddNote('C#',4,this)"></div>
+                            <div class="key_w" onclick="AddNote('C',4,this)"></div>
                             <div class="key_b">5</div>
+                            <div class="key_b" onclick="ChangeOctave(1, 4, this)">+</div>
+                            <div class="key_b" onclick="ChangeOctave(-1, 4, this)">-</div>
+                        </div>
+                        <div class="g_step" id="notes5">
+                            <div class="key_w" onclick="AddNote('B',5,this)"></div>
+                            <div class="key_b" onclick="AddNote('A#',5,this)"></div>
+                            <div class="key_w" onclick="AddNote('A',5,this)"></div>
+                            <div class="key_b" onclick="AddNote('G#',5,this)"></div>
+                            <div class="key_w" onclick="AddNote('G',5,this)"></div>
+                            <div class="key_b" onclick="AddNote('F#',5,this)"></div>
+                            <div class="key_w" onclick="AddNote('F',5,this)"></div>
+                            <div class="key_w" onclick="AddNote('E',5,this)"></div>
+                            <div class="key_b" onclick="AddNote('D#',5,this)"></div>
+                            <div class="key_w" onclick="AddNote('D',5,this)"></div>
+                            <div class="key_b" onclick="AddNote('C#',5,this)"></div>
+                            <div class="key_w" onclick="AddNote('C',5,this)"></div>
+                            <div class="key_b">6</div>
+                            <div class="key_b" onclick="ChangeOctave(1, 5, this)">+</div>
+                            <div class="key_b" onclick="ChangeOctave(-1, 5, this)">-</div>
+                        </div>
+                        <div class="g_step" id="notes6">
+                            <div class="key_w" onclick="AddNote('B',6,this)"></div>
+                            <div class="key_b" onclick="AddNote('A#',6,this)"></div>
+                            <div class="key_w" onclick="AddNote('A',6,this)"></div>
+                            <div class="key_b" onclick="AddNote('G#',6,this)"></div>
+                            <div class="key_w" onclick="AddNote('G',6,this)"></div>
+                            <div class="key_b" onclick="AddNote('F#',6,this)"></div>
+                            <div class="key_w" onclick="AddNote('F',6,this)"></div>
+                            <div class="key_w" onclick="AddNote('E',6,this)"></div>
+                            <div class="key_b" onclick="AddNote('D#',6,this)"></div>
+                            <div class="key_w" onclick="AddNote('D',6,this)"></div>
+                            <div class="key_b" onclick="AddNote('C#',6,this)"></div>
+                            <div class="key_w" onclick="AddNote('C',6,this)"></div>
+                            <div class="key_b">7</div>
+                            <div class="key_b" onclick="ChangeOctave(1, 6, this)">+</div>
+                            <div class="key_b" onclick="ChangeOctave(-1, 6, this)">-</div>
+                        </div>
+                        <div class="g_step" id="notes7">
+                            <div class="key_w" onclick="AddNote('B',7,this)"></div>
+                            <div class="key_b" onclick="AddNote('A#',7,this)"></div>
+                            <div class="key_w" onclick="AddNote('A',7,this)"></div>
+                            <div class="key_b" onclick="AddNote('G#',7,this)"></div>
+                            <div class="key_w" onclick="AddNote('G',7,this)"></div>
+                            <div class="key_b" onclick="AddNote('F#',7,this)"></div>
+                            <div class="key_w" onclick="AddNote('F',7,this)"></div>
+                            <div class="key_w" onclick="AddNote('E',7,this)"></div>
+                            <div class="key_b" onclick="AddNote('D#',7,this)"></div>
+                            <div class="key_w" onclick="AddNote('D',7,this)"></div>
+                            <div class="key_b" onclick="AddNote('C#',7,this)"></div>
+                            <div class="key_w" onclick="AddNote('C',7,this)"></div>
+                            <div class="key_b">8</div>
+                            <div class="key_b" onclick="ChangeOctave(1, 7, this)">+</div>
+                            <div class="key_b" onclick="ChangeOctave(-1, 7, this)">-</div>
+                        </div>
+                        <div class="g_step" id="notes8">
+                            <div class="key_w" onclick="AddNote('B',8,this)"></div>
+                            <div class="key_b" onclick="AddNote('A#',8,this)"></div>
+                            <div class="key_w" onclick="AddNote('A',8,this)"></div>
+                            <div class="key_b" onclick="AddNote('G#',8,this)"></div>
+                            <div class="key_w" onclick="AddNote('G',8,this)"></div>
+                            <div class="key_b" onclick="AddNote('F#',8,this)"></div>
+                            <div class="key_w" onclick="AddNote('F',8,this)"></div>
+                            <div class="key_w" onclick="AddNote('E',8,this)"></div>
+                            <div class="key_b" onclick="AddNote('D#',8,this)"></div>
+                            <div class="key_w" onclick="AddNote('D',8,this)"></div>
+                            <div class="key_b" onclick="AddNote('C#',8,this)"></div>
+                            <div class="key_w" onclick="AddNote('C',8,this)"></div>
+                            <div class="key_b">9</div>
+                            <div class="key_b" onclick="ChangeOctave(1, 8, this)">+</div>
+                            <div class="key_b" onclick="ChangeOctave(-1, 8, this)">-</div>
+                        </div>
+                        <div class="g_step" id="notes9">
+                            <div class="key_w" onclick="AddNote('B',9,this)"></div>
+                            <div class="key_b" onclick="AddNote('A#',9,this)"></div>
+                            <div class="key_w" onclick="AddNote('A',9,this)"></div>
+                            <div class="key_b" onclick="AddNote('G#',9,this)"></div>
+                            <div class="key_w" onclick="AddNote('G',9,this)"></div>
+                            <div class="key_b" onclick="AddNote('F#',9,this)"></div>
+                            <div class="key_w" onclick="AddNote('F',9,this)"></div>
+                            <div class="key_w" onclick="AddNote('E',9,this)"></div>
+                            <div class="key_b" onclick="AddNote('D#',9,this)"></div>
+                            <div class="key_w" onclick="AddNote('D',9,this)"></div>
+                            <div class="key_b" onclick="AddNote('C#',9,this)"></div>
+                            <div class="key_w" onclick="AddNote('C',9,this)"></div>
+                            <div class="key_b">10</div>
+                            <div class="key_b" onclick="ChangeOctave(1, 9, this)">+</div>
+                            <div class="key_b" onclick="ChangeOctave(-1, 9, this)">-</div>
+                        </div>
+                        <div class="g_step" id="notes10">
+                            <div class="key_w" onclick="AddNote('B',10,this)"></div>
+                            <div class="key_b" onclick="AddNote('A#',10,this)"></div>
+                            <div class="key_w" onclick="AddNote('A',10,this)"></div>
+                            <div class="key_b" onclick="AddNote('G#',10,this)"></div>
+                            <div class="key_w" onclick="AddNote('G',10,this)"></div>
+                            <div class="key_b" onclick="AddNote('F#',10,this)"></div>
+                            <div class="key_w" onclick="AddNote('F',10,this)"></div>
+                            <div class="key_w" onclick="AddNote('E',10,this)"></div>
+                            <div class="key_b" onclick="AddNote('D#',10,this)"></div>
+                            <div class="key_w" onclick="AddNote('D',10,this)"></div>
+                            <div class="key_b" onclick="AddNote('C#',10,this)"></div>
+                            <div class="key_w" onclick="AddNote('C',10,this)"></div>
+                            <div class="key_b">11</div>
+                            <div class="key_b" onclick="ChangeOctave(1, 10, this)">+</div>
+                            <div class="key_b" onclick="ChangeOctave(-1, 10, this)">-</div>
+                        </div>
+                        <div class="g_step" id="notes11">
+                            <div class="key_w" onclick="AddNote('B',11,this)"></div>
+                            <div class="key_b" onclick="AddNote('A#',11,this)"></div>
+                            <div class="key_w" onclick="AddNote('A',11,this)"></div>
+                            <div class="key_b" onclick="AddNote('G#',11,this)"></div>
+                            <div class="key_w" onclick="AddNote('G',11,this)"></div>
+                            <div class="key_b" onclick="AddNote('F#',11,this)"></div>
+                            <div class="key_w" onclick="AddNote('F',11,this)"></div>
+                            <div class="key_w" onclick="AddNote('E',11,this)"></div>
+                            <div class="key_b" onclick="AddNote('D#',11,this)"></div>
+                            <div class="key_w" onclick="AddNote('D',11,this)"></div>
+                            <div class="key_b" onclick="AddNote('C#',11,this)"></div>
+                            <div class="key_w" onclick="AddNote('C',11,this)"></div>
+                            <div class="key_b">12</div>
+                            <div class="key_b" onclick="ChangeOctave(1, 11, this)">+</div>
+                            <div class="key_b" onclick="ChangeOctave(-1, 11, this)">-</div>
+                        </div>
+                        <div class="g_step" id="notes12">
+                            <div class="key_w" onclick="AddNote('B',12,this)"></div>
+                            <div class="key_b" onclick="AddNote('A#',12,this)"></div>
+                            <div class="key_w" onclick="AddNote('A',12,this)"></div>
+                            <div class="key_b" onclick="AddNote('G#',12,this)"></div>
+                            <div class="key_w" onclick="AddNote('G',12,this)"></div>
+                            <div class="key_b" onclick="AddNote('F#',12,this)"></div>
+                            <div class="key_w" onclick="AddNote('F',12,this)"></div>
+                            <div class="key_w" onclick="AddNote('E',12,this)"></div>
+                            <div class="key_b" onclick="AddNote('D#',12,this)"></div>
+                            <div class="key_w" onclick="AddNote('D',12,this)"></div>
+                            <div class="key_b" onclick="AddNote('C#',12,this)"></div>
+                            <div class="key_w" onclick="AddNote('C',12,this)"></div>
+                            <div class="key_b">13</div>
+                            <div class="key_b" onclick="ChangeOctave(1, 12, this)">+</div>
+                            <div class="key_b" onclick="ChangeOctave(-1, 12, this)">-</div>
+                        </div>
+                        <div class="g_step" id="notes13">
+                            <div class="key_w" onclick="AddNote('B',13,this)"></div>
+                            <div class="key_b" onclick="AddNote('A#',13,this)"></div>
+                            <div class="key_w" onclick="AddNote('A',13,this)"></div>
+                            <div class="key_b" onclick="AddNote('G#',13,this)"></div>
+                            <div class="key_w" onclick="AddNote('G',13,this)"></div>
+                            <div class="key_b" onclick="AddNote('F#',13,this)"></div>
+                            <div class="key_w" onclick="AddNote('F',13,this)"></div>
+                            <div class="key_w" onclick="AddNote('E',13,this)"></div>
+                            <div class="key_b" onclick="AddNote('D#',13,this)"></div>
+                            <div class="key_w" onclick="AddNote('D',13,this)"></div>
+                            <div class="key_b" onclick="AddNote('C#',13,this)"></div>
+                            <div class="key_w" onclick="AddNote('C',13,this)"></div>
+                            <div class="key_b">14</div>
+                            <div class="key_b" onclick="ChangeOctave(1, 13, this)">+</div>
+                            <div class="key_b" onclick="ChangeOctave(-1, 13, this)">-</div>
+                        </div>
+                        <div class="g_step" id="notes14">
+                            <div class="key_w" onclick="AddNote('B',14,this)"></div>
+                            <div class="key_b" onclick="AddNote('A#',14,this)"></div>
+                            <div class="key_w" onclick="AddNote('A',14,this)"></div>
+                            <div class="key_b" onclick="AddNote('G#',14,this)"></div>
+                            <div class="key_w" onclick="AddNote('G',14,this)"></div>
+                            <div class="key_b" onclick="AddNote('F#',14,this)"></div>
+                            <div class="key_w" onclick="AddNote('F',14,this)"></div>
+                            <div class="key_w" onclick="AddNote('E',14,this)"></div>
+                            <div class="key_b" onclick="AddNote('D#',14,this)"></div>
+                            <div class="key_w" onclick="AddNote('D',14,this)"></div>
+                            <div class="key_b" onclick="AddNote('C#',14,this)"></div>
+                            <div class="key_w" onclick="AddNote('C',14,this)"></div>
+                            <div class="key_b">15</div>
+                            <div class="key_b" onclick="ChangeOctave(1, 14, this)">+</div>
+                            <div class="key_b" onclick="ChangeOctave(-1, 14, this)">-</div>
+                        </div>
+                        <div class="g_step" id="notes15">
+                            <div class="key_w" onclick="AddNote('B',15,this)"></div>
+                            <div class="key_b" onclick="AddNote('A#',15,this)"></div>
+                            <div class="key_w" onclick="AddNote('A',15,this)"></div>
+                            <div class="key_b" onclick="AddNote('G#',15,this)"></div>
+                            <div class="key_w" onclick="AddNote('G',15,this)"></div>
+                            <div class="key_b" onclick="AddNote('F#',15,this)"></div>
+                            <div class="key_w" onclick="AddNote('F',15,this)"></div>
+                            <div class="key_w" onclick="AddNote('E',15,this)"></div>
+                            <div class="key_b" onclick="AddNote('D#',15,this)"></div>
+                            <div class="key_w" onclick="AddNote('D',15,this)"></div>
+                            <div class="key_b" onclick="AddNote('C#',15,this)"></div>
+                            <div class="key_w" onclick="AddNote('C',15,this)"></div>
+                            <div class="key_b">16</div>
+                            <div class="key_b" onclick="ChangeOctave(1, 15, this)">+</div>
+                            <div class="key_b" onclick="ChangeOctave(-1, 15, this)">-</div>
                         </div>
                     </div>
                     
@@ -380,7 +574,7 @@
             </div>
         </div>   
         <div id="footer">
-            Version 0.8.1-pre-alpha | <a href="#">Donate</a>
+            Version 0.9.2-pre-alpha | <a href="#">Donate</a>
         </div>
     </div>
     

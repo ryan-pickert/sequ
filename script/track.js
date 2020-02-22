@@ -4,29 +4,32 @@ class Step
     {
         this.notes = [];
         this.active = false;
+        this.octave = 4;
     }
     addNote(note)
     {
         //Check to see if note is already on the step
         var canAdd = true;
         for(let i = 0; i < this.notes.length; i++){
-            if(this.notes[i] == note){
+            if(this.notes[i] == (note+this.octave)){
                 //Note is already here; do nothing
                 canAdd = false;
-                break;
+                return false;
             }
         }
 
         //Add note to the step
-        if(canAdd)
-            this.notes.push(note);
+        if(canAdd){
+            this.notes.push(note+this.octave);
+            return true;
+        }
     }
     removeNote(note)
     {
         for(let i = 0; i < this.notes.length; i++){
-            if(this.notes[i] == note){
+            if(this.notes[i] == (note+this.octave)){
                 //Remove note from array
-                this.notes.splice(i);
+                this.notes.splice(i, 1);
                 break;
             }
         }
@@ -160,6 +163,12 @@ class Track
             var s = getRandom(0, 16);
             this.steps[s].active = true;
             stepElements.children[s].style.backgroundColor = "var(--dark-blue2)";
+        }
+
+        //Update piano roll
+        for(let i = 0; i < 16; i++)
+        {
+            ChangeOctave(0, i, document.getElementById("notes"+i).children[0]);
         }
     }
 }
