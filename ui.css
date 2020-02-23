@@ -147,7 +147,7 @@ html, body
 {
     position: absolute;
     width: 895px;
-    height: 490px;
+    height: 550px;
     left: 0;
     right: 0;
     bottom: 40px;
@@ -208,7 +208,7 @@ input
     background-color:var(--dark-blue2);
     border: 1px solid var(--light-blue1);
     border-radius: 3px;
-    height: 26px;
+    height: 32px;
     width: 180px;
     padding: 0px;
 }
@@ -217,7 +217,7 @@ input::-webkit-slider-thumb {
     -webkit-appearance: none; 
     appearance: none;
     width: 28px;
-    height: 26px; 
+    height: 32px; 
     background: var(--dark-blue1); 
     border-radius: 3px;
     border-left: 1px solid var(--light-blue2);
@@ -263,9 +263,9 @@ input::-webkit-slider-thumb {
 
 .key_w
 {
-    height: 28px;
+    height: 32px;
     border-radius: 3px;
-    line-height: 28px;
+    line-height: 32px;
     border: 1px solid var(--light-blue1);
     background-color: #172c33;
     text-indent: 5px;
@@ -273,8 +273,8 @@ input::-webkit-slider-thumb {
 .key_b
 {
     text-indent: 5px;
-    line-height: 28px;
-    height: 28px;
+    line-height: 32px;
+    height: 32px;
     width: 30px;
     border-radius: 3px;
     border: 1px solid var(--light-blue1);
