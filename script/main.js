@@ -46,14 +46,13 @@ var Tracks = [];
 function Init()
 {
     Tone.Transport.start();
+    
     if(window.innerWidth < 1025)
         document.getElementById("wrapper").style.zoom = "0.94";
     
     //Initialize defaults
-
     Tracks = [];
     CurrentTrack = 0;
-    
 
     MajorScale = ["C", "E", "G"];
     MinorScale = ["C", "Eb", "G"];
@@ -80,14 +79,12 @@ function Init()
         deviceSlider.max = WebMidi.outputs.length;
         deviceSlider.value = WebMidi.outputs.length;
         UpdateRange(deviceSlider, "device");
-
-        
     });
 
+    //Create empty tracks
     for(let i = 0; i < 8; i++){
         Tracks.push(new Track(i));
     }
-    
 }
 
 function UpdateRange(slider, type)
@@ -97,22 +94,26 @@ function UpdateRange(slider, type)
 
     switch(type)
     {
+        case "tempo":
+            Tone.Transport.bpm.value = slider.value;
+            value = slider.value;
+            break;
         case "clock":
             if(slider.value == 1){
                 value = "1 bar";
-                Tracks[CurrentTrack].stepTime = GetStepTime("1m");
+                Tracks[CurrentTrack].clock = "1m";
             }else if(slider.value == 2){
                 value = "1/2";
-                Tracks[CurrentTrack].stepTime = GetStepTime("2n");
+                Tracks[CurrentTrack].clock = "2n";
             }else if(slider.value == 3){
                 value = "1/4";
-                Tracks[CurrentTrack].stepTime = GetStepTime("4n");
+                Tracks[CurrentTrack].clock = "4n";
             }else if(slider.value == 4){
                 value = "1/8";
-                Tracks[CurrentTrack].stepTime = GetStepTime("8n");
+                Tracks[CurrentTrack].clock = "8n";
             }else if(slider.value == 5){
                 value = "1/16";
-                Tracks[CurrentTrack].stepTime = GetStepTime("16n");
+                Tracks[CurrentTrack].clock = "16n";
             }
 
             Tracks[CurrentTrack].sliderValues[2] = slider.value;
@@ -244,6 +245,14 @@ function UpdateRange(slider, type)
     }
     var title = slider.parentElement;
     title.children[0].innerHTML = value;
+}
+function ShowBPM()
+{
+    if(document.getElementById("bpmMenu").style.display == "none"){
+        document.getElementById("bpmMenu").style.display = "block";
+    }else{
+        document.getElementById("bpmMenu").style.display = "none";
+    }
 }
 function Edit(trackNum)
 {

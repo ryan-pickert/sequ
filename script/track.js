@@ -46,6 +46,7 @@ class Track
 
         this.midiDevice = 0;
         this.midiChannel = 1;
+        this.clock = "8n";
         this.stepTime = GetStepTime("8n");
         this.noteTime = GetStepTime("8n");
         this.cycleDelay = 0;
@@ -68,7 +69,8 @@ class Track
         var track = this;
         var stepCount = 0;
         var stepElememts = document.getElementById("track" + this.trackNum);
-
+        this.stepTime = GetStepTime(this.clock);
+        
         //Start the sequence
         this.loop = setInterval(function(){
             //Send MIDI data

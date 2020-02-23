@@ -59,6 +59,16 @@ html, body
     margin-left: 10px;
     border: none;
 }
+#bpmMenu
+{
+    position: absolute;
+    top: 60px;
+    left: 152px;
+    width: 182px;
+    padding: 5px;
+    background-color: var(--dark-blue1);
+    border: 1px solid var(--light-blue2);
+}
 .button
 {
     width: fit-content;
@@ -136,8 +146,8 @@ html, body
 .edit_menu
 {
     position: absolute;
-    width: 800px;
-    height: 442px;
+    width: 895px;
+    height: 490px;
     left: 0;
     right: 0;
     bottom: 40px;
@@ -172,7 +182,7 @@ html, body
     width: 183px;
     padding: 5px;
     float: left;
-    margin-left: 52px;
+    margin-left: 21px;
     margin-top: 5px;
 }
 .section_title
@@ -186,7 +196,7 @@ html, body
     font-size: 18px;
     margin-top: 2px;
 }
-.edit_section input
+input
 {
 
     margin: 0px;
@@ -203,7 +213,7 @@ html, body
     padding: 0px;
 }
 
-.edit_section input::-webkit-slider-thumb {
+input::-webkit-slider-thumb {
     -webkit-appearance: none; 
     appearance: none;
     width: 28px;
@@ -233,20 +243,17 @@ html, body
 }
 #grid_steps
 {
-    width: 900px;
     left: 59px;
     position: absolute;
 }
 .g_step
 {
-    width: 46px;
     height: 350px;
-    
     float: left;
 }
 .g_step .key_w, .g_step .key_b
 {
-    width: 45px;
+    width: 50px;
     border-radius: 0px;
     text-align: center;
     text-indent: 0px;
@@ -256,9 +263,9 @@ html, body
 
 .key_w
 {
-    height: 26px;
+    height: 28px;
     border-radius: 3px;
-    line-height: 26px;
+    line-height: 28px;
     border: 1px solid var(--light-blue1);
     background-color: #172c33;
     text-indent: 5px;
@@ -266,8 +273,8 @@ html, body
 .key_b
 {
     text-indent: 5px;
-    line-height: 24px;
-    height: 24px;
+    line-height: 28px;
+    height: 28px;
     width: 30px;
     border-radius: 3px;
     border: 1px solid var(--light-blue1);
