@@ -14,12 +14,12 @@ Sequ uses <a href="https://tonejs.github.io/">Tone.js</a> as a clock source and 
 * Input notes via piano roll
 * Activate/deactivate steps to your liking
 * Up to eight tracks playing simultaneously
-* Send tracks to different devices or MIDI channels
+* Send tracks to different devices and MIDI channels
 
 **Quick Start Guide**
 
 >Connect your MIDI devices (if they aren't already) and restart the page.
->All availiable devices will be accessable from the 'MIDI' section in the edit menu. 
+>All availiable devices will be accessible under the 'MIDI' section in the edit menu. 
 
 
 To create a sequence:
