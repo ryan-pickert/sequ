@@ -15,7 +15,7 @@
     <div id="master_controls">
         <div class="button" onclick="PlayAll()">Play All</div>
         <div class="button" onclick="StopAll()">Stop All</div>
-        <div class="button" onclick="ShowBPM()">BPM</div>
+        <div class="button" onclick="ShowBPM(this)">BPM</div>
         <div id="bpmMenu" style="display: none;">
             <div class="slider">BPM [<span>120</span>]<input type="range" min="70" max="140" value="120" oninput="UpdateRange(this, 'tempo')"></div>
         </div>
@@ -301,6 +301,9 @@
                     <div class="key_w">D</div>
                     <div class="key_b">C#</div>
                     <div class="key_w">C</div>
+                    <div class="key_b2" onclick="ClearNotes()">Clear</div>
+                    <div class="key_b2" onclick="ChangeAllOctaves(1)">+</div>
+                    <div class="key_b2" onclick="ChangeAllOctaves(-1)">-</div>
                 </div>
                 <div id="grid">
                     <div id="grid_steps">
@@ -583,7 +586,7 @@
             </div>
         </div>   
         <div id="footer">
-            Version 0.9.3-pre-alpha | <a href="#">Donate</a>
+            Version 0.9.8-pre-alpha | <a href="#">Donate</a>
         </div>
     </div>
     

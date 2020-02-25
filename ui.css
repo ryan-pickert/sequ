@@ -137,7 +137,11 @@ html, body
     float: left;
     text-indent: 3px;
 }
-
+#stepNum
+{
+    position: relative;
+    top: 68px;
+}
 #last
 {
     border-right: 1px solid var(--light-blue1);
@@ -195,6 +199,10 @@ html, body
 {
     font-size: 18px;
     margin-top: 2px;
+}
+#trackMenu
+{
+    height: 380px;
 }
 input
 {
@@ -260,7 +268,21 @@ input::-webkit-slider-thumb {
     border: 1px solid #00455C;
     opacity: 70%;
 }
-
+.key_b2
+{
+    width: 50px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 0px;
+    text-align: center;
+    text-indent: 0px;
+    border: 1px solid #00455C;
+    opacity: 70%;
+}
+.key_b2:hover
+{
+    opacity: 100%;
+}
 .key_w
 {
     height: 32px;

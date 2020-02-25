@@ -1,38 +1,37 @@
 <h1 align="center">SEQU</h1>
-<h4 align="center">Current Version: <a href="https://ryan-pickert.github.io/sequ/">[0.6.0-pre-alpha]</a></h4>
+<h4 align="center">Current Version: <a href="https://ryan-pickert.github.io/sequ/">[0.9.8-pre-alpha]</a></h4>
 
-Sequ is a multi-track step sequencer with a focus on randomization.
+Sequ is a multi-track step sequencer with randomization options.
 
 Sequ uses <a href="https://tonejs.github.io/">Tone.js</a> as a clock source and <a href="https://github.com/djipco/webmidi">WebMidi.js</a> to send MIDI data.
 
 <img src="pic/screen1.png">
 <img src="pic/screen2.png">
+<img src="pic/screen3.png">
 
 **Features**
 * Generate random sequences using a set scale
-* Generate a new sequence every cycle
+* Input notes via piano roll
 * Activate/deactivate steps to your liking
-* Up to four tracks playing simultaneously
+* Up to eight tracks playing simultaneously
 * Send tracks to different devices or MIDI channels
 
 **Quick Start Guide**
 
-Connect your MIDI devices (if they aren't already) and restart the page.
-All availiable devices will be listed under 'DEVICES' on the left.
->The 'device' slider will default to the last MIDI device. 
+>Connect your MIDI devices (if they aren't already) and restart the page.
+>All availiable devices will be accessable from the 'MIDI' section in the edit menu. 
 
 
-To generate a sequence:
-1. Set the parameters to your liking and hit the 'generate' button.
-2. Choose the desired device and MIDI channel.
-3. Hit 'play' to start the sequence.
+To create a sequence:
+1. Choose the track you want to create the sequence on and click 'edit'.
+2. To generate a random sequence, set the parameters to your liking and hit the 'generate' button.
+3. You can enter notes manualy by clicking on 'notes' in the top left.
+4. Choose the desired device and MIDI channel.
+5. Hit the 'play' button under the track to start the sequence.
+6. Hit 'play all' at the top to start all the tracks at once.
 
 Notes:
-- A sequence MUST be generated before starting it. Generating a new sequence while it is playing will have no effect until you restart it.
-- All other parameters (including MIDI device and channel) must also be set before the sequence is started.
 - You can click on a step to activate/deactivate it.
-- Switch between different tracks by using the 'current track' slider.
-- Clicking the 'rand steps' button will set the sequence to activate random steps every cycle.
-- Clicking the 'shift notes' button will set the sequence to shift it's notes to the left every cycle.
+- BPM must be changed before tracks are started.
 
 This project is in very early development so there are some bugs and missing features!

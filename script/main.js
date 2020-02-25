@@ -246,12 +246,16 @@ function UpdateRange(slider, type)
     var title = slider.parentElement;
     title.children[0].innerHTML = value;
 }
-function ShowBPM()
+function ShowBPM(button)
 {
     if(document.getElementById("bpmMenu").style.display == "none"){
         document.getElementById("bpmMenu").style.display = "block";
+        button.style.backgroundColor = "var(--light-blue1)";
+        button.style.color = "var(--dark-blue2)";
     }else{
         document.getElementById("bpmMenu").style.display = "none";
+        button.style.backgroundColor = "";
+        button.style.color = "";
     }
 }
 function Edit(trackNum)
@@ -374,6 +378,23 @@ function AddNote(note, step, button)
     }
     
     
+}
+function ClearNotes()
+{
+    for(let i = 0; i < 16; i++){
+        var stepElement = document.getElementById("track" + CurrentTrack).children[i];
+        Tracks[CurrentTrack].steps[i].notes = [];
+        stepElement.innerHTML = "";
+        
+    }
+
+    ChangeAllOctaves(0);
+}
+function ChangeAllOctaves(change)
+{
+    for(let i = 0; i < 16; i++){
+        ChangeOctave(change, i, document.getElementById("notes"+i).children[0]);
+    }
 }
 function ChangeOctave(change, step, button)
 {
