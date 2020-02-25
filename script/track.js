@@ -50,7 +50,7 @@ class Track
         this.stepTime = GetStepTime("8n");
         this.noteTime = GetStepTime("8n");
         this.cycleDelay = 0;
-        this.randSteps = false;
+        this.cycleSteps = false;
         this.shiftNotes = false;
 
         this.randScale = 1;
@@ -92,6 +92,39 @@ class Track
                 stepElememts.children[14].style.border = "";
                 stepElememts.children[15].style.borderTop = "1px solid white";
                 stepElememts.children[15].style.borderBottom = "1px solid white";
+
+                //Random steps
+                if(track.cycleSteps){
+                    //Activate random steps
+                    var stepElements = document.getElementById("track" + track.trackNum);
+                    for(let i = 0; i < 16; i++){
+                        track.steps[i].active = false;
+                        stepElements.children[i].style.backgroundColor = "";
+                    }
+                    for(let i = 0; i < track.randSteps; i++){
+                        var s = getRandom(0, 16);
+                        track.steps[s].active = true;
+                        stepElements.children[s].style.backgroundColor = "var(--dark-blue2)";
+                    }
+                }
+
+                //Shift notes to the left
+                if(track.shiftNotes){
+                    var stepElements = document.getElementById("track" + track.trackNum);
+                    var newNotes = [];
+                    for(let i = 0; i < 16; i++){
+                        newNotes.push(track.steps[i].notes[0]);
+                    }
+                    for(let i = 0; i < 16; i++){
+                        if(i == 15){
+                            track.steps[i].notes[0] = newNotes[0];
+                        }else{
+                            track.steps[i].notes[0] = newNotes[i+1];
+                        }
+                        stepElements.children[i].innerHTML = track.steps[i].notes[0];
+                    }
+                }
+
                 stepCount = 0;
             }else{
                 if(stepCount < 15){

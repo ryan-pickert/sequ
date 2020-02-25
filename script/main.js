@@ -149,10 +149,10 @@ function UpdateRange(slider, type)
         case "randSteps":
             if(slider.value == 1){
                 value = "off";
-                Tracks[CurrentTrack].randSteps = false;
+                Tracks[CurrentTrack].cycleSteps = false;
             }else if(slider.value == 2){
                 value = "on";
-                Tracks[CurrentTrack].randSteps = true;
+                Tracks[CurrentTrack].cycleSteps = true;
             }
 
             Tracks[CurrentTrack].sliderValues[5] = slider.value;
