@@ -247,11 +247,11 @@
                 </div>
             </div>
         </div>     
-        <div id="trackMenu" class="edit_menu" style="display: none;">
+        <div id="trackMenu" class="edit_menu">
             <div class="edit_title">
-                <div class="button" style="float: left;" onclick="document.getElementById('noteMenu').style.display='block'">Notes</div>
+                <div class="button" style="float: left;" onclick="document.getElementById('noteMenu').style.bottom='40px'">Notes</div>
                 <span>Edit</span>
-                <div class="button" onclick="this.parentElement.parentElement.style.display='none'">Close</div>
+                <div class="button" onclick="this.parentElement.parentElement.style.bottom='-550px'">Close</div>
             </div>
             <div class="edit_options">
                 <div id="midiSection" class="edit_section">
@@ -282,11 +282,11 @@
                 </div>
             </div>
         </div>
-        <div id="noteMenu" class="edit_menu" style="display: none;">
+        <div id="noteMenu" class="edit_menu">
             <div class="edit_title">
-                <div class="button" style="float: left;" onclick="this.parentElement.parentElement.style.display='none'">Back</div>
+                <div class="button" style="float: left;" onclick="this.parentElement.parentElement.style.bottom='-550px'">Back</div>
                 Notes
-                <div class="button" onclick="this.parentElement.parentElement.style.display='none'; document.getElementById('trackMenu').style.display='none'">Close</div></div>
+                <div class="button" onclick="this.parentElement.parentElement.style.bottom='-550px'; document.getElementById('trackMenu').style.bottom='-550px'">Close</div></div>
             <div class="edit_options">
                 <div id="keys">
                     <div class="key_w">B</div>
@@ -586,7 +586,7 @@
             </div>
         </div>   
         <div id="footer">
-            Version 1.0.0-alpha | <a href="#">Donate</a>
+            Version 1.0.1-alpha | <a href="#">Donate</a>
         </div>
     </div>
     

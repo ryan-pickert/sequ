@@ -1,4 +1,5 @@
 //----Electron window----
+/*
 const {app, BrowserWindow} = require('electron');
 var window;
 
@@ -28,7 +29,7 @@ function CreateWindow()
     window.loadFile('index.html');
 
     window.on('closed', () => {window = null});
-}
+}*/
 //-----------------------
 //GLOBAL VARS
 var MidiDevices = [];
@@ -235,9 +236,14 @@ function UpdateRange(slider, type)
             Tracks[CurrentTrack].sliderValues[1] = slider.value;
             break;
         case "device":
-            value = MidiDevices[slider.value-1].name;
-            Tracks[CurrentTrack].midiDevice = slider.value-1;
-            Tracks[CurrentTrack].sliderValues[0] = slider.value;
+            if(MidiDevices.length < 1){
+                value = "No Devices";
+            }else{
+                value = MidiDevices[slider.value-1].name;
+                Tracks[CurrentTrack].midiDevice = slider.value-1;
+                Tracks[CurrentTrack].sliderValues[0] = slider.value;
+            }
+            
             break;
         default:
             value = slider.value;
@@ -293,10 +299,7 @@ function Edit(trackNum)
     UpdateRange(randomSection.children[3].children[1], "octave");
     UpdateRange(randomSection.children[4].children[1], "maxNotes");
 
-    if(document.getElementById("trackMenu").style.display == "none"){
-        document.getElementById("trackMenu").style.display = "block";
-        document.getElementById("trackMenu").style.bottom = "40px";
-    }
+    setTimeout(function(){document.getElementById("trackMenu").style.bottom = "40px";}, 5);
 
     for(let i = 0; i < 16; i++)
     {
@@ -475,5 +478,5 @@ function SendNote(note, channel, nTime, device)
 function getRandom(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+    return Math.floor(Math.random() * (max - min)) + min;
 }
